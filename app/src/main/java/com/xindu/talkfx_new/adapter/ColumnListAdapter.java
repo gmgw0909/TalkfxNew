@@ -19,7 +19,7 @@ import java.util.List;
  * Created by LeeBoo on 2018/3/8.
  */
 
-public class ColumnListAdapter extends BaseQuickAdapter<ColumnInfo> {
+public class ColumnListAdapter extends BaseQuickAdapter<ColumnInfo,BaseViewHolder> {
 
     public ColumnListAdapter(List<ColumnInfo> data) {
         super(R.layout.item_column, data);

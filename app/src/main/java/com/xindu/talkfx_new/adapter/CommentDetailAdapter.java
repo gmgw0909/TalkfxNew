@@ -16,7 +16,7 @@ import java.util.List;
  * Created by LeeBoo on 2018/3/8.
  */
 
-public class CommentDetailAdapter extends BaseQuickAdapter<CommentInfo> {
+public class CommentDetailAdapter extends BaseQuickAdapter<CommentInfo,BaseViewHolder> {
 
     QMUIRoundButton discuss;
     private CommentInfo clickInfo;

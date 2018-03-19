@@ -35,7 +35,7 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
     private int currentPage = 2;
-    private ColumnListAdapter columnListAdapter;
+    private ColumnListAdapter mAdapter;
     private boolean isInitCache = false;
     private boolean hasLoad = false;
 
@@ -59,13 +59,13 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        columnListAdapter = new ColumnListAdapter(null);
-        columnListAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        columnListAdapter.isFirstOnly(true);
-        recyclerView.setAdapter(columnListAdapter);
+        mAdapter = new ColumnListAdapter(null);
+        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mAdapter.isFirstOnly(false);
+        recyclerView.setAdapter(mAdapter);
         refreshLayout.setColorSchemeColors(Color.BLACK, Color.BLUE);
         refreshLayout.setOnRefreshListener(this);
-        columnListAdapter.setOnLoadMoreListener(this);
+        mAdapter.setOnLoadMoreListener(this);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
             if (getArguments() != null) {
                 type = getArguments().getString("type");
             }
-            url = url + "?tid=" + type + "&rc=0&limit=10&page=";
+            url = url + "?tid=" + type + "&rc=0&limit=" + Constants.PAGE_SIZE + "&page=";
             //配置view属性
             configView();
             //开启loading,获取数据
@@ -89,6 +89,8 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
      */
     @Override
     public void onRefresh() {
+        currentPage = 1;
+        mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         OkGo.<BaseResponse<List<ColumnInfo>>>get(url + "1")//
                 .cacheKey("ColumnListFragment" + type)       //由于该fragment会被复用,必须保证key唯一,否则数据会发生覆盖
                 .cacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST)  //缓存模式先使用缓存,然后使用网络数据
@@ -96,10 +98,8 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
                     @Override
                     public void onSuccess(Response<BaseResponse<List<ColumnInfo>>> response) {
                         List<ColumnInfo> results = response.body().datas;
-                        if (results != null) {
-                            currentPage = 2;
-                            columnListAdapter.setNewData(results);
-                        }
+                        setData(true, results);
+                        mAdapter.setEnableLoadMore(true);
                     }
 
                     @Override
@@ -114,6 +114,7 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
 
                     @Override
                     public void onError(Response<BaseResponse<List<ColumnInfo>>> response) {
+                        mAdapter.setEnableLoadMore(true);
                         //网络请求失败的回调,一般会弹个Toast
                         showToast(response.getException().getMessage());
                     }
@@ -121,7 +122,7 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
                     @Override
                     public void onFinish() {
                         //可能需要移除之前添加的布局
-                        columnListAdapter.removeAllFooterView();
+                        mAdapter.removeAllFooterView();
                         //最后调用结束刷新的方法
                         dismissDialog();
                         setRefreshing(false);
@@ -134,37 +135,43 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
      */
     @Override
     public void onLoadMoreRequested() {
-        OkGo.<BaseResponse<List<ColumnInfo>>>get(url + currentPage)//
+        OkGo.<BaseResponse<List<ColumnInfo>>>get(url + currentPage)
                 .cacheMode(CacheMode.NO_CACHE)       //上拉不需要缓存
                 .execute(new MJsonCallBack<BaseResponse<List<ColumnInfo>>>() {
                     @Override
                     public void onSuccess(Response<BaseResponse<List<ColumnInfo>>> response) {
-                        List<ColumnInfo> results = response.body().datas;
-                        if (results != null && results.size() > 0) {
-                            currentPage++;
-                            columnListAdapter.addData(results);
-                        } else {
-                            //显示没有更多数据
-                            columnListAdapter.loadComplete();
-//                            TextView textView = new TextView(getContext());
-//                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//                            params.setMargins(0, 20, 0, 20);
-//                            textView.setLayoutParams(params);
-//                            textView.setText("无更多数据");
-//                            textView.setGravity(Gravity.CENTER);
-//                            textView.setTextColor(getResources().getColor(R.color.text_gray));
-//                            columnListAdapter.addFooterView(textView);
+                        if (response.body().datas != null) {
+                            List<ColumnInfo> results = response.body().datas;
+                            setData(false, results);
                         }
                     }
 
                     @Override
                     public void onError(Response<BaseResponse<List<ColumnInfo>>> response) {
                         //显示数据加载失败,点击重试
-                        columnListAdapter.showLoadMoreFailedView();
+                        mAdapter.loadMoreFail();
                         //网络请求失败的回调,一般会弹个Toast
                         showToast(response.getException().getMessage());
                     }
                 });
+    }
+
+    private void setData(boolean isRefresh, List data) {
+        currentPage++;
+        final int size = data == null ? 0 : data.size();
+        if (isRefresh) {
+            mAdapter.setNewData(data);
+        } else {
+            if (size > 0) {
+                mAdapter.addData(data);
+            }
+        }
+        if (size < Constants.PAGE_SIZE) {
+            //第一页如果不够一页就不显示没有更多数据布局
+            mAdapter.loadMoreEnd(isRefresh);
+        } else {
+            mAdapter.loadMoreComplete();
+        }
     }
 
     public void setRefreshing(final boolean refreshing) {

@@ -182,7 +182,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                             adapter.addData(results);
                         } else {
                             //显示没有更多数据
-                            adapter.loadComplete();
+                            adapter.loadMoreComplete();
                             TextView textView = new TextView(ColumnDetailActivity.this);
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                             textView.setLayoutParams(params);
@@ -198,7 +198,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                     @Override
                     public void onError(Response<BaseResponse<List<CommentInfo>>> response) {
                         //显示数据加载失败,点击重试
-                        adapter.showLoadMoreFailedView();
+                        adapter.loadMoreFail();
                         //网络请求失败的回调,一般会弹个Toast
                         showToast(response.getException().getMessage());
                     }
@@ -268,17 +268,18 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(Response<BaseResponse> response) {
-                        showToast("发送成功");
                         etDiscuss.setText("");
                         if (adapter.getClickInfo() != null) {
+                            onRefresh();
                             CommentInfo info = new CommentInfo();
                             info.fromUserName = "LeeBoo";
                             info.toUserName = adapter.getClickInfo().fromUserName;
                             info.content = content;
                             adapter.childAdapter.add(0, info);
                         } else {
-                            onRefresh();
+
                         }
+                        showToast("发送成功");
                     }
 
                     @Override

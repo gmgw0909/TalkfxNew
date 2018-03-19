@@ -24,7 +24,7 @@ import java.util.List;
  * Created by LeeBoo on 2018/3/8.
  */
 
-public class ColumnDetailAdapter extends BaseQuickAdapter<CommentInfo> {
+public class ColumnDetailAdapter extends BaseQuickAdapter<CommentInfo, BaseViewHolder> {
 
     QMUIRoundButton discuss;
     private CommentInfo clickInfo;
@@ -61,7 +61,7 @@ public class ColumnDetailAdapter extends BaseQuickAdapter<CommentInfo> {
         RecyclerView view = baseViewHolder.getView(R.id.child_list);
         if (model.childList != null && model.childList.size() > 0) {
             view.setVisibility(View.VISIBLE);
-            childAdapter = new BaseQuickAdapter<CommentInfo>(R.layout.item_comment_child, model.childList) {
+            childAdapter = new BaseQuickAdapter<CommentInfo, BaseViewHolder>(R.layout.item_comment_child, model.childList) {
                 @Override
                 protected void convert(BaseViewHolder baseViewHolder, CommentInfo info) {
                     if (!TextUtils.isEmpty(info.fromUserName) && !TextUtils.isEmpty(info.toUserName) && !TextUtils.isEmpty(info.content)) {

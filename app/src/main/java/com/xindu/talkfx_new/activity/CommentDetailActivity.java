@@ -165,7 +165,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                                 adapter.addData(results);
                             } else {
                                 //显示没有更多数据
-                                adapter.loadComplete();
+                                adapter.loadMoreComplete();
                                 TextView textView = new TextView(CommentDetailActivity.this);
                                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                                 textView.setLayoutParams(params);
@@ -183,7 +183,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                     public void onError(Response<BaseResponse<List<CommentInfo>>> response) {
                         if (status == 2) {
                             //显示数据加载失败,点击重试
-                            adapter.showLoadMoreFailedView();
+                            adapter.loadMoreFail();
                         }
                         //网络请求失败的回调
                         showToast(response.getException().getMessage());
