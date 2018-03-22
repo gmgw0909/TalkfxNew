@@ -13,6 +13,8 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.xindu.talkfx_new.activity.LoginActivity;
+import com.xindu.talkfx_new.activity.RegisterActivity;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -60,6 +62,36 @@ public class App extends Application {
             }
 
             lists.clear();
+        }
+    }
+
+    /**
+     * LoginActivity
+     */
+    public static void clearLoginActivity() {
+        try {
+            if (lists != null) {
+                ArrayList<Activity> list_ = new ArrayList<>();
+                for (Activity a : lists) {
+                    if (a != null) {
+                        if (a instanceof LoginActivity) {
+                            a.finish();
+                            list_.add(a);
+                        }
+                        if (a instanceof RegisterActivity) {
+                            a.finish();
+                            list_.add(a);
+                        }
+//                        if (a instanceof RetrievePasswordActivity) {
+//                            a.finish();
+//                            list_.add(a);
+//                        }
+                    }
+                }
+                lists.removeAll(list_);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

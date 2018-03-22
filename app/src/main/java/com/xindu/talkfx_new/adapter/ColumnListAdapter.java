@@ -1,6 +1,5 @@
 package com.xindu.talkfx_new.adapter;
 
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,10 +7,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.xindu.talkfx_new.bean.ColumnInfo;
 import com.xindu.talkfx_new.R;
-import com.xindu.talkfx_new.activity.ColumnDetailActivity;
 import com.xindu.talkfx_new.base.App;
+import com.xindu.talkfx_new.bean.ColumnInfo;
 
 import java.util.List;
 
@@ -42,13 +40,5 @@ public class ColumnListAdapter extends BaseQuickAdapter<ColumnInfo,BaseViewHolde
         } else {
             firstImg.setVisibility(View.GONE);
         }
-        final View view = baseViewHolder.getConvertView();
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, ColumnDetailActivity.class)
-                        .putExtra("columnId", model.columnId + ""));
-            }
-        });
     }
 }

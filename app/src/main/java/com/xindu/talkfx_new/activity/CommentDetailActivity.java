@@ -1,18 +1,16 @@
 package com.xindu.talkfx_new.activity;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,6 +21,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.adapter.CommentDetailAdapter;
@@ -32,7 +35,7 @@ import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.CommentInfo;
-import com.xindu.talkfx_new.utils.KeyboardChangeListener;
+import com.xindu.talkfx_new.utils.KeyboardUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
 import com.xindu.talkfx_new.widget.CircleImageView;
@@ -40,6 +43,8 @@ import com.xindu.talkfx_new.widget.CircleImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -55,11 +60,13 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
     @Bind(R.id.rl1)
     RelativeLayout rl1;
     @Bind(R.id.rl2)
-    RelativeLayout rl2;
+    LinearLayout rl2;
     @Bind(R.id.et_discuss)
     EditText etDiscuss;
     @Bind(R.id.discuss)
     QMUIRoundButton discuss;
+    @Bind(R.id.click_close_kb)
+    Button clickCloseKb;
 
     CommentDetailAdapter adapter;
 
@@ -69,7 +76,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
     TextView data;
     TextView content;
 
-    int currentPage = 2;
+    int currentPage = 1;
     int status = 0; //1下拉刷新 2上拉加载
 
     CommentInfo info;
@@ -118,7 +125,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                 content.setText("");
             }
         }
-        url = Constants.baseUrl + "/comment/detail?gid=" + commentId + "&limit=10&page=";
+        url = Constants.baseUrl + "/comment/detail?gid=" + commentId + "&limit=" + Constants.PAGE_SIZE + "&page=";
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this));
         adapter = new CommentDetailAdapter(null, info, discuss);
@@ -126,9 +133,28 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
         adapter.addHeaderView(topView);
         recyclerView.setAdapter(adapter);
 
-        refreshLayout.setColorSchemeColors(Color.RED, Color.BLUE, Color.GREEN);
+        refreshLayout.setColorSchemeColors(Color.BLACK, Color.BLUE);
         refreshLayout.setOnRefreshListener(this);
-        adapter.setOnLoadMoreListener(this);
+        adapter.setOnLoadMoreListener(this, recyclerView);
+        adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter quickAdapter, View view, int position) {
+                if (SPUtil.getString(Constants.USERNAME).equals(((CommentInfo) (quickAdapter.getItem(position))).fromUserName)) {
+                    showListPopup(view, (CommentInfo) quickAdapter.getItem(position), listItems2, position);
+                } else {
+                    showListPopup(view, (CommentInfo) quickAdapter.getItem(position), listItems1, position);
+                }
+                return false;
+            }
+        });
+
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter quickAdapter, View view, int position) {
+                discuss.callOnClick();
+                adapter.setClickInfo((CommentInfo) quickAdapter.getItem(position));
+            }
+        });
 
         //开启loading,获取数据
         setRefreshing(true);
@@ -138,7 +164,9 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
     @Override
     public void onRefresh() {
         status = 1;
-        requestData(1);//第一页数据
+        currentPage = 1;
+        adapter.setEnableLoadMore(false);
+        requestData(currentPage);//第一页数据
     }
 
     @Override
@@ -155,27 +183,9 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                     public void onSuccess(Response<BaseResponse<List<CommentInfo>>> response) {
                         List<CommentInfo> results = response.body().datas;
                         if (status == 1) {
-                            if (results != null && results.size() > 0) {
-                                currentPage = 2;
-                                adapter.setNewData(results);
-                            }
+                            setData(true, results);
                         } else if (status == 2) {
-                            if (results != null && results.size() > 0) {
-                                currentPage++;
-                                adapter.addData(results);
-                            } else {
-                                //显示没有更多数据
-                                adapter.loadMoreComplete();
-                                TextView textView = new TextView(CommentDetailActivity.this);
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                                textView.setLayoutParams(params);
-                                textView.setPadding(0, 0, 0, 40);
-                                textView.setText("无更多数据");
-                                textView.setGravity(Gravity.CENTER);
-                                textView.setTextColor(getResources().getColor(R.color.text_gray));
-                                textView.setBackgroundColor(getResources().getColor(R.color.bg_normal));
-                                adapter.addFooterView(textView);
-                            }
+                            setData(false, results);
                         }
                     }
 
@@ -192,6 +202,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                     @Override
                     public void onFinish() {
                         if (status == 1) {
+                            adapter.setEnableLoadMore(true);
                             //可能需要移除之前添加的布局
                             adapter.removeAllFooterView();
                             //最后调用结束刷新的方法
@@ -199,6 +210,32 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                         }
                     }
                 });
+    }
+
+    private void setData(boolean isRefresh, List data) {
+        currentPage++;
+        final int size = data == null ? 0 : data.size();
+        if (isRefresh) {
+            adapter.setNewData(data);
+        } else {
+            if (size > 0) {
+                adapter.addData(data);
+            }
+        }
+        if (isRefresh) {
+            if (size < 8) {
+                adapter.loadMoreEnd(isRefresh);
+            } else {
+                adapter.loadMoreComplete();
+            }
+        } else {
+            if (size < Constants.PAGE_SIZE) {
+                //第一页如果不够一页就不显示没有更多数据布局
+                adapter.loadMoreEnd(isRefresh);
+            } else {
+                adapter.loadMoreComplete();
+            }
+        }
     }
 
     public void setRefreshing(final boolean refreshing) {
@@ -210,13 +247,12 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
         });
     }
 
-    @OnClick({R.id.discuss, R.id.collection, R.id.share, R.id.send, R.id.btn_back})
+    @OnClick({R.id.discuss, R.id.collection, R.id.share, R.id.send, R.id.btn_back, R.id.click_close_kb})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.discuss:
                 if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                    KeyboardUtil.openKeyboard(etDiscuss, this);
                     etDiscuss.requestFocus();
                 } else {
                     startActivity(LoginActivity.class, false);
@@ -231,6 +267,10 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                 break;
             case R.id.btn_back:
                 finish();
+                overridePendingTransition(0, R.anim.zoom_finish);
+                break;
+            case R.id.click_close_kb:
+                KeyboardUtil.closeKeyboard(etDiscuss, this);
                 break;
         }
     }
@@ -244,6 +284,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
             showToast("评论内容不能为空");
             return;
         }
+
         JSONObject obj = new JSONObject();
         try {
             obj.put("type", "2");
@@ -268,6 +309,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                         showToast("发送成功");
                         etDiscuss.setText("");
                         onRefresh();
+                        KeyboardUtil.closeKeyboard(etDiscuss, CommentDetailActivity.this);
                     }
 
                     @Override
@@ -277,9 +319,15 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.zoom_finish);
+    }
+
     //键盘打开关闭监听器
     private void initKeyboardChangeListener() {
-        new KeyboardChangeListener(this).setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
+        new KeyboardUtil(this).setKeyBoardListener(new KeyboardUtil.KeyBoardListener() {
             @Override
             public void onKeyboardChange(boolean isShow, int keyboardHeight) {
                 if (isShow) {
@@ -288,53 +336,89 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                     }
                     rl2.setVisibility(View.VISIBLE);
                     rl1.setVisibility(View.GONE);
+                    clickCloseKb.setVisibility(View.VISIBLE);
                 } else {
                     adapter.setClickInfo(null);
                     etDiscuss.setHint("请您发表回复");
                     rl2.setVisibility(View.GONE);
                     rl1.setVisibility(View.VISIBLE);
+                    clickCloseKb.setVisibility(View.GONE);
                 }
             }
         });
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    /**
+     * 长按弹框
+     */
+    private QMUIListPopup mListPopup;
+    String[] listItems1 = new String[]{
+            "回复",
+            "举报",
+    };
+    String[] listItems2 = new String[]{
+            "回复",
+            "删除",
+    };
+
+    private void showListPopup(View v, final CommentInfo model, final String[] listItems, final int p) {
+        List<String> data = new ArrayList<>();
+        Collections.addAll(data, listItems);
+        ArrayAdapter adapter_ = new ArrayAdapter<>(mContext, R.layout.simple_list_item, data);
+        mListPopup = new QMUIListPopup(mContext, QMUIPopup.DIRECTION_NONE, adapter_);
+        mListPopup.create(QMUIDisplayHelper.dp2px(mContext, 250), QMUIDisplayHelper.dp2px(mContext, 200), new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (listItems[i].equals("回复")) {
+                    discuss.callOnClick();
+                    adapter.setClickInfo(model);
+                } else if (listItems[i].equals("删除")) {
+                    OkGo.<BaseResponse>delete(Constants.baseUrl + "/comment/delete/" + model.commentId)
+                            .execute(new MJsonCallBack<BaseResponse>() {
+                                @Override
+                                public void onSuccess(Response<BaseResponse> response) {
+                                    BaseResponse r = response.body();
+                                    if (r.code == 0) {
+                                        adapter.remove(p);
+                                        showToast("删除成功");
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Response<BaseResponse> response) {
+
+                                }
+                            });
+                } else if (listItems[i].equals("举报")) {
+
                 }
+                mListPopup.dismiss();
             }
-            return super.dispatchTouchEvent(ev);
-        }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
+        });
+        mListPopup.setAnimStyle(QMUIPopup.ANIM_AUTO);
+        mListPopup.show(v);
     }
 
-    public boolean isShouldHideInput(View v, MotionEvent event) {
+    /**
+     * 删除确认框
+     */
+    private void showDeleteDialog() {
+        new QMUIDialog.MessageDialogBuilder(mContext)
+                .setTitle("删除评论")
+                .setMessage("确定要删除吗？")
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
 
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = {0, 0};
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return false;
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 }

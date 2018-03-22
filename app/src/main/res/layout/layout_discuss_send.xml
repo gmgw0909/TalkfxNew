@@ -7,100 +7,104 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <RelativeLayout
-        android:id="@+id/rl1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <View
+        <RelativeLayout
+            android:id="@+id/rl1"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray" />
-
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:id="@+id/discuss"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="100dp"
-            android:gravity="left|center_vertical"
-            android:hint="发表评论..."
-            android:paddingLeft="10dp"
-            android:textSize="14sp"
-            app:qmui_backgroundColor="@color/gray"
-            app:qmui_borderColor="@color/gray"
-            app:qmui_isRadiusAdjustBounds="false"
-            app:qmui_radius="@dimen/dp_4" />
-
-        <ImageView
-            android:id="@+id/collection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/share"
-            android:paddingRight="15dp"
-            android:src="@mipmap/column_btn_collection" />
-
-        <ImageView
-            android:id="@+id/share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingRight="20dp"
-            android:src="@mipmap/column_btn_share" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rl2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:background="@color/gray"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:layout_height="50dp"
+            android:background="@color/white">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray" />
 
-            <EditText
-                android:id="@+id/et_discuss"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="top"
-                android:hint="请您发表评论"
-                android:padding="5dp"
-                android:paddingLeft="10dp"
-                android:textSize="14sp" />
-
-
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                android:id="@+id/send"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="7dp"
-                android:gravity="center"
+                android:id="@+id/discuss"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="100dp"
+                android:gravity="left|center_vertical"
+                android:hint="发表评论..."
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="发送"
-                android:textColor="@color/blue"
+                android:textSize="14sp"
+                app:qmui_backgroundColor="@color/gray"
+                app:qmui_borderColor="@color/gray"
                 app:qmui_isRadiusAdjustBounds="false"
-                app:qmui_radius="3dp" />
+                app:qmui_radius="@dimen/dp_4" />
 
-        </LinearLayout>
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/collection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/share"
+                android:paddingRight="15dp"
+                android:src="@mipmap/column_btn_collection" />
+
+            <ImageView
+                android:id="@+id/share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="20dp"
+                android:src="@mipmap/column_btn_share" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/gray"
+            android:scaleType="centerInside"
+            android:src="@mipmap/btn_comment_close" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rl2"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="@color/gray"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/et_discuss"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:gravity="top"
+            android:hint="请您发表评论"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:textSize="14sp" />
+
+
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="7dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="发送"
+            android:textColor="@color/blue"
+            app:qmui_isRadiusAdjustBounds="false"
+            app:qmui_radius="3dp" />
+
+    </LinearLayout>
+
 </FrameLayout>

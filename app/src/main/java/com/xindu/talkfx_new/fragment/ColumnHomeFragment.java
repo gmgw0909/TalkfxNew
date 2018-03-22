@@ -1,6 +1,7 @@
 package com.xindu.talkfx_new.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,6 +19,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.xindu.talkfx_new.R;
+import com.xindu.talkfx_new.activity.ColumnDetailActivity;
 import com.xindu.talkfx_new.adapter.ColumnListAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.base.BaseResponse;
@@ -64,12 +66,20 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mAdapter = new ColumnListAdapter(null);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+//        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.isFirstOnly(false);
         recyclerView.setAdapter(mAdapter);
         refreshLayout.setColorSchemeColors(Color.BLACK, Color.BLUE);
         refreshLayout.setOnRefreshListener(this);
-        mAdapter.setOnLoadMoreListener(this);
+        mAdapter.setOnLoadMoreListener(this, recyclerView);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(getActivity(), ColumnDetailActivity.class)
+                        .putExtra("columnId", ((ColumnInfo) (adapter.getItem(position))).columnId + ""));
+                getActivity().overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+            }
+        });
         initBanner();
     }
 
@@ -137,7 +147,6 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
                         if (response.body().datas != null && response.body().datas.columns != null) {
                             List<ColumnInfo> results = response.body().datas.columns;
                             setData(true, results);
-                            mAdapter.setEnableLoadMore(true);
                         }
                     }
 
@@ -153,13 +162,13 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
 
                     @Override
                     public void onError(Response<BaseResponse<Columns>> response) {
-                        mAdapter.setEnableLoadMore(true);
                         //网络请求失败的回调,一般会弹个Toast
                         showToast(response.getException().getMessage());
                     }
 
                     @Override
                     public void onFinish() {
+                        mAdapter.setEnableLoadMore(true);
                         //可能需要移除之前添加的布局
                         mAdapter.removeAllFooterView();
                         //最后调用结束刷新的方法
@@ -211,6 +220,7 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
         } else {
             mAdapter.loadMoreComplete();
         }
+
     }
 
     // 开始自动翻页

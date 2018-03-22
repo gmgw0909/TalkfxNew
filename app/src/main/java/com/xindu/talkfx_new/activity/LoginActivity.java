@@ -138,6 +138,7 @@ public class LoginActivity extends BaseActivity {
      * 发送验证码
      */
     private void sendCode(String phone) {
+        showDialog();
         OkGo.<BaseResponse>get(Constants.baseUrl + "/customer/login/code/" + phone)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override
@@ -148,11 +149,13 @@ public class LoginActivity extends BaseActivity {
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
+                        dismissDialog();
                     }
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
                         showToast(response.getException().getMessage());
+                        dismissDialog();
                     }
                 });
     }
@@ -209,6 +212,7 @@ public class LoginActivity extends BaseActivity {
             showToast("请输入6位验证码");
             return;
         }
+        showDialog();
         JSONObject obj = new JSONObject();
         try {
             obj.put("loginPhone", phone);
@@ -223,17 +227,19 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess(Response<BaseResponse> response) {
                         BaseResponse r = response.body();
                         if (r.code == 0 && r.msg.equals(NetResponseCode.登录成功.getCode())) {
-                            App.clearActivity();//清除activity
-                            startActivity(HomeActivity.class, true);
+                            App.clearLoginActivity();
                             SPUtil.put(Constants.IS_LOGIN, true);
+                            isLogin();
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
+                        dismissDialog();
                     }
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
                         showToast(response.getException().getMessage());
+                        dismissDialog();
                     }
                 });
     }
@@ -248,7 +254,7 @@ public class LoginActivity extends BaseActivity {
             showToast("输入帐号不能为空");
             return;
         }
-        if (TextUtils.isEmpty(password)||!StringUtil.validatePwd(password)) {
+        if (TextUtils.isEmpty(password) || !StringUtil.validatePwd(password)) {
             showToast("请输入6-18位的密码");
             return;
         }
@@ -259,6 +265,7 @@ public class LoginActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        showDialog();
         OkGo.<BaseResponse>post(Constants.baseUrl + "/customer/login")
                 .upJson(obj)
                 .execute(new MJsonCallBack<BaseResponse>() {
@@ -266,17 +273,19 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess(Response<BaseResponse> response) {
                         BaseResponse r = response.body();
                         if (r.code == 0 && r.msg.equals(NetResponseCode.登录成功.getCode())) {
-                            App.clearActivity();//清除activity
-                            startActivity(HomeActivity.class, true);
+                            App.clearLoginActivity();
                             SPUtil.put(Constants.IS_LOGIN, true);
+                            isLogin();
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
+                        dismissDialog();
                     }
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
                         showToast(response.getException().getMessage());
+                        dismissDialog();
                     }
                 });
     }

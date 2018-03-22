@@ -1,17 +1,20 @@
 package com.xindu.talkfx_new.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.xindu.talkfx_new.R;
+import com.xindu.talkfx_new.activity.ColumnDetailActivity;
 import com.xindu.talkfx_new.adapter.ColumnListAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.base.BaseResponse;
@@ -60,12 +63,20 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mAdapter = new ColumnListAdapter(null);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+//        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.isFirstOnly(false);
         recyclerView.setAdapter(mAdapter);
         refreshLayout.setColorSchemeColors(Color.BLACK, Color.BLUE);
         refreshLayout.setOnRefreshListener(this);
-        mAdapter.setOnLoadMoreListener(this);
+        mAdapter.setOnLoadMoreListener(this,recyclerView);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(getActivity(), ColumnDetailActivity.class)
+                        .putExtra("columnId", ((ColumnInfo) (adapter.getItem(position))).columnId + ""));
+                getActivity().overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+            }
+        });
     }
 
     @Override

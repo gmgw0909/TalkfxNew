@@ -1,16 +1,19 @@
 package com.xindu.talkfx_new.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 /**
  * Created by LeeBoo on 2018/1/26.
  */
 
-public class KeyboardChangeListener implements ViewTreeObserver.OnGlobalLayoutListener {
+public class KeyboardUtil implements ViewTreeObserver.OnGlobalLayoutListener {
     private static final String TAG = "ListenerHandler";
     private View mContentView;
     private int mOriginHeight;
@@ -20,7 +23,8 @@ public class KeyboardChangeListener implements ViewTreeObserver.OnGlobalLayoutLi
     public interface KeyBoardListener {
         /**
          * call back
-         * @param isShow true is show else hidden
+         *
+         * @param isShow         true is show else hidden
          * @param keyboardHeight keyboard height
          */
         void onKeyboardChange(boolean isShow, int keyboardHeight);
@@ -30,7 +34,7 @@ public class KeyboardChangeListener implements ViewTreeObserver.OnGlobalLayoutLi
         this.mKeyBoardListen = keyBoardListen;
     }
 
-    public KeyboardChangeListener(Activity contextObj) {
+    public KeyboardUtil(Activity contextObj) {
         if (contextObj == null) {
             Log.i(TAG, "contextObj is null");
             return;
@@ -86,6 +90,29 @@ public class KeyboardChangeListener implements ViewTreeObserver.OnGlobalLayoutLi
         }
     }
 
+    /**
+     * 打开软键盘
+     */
+    public static void openKeyboard(EditText mEditText, Context mContext) {
+        InputMethodManager imm = (InputMethodManager) mContext
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mEditText, InputMethodManager.RESULT_SHOWN);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
+                InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
+    /**
+     * 关闭软键盘
+     */
+    public static void closeKeyboard(EditText mEditText, Context mContext) {
+        InputMethodManager imm = (InputMethodManager) mContext
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+    }
+
+    /**
+     * 销毁 GlobalLayoutListener
+     */
     public void destroy() {
         if (mContentView != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

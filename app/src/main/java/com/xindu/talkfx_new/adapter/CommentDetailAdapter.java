@@ -16,7 +16,7 @@ import java.util.List;
  * Created by LeeBoo on 2018/3/8.
  */
 
-public class CommentDetailAdapter extends BaseQuickAdapter<CommentInfo,BaseViewHolder> {
+public class CommentDetailAdapter extends BaseQuickAdapter<CommentInfo, BaseViewHolder> {
 
     QMUIRoundButton discuss;
     private CommentInfo clickInfo;
@@ -37,7 +37,7 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentInfo,BaseViewH
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, final CommentInfo model) {
+    protected void convert(final BaseViewHolder baseViewHolder, final CommentInfo model) {
         baseViewHolder.setText(R.id.userName, model.fromUserName)
                 .setText(R.id.data, model.createDate)
                 .setText(R.id.content, model.toUserName.equals(parentInfo.fromUserName + "") ? model.content : "回复 " + model.toUserName + "：" + model.content);
@@ -47,12 +47,5 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentInfo,BaseViewH
 
         RecyclerView view = baseViewHolder.getView(R.id.child_list);
         view.setVisibility(View.GONE);
-        baseViewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                discuss.callOnClick();
-                setClickInfo(model);
-            }
-        });
     }
 }

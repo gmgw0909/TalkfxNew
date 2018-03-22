@@ -1,18 +1,17 @@
 package com.xindu.talkfx_new.activity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +22,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.adapter.ColumnDetailAdapter;
@@ -32,13 +34,15 @@ import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.ColumnDetailResponse;
 import com.xindu.talkfx_new.bean.CommentInfo;
-import com.xindu.talkfx_new.utils.KeyboardChangeListener;
+import com.xindu.talkfx_new.utils.KeyboardUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -54,11 +58,13 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     @Bind(R.id.rl1)
     RelativeLayout rl1;
     @Bind(R.id.rl2)
-    RelativeLayout rl2;
+    LinearLayout rl2;
     @Bind(R.id.et_discuss)
     EditText etDiscuss;
     @Bind(R.id.discuss)
     QMUIRoundButton discuss;
+    @Bind(R.id.click_close_kb)
+    Button clickCloseKb;
 
     View topView;
     TextView title;
@@ -67,11 +73,13 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     TextView readCount;
     TextView data;
     TextView content;
+    TextView commentsCount;
 
-    ColumnDetailAdapter adapter;
-    int currentPage = 2;
+    ColumnDetailAdapter mAdapter;
+    int currentPage = 1;
 
     String columnId = "";
+    boolean sendSucesss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +93,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         userName = topView.findViewById(R.id.userName);
         data = topView.findViewById(R.id.data);
         content = topView.findViewById(R.id.content);
+        commentsCount = topView.findViewById(R.id.commentsCount);
         columnId = getIntent().getStringExtra("columnId");
         initData();
         initKeyboardChangeListener();
@@ -93,14 +102,40 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     protected void initData() {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this));
-        adapter = new ColumnDetailAdapter(null, discuss);
-        adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-        adapter.addHeaderView(topView);
-        recyclerView.setAdapter(adapter);
+        mAdapter = new ColumnDetailAdapter(null, discuss);
+        mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+        mAdapter.addHeaderView(topView);
+        recyclerView.setAdapter(mAdapter);
 
-        refreshLayout.setColorSchemeColors(Color.RED, Color.BLUE, Color.GREEN);
+        refreshLayout.setColorSchemeColors(Color.BLACK, Color.BLUE);
         refreshLayout.setOnRefreshListener(this);
-        adapter.setOnLoadMoreListener(this);
+        mAdapter.setOnLoadMoreListener(this, recyclerView);
+        mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter quickAdapter, View view, int position) {
+                if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
+                    if (SPUtil.getString(Constants.USERNAME).equals(((CommentInfo) (quickAdapter.getItem(position))).fromUserName)) {
+                        showListPopup(view, (CommentInfo) quickAdapter.getItem(position), listItems2, position);
+                    } else {
+                        showListPopup(view, (CommentInfo) quickAdapter.getItem(position), listItems1, position);
+                    }
+                } else {
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                }
+                return false;
+            }
+        });
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter quickAdapter, View view, int position) {
+                if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
+                    discuss.callOnClick();
+                    mAdapter.setClickInfo((CommentInfo) quickAdapter.getItem(position));
+                } else {
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                }
+            }
+        });
     }
 
     @Override
@@ -113,6 +148,8 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
     @Override
     public void onRefresh() {
+        currentPage = 1;
+        mAdapter.setEnableLoadMore(false);
         OkGo.<BaseResponse<ColumnDetailResponse>>get(Constants.baseUrl + "/column/detail/" + columnId)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new MJsonCallBack<BaseResponse<ColumnDetailResponse>>() {
@@ -141,6 +178,11 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 } else {
                                     readCount.setText("阅读  0");
                                 }
+                                if (detailResponse.column.commentCount != 0) {
+                                    commentsCount.setText("评论 (" + detailResponse.column.commentCount + ")");
+                                } else {
+                                    commentsCount.setText("暂无评论");
+                                }
                             }
                             if (!TextUtils.isEmpty(detailResponse.userName)) {
                                 userName.setText(detailResponse.userName);
@@ -148,8 +190,13 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 userName.setText("暂无");
                             }
 //                            Glide.with(App.getInstance().getApplicationContext()).load(detailResponse.column.headImg).into(headImg);
-                            currentPage = 2;
-                            adapter.setNewData(detailResponse.comments);
+                            mAdapter.setAuthor(detailResponse.userName + "");
+                            setData(true, detailResponse.comments);
+                        }
+                        if (sendSucesss) {
+                            recyclerView.scrollToPosition(1);
+                            showToast("发送成功");
+                            sendSucesss = false;
                         }
                     }
 
@@ -161,8 +208,10 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
                     @Override
                     public void onFinish() {
+                        dismissDialog();
+                        mAdapter.setEnableLoadMore(true);
                         //可能需要移除之前添加的布局
-                        adapter.removeAllFooterView();
+                        mAdapter.removeAllFooterView();
                         //最后调用结束刷新的方法
                         setRefreshing(false);
                     }
@@ -171,38 +220,49 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
     @Override
     public void onLoadMoreRequested() {
-        OkGo.<BaseResponse<List<CommentInfo>>>get(Constants.baseUrl + "/comment/list?cid=1&limit=10&page=" + currentPage)//
+        OkGo.<BaseResponse<List<CommentInfo>>>get(Constants.baseUrl + "/comment/list?cid=" + columnId + "&limit=" + Constants.PAGE_SIZE + "&page=" + currentPage)
                 .cacheMode(CacheMode.NO_CACHE)       //上拉不需要缓存
                 .execute(new MJsonCallBack<BaseResponse<List<CommentInfo>>>() {
                     @Override
                     public void onSuccess(Response<BaseResponse<List<CommentInfo>>> response) {
                         List<CommentInfo> results = response.body().datas;
-                        if (results != null && results.size() > 0) {
-                            currentPage++;
-                            adapter.addData(results);
-                        } else {
-                            //显示没有更多数据
-                            adapter.loadMoreComplete();
-                            TextView textView = new TextView(ColumnDetailActivity.this);
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                            textView.setLayoutParams(params);
-                            textView.setPadding(0, 0, 0, 40);
-                            textView.setText("无更多数据");
-                            textView.setGravity(Gravity.CENTER);
-                            textView.setTextColor(getResources().getColor(R.color.text_gray));
-                            textView.setBackgroundColor(getResources().getColor(R.color.bg_normal));
-                            adapter.addFooterView(textView);
-                        }
+                        setData(false, results);
                     }
 
                     @Override
                     public void onError(Response<BaseResponse<List<CommentInfo>>> response) {
                         //显示数据加载失败,点击重试
-                        adapter.loadMoreFail();
+                        mAdapter.loadMoreFail();
                         //网络请求失败的回调,一般会弹个Toast
                         showToast(response.getException().getMessage());
                     }
                 });
+    }
+
+    private void setData(boolean isRefresh, List data) {
+        currentPage++;
+        final int size = data == null ? 0 : data.size();
+        if (isRefresh) {
+            mAdapter.setNewData(data);
+        } else {
+            if (size > 0) {
+                mAdapter.addData(data);
+            }
+        }
+        if (isRefresh) {
+            if (size < 8) {
+                mAdapter.loadMoreEnd(isRefresh);
+            } else {
+                mAdapter.loadMoreComplete();
+            }
+        } else {
+            if (size < Constants.PAGE_SIZE) {
+                //第一页如果不够一页就不显示没有更多数据布局
+                mAdapter.loadMoreEnd(isRefresh);
+            } else {
+                mAdapter.loadMoreComplete();
+            }
+        }
     }
 
     public void setRefreshing(final boolean refreshing) {
@@ -214,13 +274,12 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         });
     }
 
-    @OnClick({R.id.discuss, R.id.collection, R.id.share, R.id.send, R.id.btn_back})
+    @OnClick({R.id.discuss, R.id.collection, R.id.share, R.id.send, R.id.btn_back, R.id.click_close_kb})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.discuss:
                 if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                    KeyboardUtil.openKeyboard(etDiscuss, this);
                     etDiscuss.requestFocus();
                 } else {
                     startActivity(LoginActivity.class, false);
@@ -235,6 +294,10 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 break;
             case R.id.btn_back:
                 finish();
+                overridePendingTransition(0, R.anim.zoom_finish);
+                break;
+            case R.id.click_close_kb:
+                KeyboardUtil.closeKeyboard(etDiscuss, this);
                 break;
         }
     }
@@ -248,105 +311,121 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
             showToast("评论内容不能为空");
             return;
         }
+        showDialog("发送中...");
         JSONObject obj = new JSONObject();
         try {
             obj.put("columnId", columnId);
             obj.put("content", content);
-            if (adapter.getClickInfo() != null) {
+            if (mAdapter.getClickInfo() != null) {
                 obj.put("type", "2");
-                obj.put("toCustomerId", adapter.getClickInfo().fromUserId);
-                obj.put("toCommentId", adapter.getClickInfo().commentId);
-                obj.put("groupId", adapter.getClickInfo().commentId);
+                obj.put("toCustomerId", mAdapter.getClickInfo().fromUserId);
+                obj.put("toCommentId", mAdapter.getClickInfo().commentId);
+                obj.put("groupId", mAdapter.getClickInfo().commentId);
             } else {
                 obj.put("type", "1");
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        etDiscuss.setText("");
+        KeyboardUtil.closeKeyboard(etDiscuss, ColumnDetailActivity.this);
         OkGo.<BaseResponse>post(Constants.baseUrl + "/comment/insert")
                 .upJson(obj)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(Response<BaseResponse> response) {
-                        etDiscuss.setText("");
-                        if (adapter.getClickInfo() != null) {
-                            onRefresh();
-                            CommentInfo info = new CommentInfo();
-                            info.fromUserName = "LeeBoo";
-                            info.toUserName = adapter.getClickInfo().fromUserName;
-                            info.content = content;
-                            adapter.childAdapter.add(0, info);
-                        } else {
-
-                        }
-                        showToast("发送成功");
+                        sendSucesss = true;
+                        onRefresh();
                     }
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
+                        dismissDialog();
                         showToast(response.getException().getMessage());
                     }
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.zoom_finish);
+    }
+
     //键盘打开关闭监听器
     private void initKeyboardChangeListener() {
-        new KeyboardChangeListener(this).setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
+        new KeyboardUtil(this).setKeyBoardListener(new KeyboardUtil.KeyBoardListener() {
             @Override
             public void onKeyboardChange(boolean isShow, int keyboardHeight) {
                 if (isShow) {
-                    if (adapter.getClickInfo() != null && !TextUtils.isEmpty(adapter.getClickInfo().fromUserName)) {
-                        etDiscuss.setHint("回复 " + adapter.getClickInfo().fromUserName);
+                    if (mAdapter.getClickInfo() != null && !TextUtils.isEmpty(mAdapter.getClickInfo().fromUserName)) {
+                        etDiscuss.setHint("回复 " + mAdapter.getClickInfo().fromUserName);
                     }
                     rl2.setVisibility(View.VISIBLE);
                     rl1.setVisibility(View.GONE);
+                    clickCloseKb.setVisibility(View.VISIBLE);
                 } else {
-                    adapter.setClickInfo(null);
+                    mAdapter.setClickInfo(null);
                     etDiscuss.setHint("请您发表评论");
                     rl2.setVisibility(View.GONE);
                     rl1.setVisibility(View.VISIBLE);
+                    clickCloseKb.setVisibility(View.GONE);
                 }
             }
         });
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    /**
+     * 长按弹框
+     */
+    private QMUIListPopup mListPopup;
+    String[] listItems1 = new String[]{
+            "回复",
+            "举报",
+    };
+    String[] listItems2 = new String[]{
+            "回复",
+            "删除",
+    };
+
+    private void showListPopup(View v, final CommentInfo model, final String[] listItems, final int p) {
+        List<String> data = new ArrayList<>();
+        Collections.addAll(data, listItems);
+        ArrayAdapter adapter_ = new ArrayAdapter<>(mContext, R.layout.simple_list_item, data);
+        mListPopup = new QMUIListPopup(mContext, QMUIPopup.DIRECTION_NONE, adapter_);
+        mListPopup.create(QMUIDisplayHelper.dp2px(mContext, 250), QMUIDisplayHelper.dp2px(mContext, 200), new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (listItems[i].equals("回复")) {
+                    discuss.callOnClick();
+                    mAdapter.setClickInfo(model);
+                } else if (listItems[i].equals("删除")) {
+                    OkGo.<BaseResponse>delete(Constants.baseUrl + "/comment/delete/" + model.commentId)
+                            .execute(new MJsonCallBack<BaseResponse>() {
+                                @Override
+                                public void onSuccess(Response<BaseResponse> response) {
+                                    BaseResponse r = response.body();
+                                    if (r.code == 0) {
+                                        mAdapter.remove(p);
+                                        if (p == 0) {
+                                            commentsCount.setText("暂无评论");
+                                        }
+                                        showToast("删除成功");
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Response<BaseResponse> response) {
+
+                                }
+                            });
+                } else if (listItems[i].equals("举报")) {
+
                 }
+                mListPopup.dismiss();
             }
-            return super.dispatchTouchEvent(ev);
-        }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
-    }
-
-    public boolean isShouldHideInput(View v, MotionEvent event) {
-
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = {0, 0};
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return false;
+        });
+        mListPopup.setAnimStyle(QMUIPopup.ANIM_AUTO);
+        mListPopup.show(v);
     }
 }

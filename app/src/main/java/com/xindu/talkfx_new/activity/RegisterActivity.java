@@ -78,6 +78,7 @@ public class RegisterActivity extends BaseActivity {
      * 发送验证码
      */
     private void sendCode(String phone) {
+        showDialog();
         OkGo.<BaseResponse>get(Constants.baseUrl + "/customer/regist/code/" + phone)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override
@@ -88,11 +89,13 @@ public class RegisterActivity extends BaseActivity {
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
+                        dismissDialog();
                     }
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
                         showToast(response.getException().getMessage());
+                        dismissDialog();
                     }
                 });
     }
@@ -149,6 +152,7 @@ public class RegisterActivity extends BaseActivity {
             showToast("请输入6位验证码");
             return;
         }
+        showDialog();
         JSONObject obj = new JSONObject();
         try {
             obj.put("phone", phone);
@@ -163,17 +167,19 @@ public class RegisterActivity extends BaseActivity {
                     public void onSuccess(Response<BaseResponse> response) {
                         BaseResponse r = response.body();
                         if (r.code == 0) {
-                            App.clearActivity();//清除activity
-                            startActivity(HomeActivity.class, true);
+                            App.clearLoginActivity();
                             SPUtil.put(Constants.IS_LOGIN, true);
+                            isLogin();
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
+                        dismissDialog();
                     }
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
                         showToast(response.getException().getMessage());
+                        dismissDialog();
                     }
                 });
     }

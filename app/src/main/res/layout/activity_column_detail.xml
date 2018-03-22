@@ -3,23 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/layout_topbar" />
+    <!--<include-->
+    <!--android:id="@+id/title_bar"-->
+    <!--layout="@layout/layout_topbar" />-->
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_bar"
-        android:layout_below="@+id/title_bar">
+        android:layout_above="@+id/bottom_bar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:background="@color/bg_normal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/bg_normal" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <Button
+        android:id="@+id/click_close_kb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:background="#30000000"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/bottom_bar"
