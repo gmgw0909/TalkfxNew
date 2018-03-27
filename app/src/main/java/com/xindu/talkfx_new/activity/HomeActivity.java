@@ -40,7 +40,7 @@ public class HomeActivity extends BaseActivity {
         r2 = (RadioButton) findViewById(R.id.rb_order);
         r3 = (RadioButton) findViewById(R.id.rb_income);
         r4 = (RadioButton) findViewById(R.id.rb_group);
-        r4 = (RadioButton) findViewById(R.id.rb_my);
+        r5 = (RadioButton) findViewById(R.id.rb_my);
         r1.setOnClickListener(this);
         r2.setOnClickListener(this);
         r3.setOnClickListener(this);
