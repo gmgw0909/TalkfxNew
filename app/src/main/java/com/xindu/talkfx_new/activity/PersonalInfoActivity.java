@@ -1,5 +1,6 @@
 package com.xindu.talkfx_new.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -38,6 +39,7 @@ public class PersonalInfoActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_back:
                 finish();
+                startActivity(new Intent(PersonalInfoActivity.this,PersonalActivity.class));
                 break;
         }
     }

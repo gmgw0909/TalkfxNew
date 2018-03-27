@@ -55,6 +55,10 @@
             android:name=".activity.PersonalInfoActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.PersonalActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
