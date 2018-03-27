@@ -45,7 +45,11 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showDialog() {
-
+        tipDialog = new QMUITipDialog.Builder(getContext())
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord("正在加载")
+                .create();
+        tipDialog.show();
     }
 
     public void dismissDialog() {
