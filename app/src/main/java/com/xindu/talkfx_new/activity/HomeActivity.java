@@ -30,6 +30,7 @@ public class HomeActivity extends BaseActivity {
     private RadioButton r2;
     private RadioButton r3;
     private RadioButton r4;
+    private RadioButton r5;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,10 +40,12 @@ public class HomeActivity extends BaseActivity {
         r2 = (RadioButton) findViewById(R.id.rb_order);
         r3 = (RadioButton) findViewById(R.id.rb_income);
         r4 = (RadioButton) findViewById(R.id.rb_group);
+        r4 = (RadioButton) findViewById(R.id.rb_my);
         r1.setOnClickListener(this);
         r2.setOnClickListener(this);
         r3.setOnClickListener(this);
         r4.setOnClickListener(this);
+        r5.setOnClickListener(this);
         r1.setSelected(true);
         initFragment();
     }
@@ -55,10 +58,12 @@ public class HomeActivity extends BaseActivity {
         GroupFragment f2 = new GroupFragment();
         GroupFragment f3 = new GroupFragment();
         GroupFragment f4 = new GroupFragment();
+        GroupFragment f5 = new GroupFragment();
         fragmentList.add(f1);
         fragmentList.add(f2);
         fragmentList.add(f3);
         fragmentList.add(f4);
+        fragmentList.add(f5);
         getSupportFragmentManager().beginTransaction().add(R.id.fl_content, f1, "0").commit();
     }
 
@@ -69,22 +74,27 @@ public class HomeActivity extends BaseActivity {
         r2.setSelected(false);
         r3.setSelected(false);
         r4.setSelected(false);
+        r5.setSelected(false);
         switch (v.getId()) {
             case R.id.rb_underling:
                 index = 0;
                 r1.setSelected(true);
                 break;
-            case R.id.rb_order:
+            case R.id.rb_group:
                 index = 1;
-                r2.setSelected(true);
+                r4.setSelected(true);
+                break;
+            case R.id.rb_my:
+                index = 2;
+                r5.setSelected(true);
                 break;
             case R.id.rb_income:
-                index = 2;
+                index = 3;
                 r3.setSelected(true);
                 break;
-            case R.id.rb_group:
-                index = 3;
-                r4.setSelected(true);
+            case R.id.rb_order:
+                index = 4;
+                r2.setSelected(true);
                 break;
         }
 

@@ -33,11 +33,18 @@
             android:text="专栏" />
 
         <RadioButton
-            android:id="@+id/rb_order"
+            android:id="@+id/rb_group"
             style="@style/BottomBarItem"
-            android:drawableTop="@drawable/selector_bottom_bar_rb2"
+            android:drawableTop="@drawable/selector_bottom_bar_rb4"
             android:paddingTop="6dp"
-            android:text="交易大师" />
+            android:text="群组" />
+
+        <RadioButton
+            android:id="@+id/rb_my"
+            style="@style/BottomBarItem"
+            android:drawableTop="@drawable/selector_bottom_bar_rb5"
+            android:paddingTop="6dp"
+            android:text="我的" />
 
         <RadioButton
             android:id="@+id/rb_income"
@@ -47,11 +54,11 @@
             android:text="行情" />
 
         <RadioButton
-            android:id="@+id/rb_group"
+            android:id="@+id/rb_order"
             style="@style/BottomBarItem"
-            android:drawableTop="@drawable/selector_bottom_bar_rb4"
+            android:drawableTop="@drawable/selector_bottom_bar_rb2"
             android:paddingTop="6dp"
-            android:text="群组" />
+            android:text="交易" />
     </RadioGroup>
 
 
