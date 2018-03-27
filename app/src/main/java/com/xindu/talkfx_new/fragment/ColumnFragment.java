@@ -59,6 +59,7 @@ public class ColumnFragment extends BaseFragment {
         initTabAndPager();
     }
 
+    //选中字体变粗
     class MyTypefaceProvider implements QMUITabSegment.TypefaceProvider {
 
         @Override

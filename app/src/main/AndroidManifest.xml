@@ -47,6 +47,14 @@
             android:name=".activity.CommentDetailActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.PersonalInfoActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
