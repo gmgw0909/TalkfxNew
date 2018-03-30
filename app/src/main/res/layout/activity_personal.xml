@@ -26,13 +26,12 @@
                 android:padding="15dp"
                 android:paddingLeft="20dp">
 
-                <ImageView
+                <com.xindu.talkfx_new.widget.CircleImageView
                     android:id="@+id/headImg"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
-                    android:scaleType="centerInside"
                     android:src="@mipmap/default_person_icon" />
 
                 <LinearLayout
@@ -52,17 +51,18 @@
                             android:id="@+id/userName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="libao"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <ImageView
+                            android:id="@+id/rz_s"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:src="@mipmap/personal_rz_s" />
 
                         <ImageView
+                            android:id="@+id/rz_v"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="6dp"
@@ -70,18 +70,20 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/fans"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="12dp"
                         android:drawableLeft="@mipmap/personal_fans"
                         android:drawablePadding="10dp"
-                        android:text="粉丝数:128"
+                        android:text="粉丝数:0"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
 
                 <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                    android:id="@+id/follow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -100,6 +102,7 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/summary_authenInfor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -114,31 +117,40 @@
                 android:background="@color/gray" />
 
             <LinearLayout
+                android:id="@+id/ll_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginTop="2dp"
-                    android:src="@mipmap/persoanl_info_zz" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="最佳答案后边显示省略号这个能行的,不错,顶了最佳答案后边显示省略号这个能行的,不错,顶了最佳答案后边显示省略号这个能行的,不错,顶了" />
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@mipmap/persoanl_info_zz" />
+
+                    <TextView
+                        android:id="@+id/summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray" />
 
             <LinearLayout
+                android:id="@+id/ll_authenInfor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -152,11 +164,11 @@
                     android:src="@mipmap/personal_info_icon" />
 
                 <TextView
+                    android:id="@+id/authenInfor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="3dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="最佳答案后边显示省略号这了最的,不错,顶了" />
+                    android:layout_marginLeft="10dp" />
             </LinearLayout>
 
             <View

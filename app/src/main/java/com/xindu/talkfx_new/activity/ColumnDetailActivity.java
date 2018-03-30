@@ -99,6 +99,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     String columnId = "";
     boolean firstIn = true;
     boolean sendSuccess;
+    String customerId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,13 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         title = topView.findViewById(R.id.title);
         readCount = topView.findViewById(R.id.read_count);
         headImg = topView.findViewById(R.id.headImg);
+        headImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ColumnDetailActivity.this, PersonalActivity.class)
+                        .putExtra("customerId", customerId));
+            }
+        });
         userName = topView.findViewById(R.id.userName);
         data = topView.findViewById(R.id.data);
         opinion = topView.findViewById(R.id.opinion);
@@ -198,6 +206,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 firstIn = false;
                                 //喊单数据
                                 setDataToTopView(detailResponse);
+                                customerId = detailResponse.customerId + "";
                                 if (!TextUtils.isEmpty(detailResponse.column.title)) {
                                     title.setText(detailResponse.column.title);
                                 } else {
