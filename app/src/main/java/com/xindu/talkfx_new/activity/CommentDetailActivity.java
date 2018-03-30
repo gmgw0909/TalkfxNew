@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.CommentInfo;
+import com.xindu.talkfx_new.utils.ImageGetterUtil;
 import com.xindu.talkfx_new.utils.KeyboardUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
@@ -106,7 +108,8 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
             commentId = info.commentId + "";
             if (!TextUtils.isEmpty(info.fromUserImg)) {
                 Glide.with(App.getInstance().getApplicationContext())
-                        .load(info.fromUserImg).error(R.mipmap.default_person_icon)
+                        .load(Constants.baseImgUrl + info.fromUserImg)
+                        .error(R.mipmap.default_person_icon)
                         .into(headImg);
             }
             if (!TextUtils.isEmpty(info.fromUserName)) {
@@ -120,15 +123,16 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                 data.setText("");
             }
             if (!TextUtils.isEmpty(info.content)) {
-                content.setText(info.content);
+                content.setText(Html.fromHtml(info.content, new ImageGetterUtil(mContext, content), null));
             } else {
                 content.setText("");
             }
         }
-        url = Constants.baseUrl + "/comment/detail?gid=" + commentId + "&limit=" + Constants.PAGE_SIZE + "&page=";
+        url = Constants.baseDataUrl + "/comment/detail?gid=" + commentId + "&limit=" + Constants.PAGE_SIZE + "&page=";
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this));
         adapter = new CommentDetailAdapter(null, info, discuss);
+        adapter.setAuthor(getIntent().getStringExtra("author"));
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.addHeaderView(topView);
         recyclerView.setAdapter(adapter);
@@ -301,7 +305,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        OkGo.<BaseResponse>post(Constants.baseUrl + "/comment/insert")
+        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/comment/insert")
                 .upJson(obj)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override
@@ -373,7 +377,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                     discuss.callOnClick();
                     adapter.setClickInfo(model);
                 } else if (listItems[i].equals("删除")) {
-                    OkGo.<BaseResponse>delete(Constants.baseUrl + "/comment/delete/" + model.commentId)
+                    OkGo.<BaseResponse>delete(Constants.baseDataUrl + "/comment/delete/" + model.commentId)
                             .execute(new MJsonCallBack<BaseResponse>() {
                                 @Override
                                 public void onSuccess(Response<BaseResponse> response) {

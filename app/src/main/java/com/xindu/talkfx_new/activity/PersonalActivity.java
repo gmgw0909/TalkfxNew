@@ -1,19 +1,17 @@
 package com.xindu.talkfx_new.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.TextView;
 
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.adapter.ViewPagerAdapter;
 import com.xindu.talkfx_new.base.BaseActivity;
-import com.xindu.talkfx_new.fragment.ColumnFragment;
-import com.xindu.talkfx_new.fragment.ColumnHomeFragment;
 import com.xindu.talkfx_new.fragment.ColumnListFragment;
 
 import java.util.ArrayList;
@@ -60,12 +58,22 @@ public class PersonalActivity extends BaseActivity {
         mTabSegment.setPadding(space, 0, space, 0);
     }
 
-    @OnClick({R.id.btn_back})
+    @OnClick({R.id.btn_back, R.id.headImg})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
                 finish();
+                overridePendingTransition(0, R.anim.zoom_finish);
+                break;
+            case R.id.headImg:
+                startActivity(new Intent(PersonalActivity.this, PersonalInfoActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.zoom_finish);
     }
 }

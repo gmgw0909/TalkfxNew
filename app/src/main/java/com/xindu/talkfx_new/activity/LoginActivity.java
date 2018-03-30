@@ -139,7 +139,7 @@ public class LoginActivity extends BaseActivity {
      */
     private void sendCode(String phone) {
         showDialog();
-        OkGo.<BaseResponse>get(Constants.baseUrl + "/customer/login/code/" + phone)
+        OkGo.<BaseResponse>get(Constants.baseDataUrl + "/customer/login/code/" + phone)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(Response<BaseResponse> response) {
@@ -220,7 +220,7 @@ public class LoginActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        OkGo.<BaseResponse>post(Constants.baseUrl + "/customer/login/fast")
+        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/customer/login/fast")
                 .upJson(obj)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override
@@ -266,7 +266,7 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
         showDialog();
-        OkGo.<BaseResponse>post(Constants.baseUrl + "/customer/login")
+        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/customer/login")
                 .upJson(obj)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override

@@ -20,13 +20,13 @@ public class ColumnInfo implements Serializable {
     public String cycleEnd;
     public String cycleStart;
     public String firstImg;
-    public float openPosition;
+    public double openPosition;
     public String operate;
     public String opinion;
     public int readCount;
-    public float stopLoss;
+    public double stopLoss;
     public String tactful;
-    public float takeprofit;
+    public double takeprofit;
     public String title;
     public String typeTitle;
 }

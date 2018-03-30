@@ -22,15 +22,16 @@
                 android:id="@+id/rl1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@mipmap/personal_top_bg"
                 android:padding="15dp"
                 android:paddingLeft="20dp">
 
                 <ImageView
                     android:id="@+id/headImg"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="16dp"
                     android:scaleType="centerInside"
                     android:src="@mipmap/default_person_icon" />
 
@@ -52,70 +53,51 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="libao"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:src="@mipmap/login_btn_delete" />
+                            android:src="@mipmap/personal_rz_s" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:src="@mipmap/login_btn_delete" />
+                            android:layout_marginLeft="6dp"
+                            android:src="@mipmap/personal_rz_v" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="7dp"
-                        android:layout_marginTop="7dp"
-                        android:background="@color/gray" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="12dp"
+                        android:drawableLeft="@mipmap/personal_fans"
+                        android:drawablePadding="10dp"
+                        android:text="粉丝数:128"
+                        android:textColor="@color/white" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="粉丝数:128"
-                                android:textSize="16sp" />
-
-                            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_gravity="right"
-                                android:clickable="true"
-                                android:gravity="center"
-                                android:paddingBottom="@dimen/dp_4"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:paddingTop="@dimen/dp_4"
-                                android:text="+ 关注"
-                                android:textSize="@dimen/sp_12"
-                                app:qmui_isRadiusAdjustBounds="false"
-                                app:qmui_radius="@dimen/dp_4" />
-                        </RelativeLayout>
-                    </LinearLayout>
                 </LinearLayout>
-            </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/bg_normal" />
+                <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/dp_4"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingTop="@dimen/dp_4"
+                    android:text="+ 关注"
+                    android:textColor="@color/white"
+                    app:qmui_backgroundColor="@color/blue"
+                    app:qmui_isRadiusAdjustBounds="true" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -123,7 +105,7 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="10dp"
                 android:paddingLeft="6dp"
-                android:text="认证信息\u0026个人简介"
+                android:text="个人简介\u0026认证信息"
                 android:textSize="16sp" />
 
             <View
@@ -142,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
                     android:layout_marginTop="2dp"
-                    android:src="@mipmap/login_btn_delete" />
+                    android:src="@mipmap/persoanl_info_zz" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -167,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
                     android:layout_marginTop="2dp"
-                    android:src="@mipmap/login_btn_delete" />
+                    android:src="@mipmap/personal_info_icon" />
 
                 <TextView
                     android:layout_width="match_parent"

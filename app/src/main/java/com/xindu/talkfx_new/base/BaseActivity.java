@@ -85,7 +85,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      * 保存用户信息
      */
     public void isLogin() {
-        OkGo.<IsLoginResponse>get(Constants.baseUrl + "/customer/isLogin")
+        OkGo.<IsLoginResponse>get(Constants.baseDataUrl + "/customer/isLogin")
                 .execute(new MJsonCallBack<IsLoginResponse>() {
                     @Override
                     public void onSuccess(Response<IsLoginResponse> response) {

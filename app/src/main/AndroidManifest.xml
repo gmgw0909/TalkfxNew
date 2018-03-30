@@ -31,6 +31,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.NavigationPageActivity"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask" />
         <activity

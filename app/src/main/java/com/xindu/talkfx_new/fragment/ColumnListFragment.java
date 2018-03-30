@@ -42,7 +42,7 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
     private boolean isInitCache = false;
     private boolean hasLoad = false;
 
-    private String url = Constants.baseUrl + "/column/list";
+    private String url = Constants.baseDataUrl + "/column/list";
     private String type;
 
     @Override

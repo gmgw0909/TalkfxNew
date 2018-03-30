@@ -31,11 +31,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.xindu.talkfx_new.widget.CircleImageView
                 android:id="@+id/headImg"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:scaleType="centerInside"
                 android:src="@mipmap/default_person_icon" />
 
             <TextView
@@ -76,7 +75,7 @@
             android:layout_width="100dp"
             android:layout_height="75dp"
             android:layout_alignParentRight="true"
-            android:scaleType="centerInside" />
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/read_count"

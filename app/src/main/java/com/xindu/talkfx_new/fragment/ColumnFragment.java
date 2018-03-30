@@ -1,17 +1,20 @@
 package com.xindu.talkfx_new.fragment;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 import com.xindu.talkfx_new.R;
+import com.xindu.talkfx_new.activity.SettingActivity;
 import com.xindu.talkfx_new.adapter.ViewPagerAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by LeeBoo on 2018/3/12.
@@ -57,6 +60,11 @@ public class ColumnFragment extends BaseFragment {
     @Override
     protected void lazyLoad() {
         initTabAndPager();
+    }
+
+    @OnClick(R.id.btn_setting)
+    public void onViewClicked() {
+        startActivity(new Intent(getActivity(), SettingActivity.class));
     }
 
     //选中字体变粗

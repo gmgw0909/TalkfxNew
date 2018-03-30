@@ -1,6 +1,7 @@
 package com.xindu.talkfx_new.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -85,8 +86,9 @@ public class HomeActivity extends BaseActivity {
                 r4.setSelected(true);
                 break;
             case R.id.rb_my:
-                index = 2;
-                r5.setSelected(true);
+//                index = 2;
+//                r5.setSelected(true);
+                startActivity(new Intent(HomeActivity.this, PersonalActivity.class));
                 break;
             case R.id.rb_income:
                 index = 3;

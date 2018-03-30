@@ -49,7 +49,7 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
     private boolean isInitCache = false;
     private boolean hasLoad = false;
 
-    private String url = Constants.baseUrl + "/column";
+    private String url = Constants.baseDataUrl + "/column";
 
     @Override
     protected int setContentView() {

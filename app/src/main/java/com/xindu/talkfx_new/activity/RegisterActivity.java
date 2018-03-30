@@ -79,7 +79,7 @@ public class RegisterActivity extends BaseActivity {
      */
     private void sendCode(String phone) {
         showDialog();
-        OkGo.<BaseResponse>get(Constants.baseUrl + "/customer/regist/code/" + phone)
+        OkGo.<BaseResponse>get(Constants.baseDataUrl + "/customer/regist/code/" + phone)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(Response<BaseResponse> response) {
@@ -160,7 +160,7 @@ public class RegisterActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        OkGo.<BaseResponse>post(Constants.baseUrl + "/customer/regist/phone")
+        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/customer/regist/phone")
                 .upJson(obj)
                 .execute(new MJsonCallBack<BaseResponse>() {
                     @Override

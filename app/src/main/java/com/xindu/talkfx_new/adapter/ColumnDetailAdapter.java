@@ -4,22 +4,28 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.activity.CommentDetailActivity;
 import com.xindu.talkfx_new.activity.LoginActivity;
+import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.bean.CommentInfo;
+import com.xindu.talkfx_new.utils.ImageGetterUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
+import com.xindu.talkfx_new.utils.SpannableStringUtils;
+import com.xindu.talkfx_new.utils.Utils;
+import com.xindu.talkfx_new.widget.CircleImageView;
 
 import java.util.List;
 
@@ -57,13 +63,19 @@ public class ColumnDetailAdapter extends BaseQuickAdapter<CommentInfo, BaseViewH
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final CommentInfo model) {
-        baseViewHolder.setText(R.id.userName, model.fromUserName.equals(getAuthor()) ? model.fromUserName + "(作者)" : model.fromUserName)
+        baseViewHolder.setText(R.id.userName, model.fromUserName.equals(getAuthor())
+                ? SpannableStringUtils.getBuilder(model.fromUserName + "(作者)").setForegroundColor(mContext.getResources().getColor(R.color.text_orange)).create()
+                : SpannableStringUtils.getBuilder(model.fromUserName).setForegroundColor(mContext.getResources().getColor(R.color.blue)).create())
                 .setText(R.id.data, model.createDate)
-                .setText(R.id.content, model.content);
+                .setText(R.id.content, Html.fromHtml(model.content, new ImageGetterUtil(mContext, (TextView) baseViewHolder.getView(R.id.content)), null));
 
-        ImageView headImg = baseViewHolder.getView(R.id.headImg);
-//        Glide.with(App.getInstance().getApplicationContext()).load(model.headImg).into(headImg);
-
+        CircleImageView headImg = baseViewHolder.getView(R.id.user_icon);
+        if (!TextUtils.isEmpty(model.fromUserImg)) {
+            Glide.with(App.getInstance().getApplicationContext())
+                    .load(Constants.baseImgUrl + model.fromUserImg)
+                    .error(R.mipmap.default_person_icon)
+                    .into(headImg);
+        }
         RecyclerView view = baseViewHolder.getView(R.id.child_list);
         if (model.childList != null && model.childList.size() > 0) {
             view.setVisibility(View.VISIBLE);
@@ -79,10 +91,9 @@ public class ColumnDetailAdapter extends BaseQuickAdapter<CommentInfo, BaseViewH
             TextView textView = new TextView(mContext);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             textView.setLayoutParams(params);
-            textView.setPadding(0, 20, 20, 8);
+            textView.setPadding(Utils.dip2pix(mContext, 10), Utils.dip2pix(mContext, 10), Utils.dip2pix(mContext, 10), 8);
             textView.setText("查看更多回复");
-            textView.setGravity(Gravity.RIGHT);
-            textView.setTextColor(mContext.getResources().getColor(R.color.blue));
+            textView.setTextColor(mContext.getResources().getColor(R.color.text_gray));
             textView.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
             childAdapter.addFooterView(textView);
             textView.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +110,8 @@ public class ColumnDetailAdapter extends BaseQuickAdapter<CommentInfo, BaseViewH
     private void clickEvent(CommentInfo model) {
         if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
             mContext.startActivity(new Intent(mContext, CommentDetailActivity.class)
-                    .putExtra("CommentInfo", model));
+                    .putExtra("CommentInfo", model)
+                    .putExtra("author", getAuthor()));
             ((Activity) mContext).overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
         } else {
             mContext.startActivity(new Intent(mContext, LoginActivity.class));
