@@ -21,6 +21,8 @@ public class ColumnInfo implements Serializable {
     public String cycleStart;
     public String firstImg;
     public double openPosition;
+    public int supportCount;
+    public int opposeCount;
     public String operate;
     public String opinion;
     public int readCount;

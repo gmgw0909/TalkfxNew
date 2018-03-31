@@ -2,7 +2,6 @@ package com.xindu.talkfx_new.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +9,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -77,6 +78,8 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     QMUIRoundButton discuss;
     @Bind(R.id.click_close_kb)
     Button clickCloseKb;
+    @Bind(R.id.collection)
+    ImageView collection;
 
     View topView;
     TextView title;
@@ -100,6 +103,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     boolean firstIn = true;
     boolean sendSuccess;
     String customerId = "";
+    int collectStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,14 +224,18 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 if (!TextUtils.isEmpty(detailResponse.column.opinion)) {
                                     opinionLayout.setVisibility(View.VISIBLE);
                                     opinion.setText(detailResponse.column.opinion);
-                                    //
-                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
-                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                                    zanUp.setCompoundDrawables(drawable, null, null, null);
-                                    if (detailResponse.column.commentCount != 0) {
-                                        zanUp.setText("");
+//                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
+//                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//                                    zanUp.setCompoundDrawables(drawable, null, null, null);
+                                    if (detailResponse.column.supportCount != 0) {
+                                        zanUp.setText(detailResponse.column.supportCount + "");
                                     } else {
                                         zanUp.setText("0");
+                                    }
+                                    if (detailResponse.column.opposeCount != 0) {
+                                        zanDown.setText(detailResponse.column.opposeCount + "");
+                                    } else {
+                                        zanDown.setText("0");
                                     }
                                 } else {
                                     opinionLayout.setVisibility(View.GONE);
@@ -257,7 +265,13 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                             .into(headImg);
                                 }
                             }
-
+                            collectStatus = detailResponse.collectStatus;
+                            Log.d("Ok_collectStatus", collectStatus + "");
+                            if (detailResponse.collectStatus == 1) {
+                                collection.setImageResource(R.mipmap.column_btn_collection);
+                            } else {
+                                collection.setImageResource(R.mipmap.column_btn_collection_s);
+                            }
                             if (detailResponse.column != null && detailResponse.column.commentCount != 0) {
                                 commentsCount.setText("评论 (" + detailResponse.column.commentCount + ")");
                             } else {
@@ -275,8 +289,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
                     @Override
                     public void onError(Response<BaseResponse<ColumnDetailResponse>> response) {
-                        //网络请求失败的回调,一般会弹个Toast
-                        showToast(response.getException().getMessage());
+                        Utils.errorResponse(mContext,response);
                     }
 
                     @Override
@@ -358,8 +371,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                     public void onError(Response<BaseResponse<List<CommentInfo>>> response) {
                         //显示数据加载失败,点击重试
                         mAdapter.loadMoreFail();
-                        //网络请求失败的回调,一般会弹个Toast
-                        showToast(response.getException().getMessage());
+                        Utils.errorResponse(mContext,response);
                     }
                 });
     }
@@ -411,6 +423,11 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 }
                 break;
             case R.id.collection:
+                if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
+                    collect();
+                } else {
+                    startActivity(LoginActivity.class, false);
+                }
                 break;
             case R.id.share:
                 break;
@@ -425,6 +442,42 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 KeyboardUtil.closeKeyboard(etDiscuss, this);
                 break;
         }
+    }
+
+    private void collect() {
+        showDialog();
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("cid", columnId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/column/collect")
+                .upJson(obj)
+                .execute(new MJsonCallBack<BaseResponse>() {
+                    @Override
+                    public void onSuccess(Response<BaseResponse> response) {
+                        if (response.body().code == 0) {
+                            if (collectStatus == 1) {
+                                collectStatus = 0;
+                                collection.setImageResource(R.mipmap.column_btn_collection_s);
+                            } else if (collectStatus == 0) {
+                                collectStatus = 1;
+                                collection.setImageResource(R.mipmap.column_btn_collection);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<BaseResponse> response) {
+                        Utils.errorResponse(mContext,response);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissDialog();
+                    }
+                });
     }
 
     /**
@@ -466,7 +519,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                     @Override
                     public void onError(Response<BaseResponse> response) {
                         dismissDialog();
-                        showToast(response.getException().getMessage());
+                        Utils.errorResponse(mContext,response);
                     }
                 });
     }
@@ -558,4 +611,5 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         mListPopup.setAnimStyle(QMUIPopup.ANIM_AUTO);
         mListPopup.show(v);
     }
+
 }

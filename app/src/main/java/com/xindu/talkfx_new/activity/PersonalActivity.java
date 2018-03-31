@@ -29,6 +29,7 @@ import com.xindu.talkfx_new.bean.CustomerResponse;
 import com.xindu.talkfx_new.fragment.ColumnListFragment;
 import com.xindu.talkfx_new.fragment.ColumnPersonalListFragment;
 import com.xindu.talkfx_new.fragment.GroupFragment;
+import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
 import java.util.ArrayList;
@@ -147,8 +148,7 @@ public class PersonalActivity extends BaseActivity {
 
                     @Override
                     public void onError(Response<BaseResponse<CustomerResponse>> response) {
-                        //网络请求失败的回调,一般会弹个Toast
-                        showToast(response.getException().getMessage());
+                        Utils.errorResponse(mContext,response);
                     }
 
                     @Override

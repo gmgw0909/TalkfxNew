@@ -26,6 +26,7 @@ import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.ColumnInfo;
+import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
 
 import java.util.Arrays;
@@ -162,8 +163,7 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
 
                     @Override
                     public void onError(Response<BaseResponse<Columns>> response) {
-                        //网络请求失败的回调,一般会弹个Toast
-                        showToast(response.getException().getMessage());
+                        Utils.errorResponse(getActivity(),response);
                     }
 
                     @Override
@@ -198,8 +198,7 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
                     public void onError(Response<BaseResponse<List<ColumnInfo>>> response) {
                         //显示数据加载失败,点击重试
                         mAdapter.loadMoreFail();
-                        //网络请求失败的回调,一般会弹个Toast
-                        showToast(response.getException().getMessage());
+                        Utils.errorResponse(getActivity(),response);
                     }
                 });
     }

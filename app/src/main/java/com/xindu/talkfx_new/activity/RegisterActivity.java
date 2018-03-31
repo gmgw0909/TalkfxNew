@@ -18,6 +18,7 @@ import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.base.NetResponseCode;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.StringUtil;
+import com.xindu.talkfx_new.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,8 +95,8 @@ public class RegisterActivity extends BaseActivity {
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
-                        showToast(response.getException().getMessage());
                         dismissDialog();
+                        Utils.errorResponse(mContext,response);
                     }
                 });
     }
@@ -178,8 +179,8 @@ public class RegisterActivity extends BaseActivity {
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
-                        showToast(response.getException().getMessage());
                         dismissDialog();
+                        Utils.errorResponse(mContext,response);
                     }
                 });
     }

@@ -7,12 +7,21 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 
+import com.lzy.okgo.model.Response;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.xindu.talkfx_new.activity.NavigationPageActivity;
+import com.xindu.talkfx_new.base.App;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.logging.Handler;
 
 public class Utils {
 
@@ -136,6 +145,20 @@ public class Utils {
         str = str.replace("&mdash;", "—");
         str = str.replace("&ndash;", "–");
         return str;
+    }
+
+    public static void errorResponse(Context mContext,Response response) {
+        final QMUITipDialog tipDialog = new QMUITipDialog.Builder(mContext)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                .setTipWord("请求网络失败:" + response.getException().getMessage())
+                .create();
+        tipDialog.show();
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tipDialog.dismiss();
+            }
+        }, 2000);
     }
 
 }

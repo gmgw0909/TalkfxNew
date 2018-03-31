@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import com.xindu.talkfx_new.bean.CommentInfo;
 import com.xindu.talkfx_new.utils.ImageGetterUtil;
 import com.xindu.talkfx_new.utils.KeyboardUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
+import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
@@ -69,6 +71,10 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
     QMUIRoundButton discuss;
     @Bind(R.id.click_close_kb)
     Button clickCloseKb;
+    @Bind(R.id.collection)
+    ImageView collection;
+    @Bind(R.id.share)
+    ImageView share;
 
     CommentDetailAdapter adapter;
 
@@ -97,7 +103,8 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
         userName = topView.findViewById(R.id.userName);
         data = topView.findViewById(R.id.data);
         content = topView.findViewById(R.id.content);
-
+        collection.setVisibility(View.GONE);
+        share.setVisibility(View.GONE);
         initData();
         initKeyboardChangeListener();
     }
@@ -200,7 +207,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                             adapter.loadMoreFail();
                         }
                         //网络请求失败的回调
-                        showToast(response.getException().getMessage());
+                        Utils.errorResponse(mContext,response);
                     }
 
                     @Override
@@ -318,7 +325,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
-                        showToast(response.getException().getMessage());
+                        Utils.errorResponse(mContext,response);
                     }
                 });
     }

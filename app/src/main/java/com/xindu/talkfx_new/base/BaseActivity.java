@@ -16,6 +16,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.xindu.talkfx_new.bean.IsLoginResponse;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.ToastUtil;
+import com.xindu.talkfx_new.utils.Utils;
 
 /**
  * Created by LeeBoo on 2018/3/12.
@@ -43,7 +44,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showDialog() {
-        showDialog("正在加载");
+        showDialog("正在请求");
     }
 
     public void dismissDialog() {
@@ -97,8 +98,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onError(Response<IsLoginResponse> response) {
-                        showToast(response.getException().getMessage());
-
+                        Utils.errorResponse(mContext,response);
                     }
                 });
     }
