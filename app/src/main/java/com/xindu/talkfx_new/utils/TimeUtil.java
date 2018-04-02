@@ -24,6 +24,7 @@ public class TimeUtil {
     public static final String FORMAT_TIME_EN = "yyyy-MM-dd HH:mm:ss";
     public static final String FORMAT_TIME_EN_2 = "yyyy-MM-dd HH:mm";
     public static final String FORMAT_TIME_MM_dd = "MM/dd";
+    public static final String FORMAT_TIME_MM_dd_HH_mm = "MM-dd HH:mm";
 
     public static final String FORMAT_DAY_CN = "HH时mm分ss秒";
     public static final String FORMAT_DAY_CN_2 = "HH时mm分";

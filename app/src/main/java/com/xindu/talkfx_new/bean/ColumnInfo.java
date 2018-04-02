@@ -31,4 +31,5 @@ public class ColumnInfo implements Serializable {
     public double takeprofit;
     public String title;
     public String typeTitle;
+    public String miniContent;
 }

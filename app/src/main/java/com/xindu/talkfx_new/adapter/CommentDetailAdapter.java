@@ -16,6 +16,7 @@ import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.bean.CommentInfo;
 import com.xindu.talkfx_new.utils.ImageGetterUtil;
 import com.xindu.talkfx_new.utils.SpannableStringUtils;
+import com.xindu.talkfx_new.utils.TimeUtil;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentInfo, BaseView
                 .setForegroundColor(mContext.getResources().getColor(R.color.text_orange)).create()
                 : SpannableStringUtils.getBuilder(model.fromUserName)
                 .setForegroundColor(mContext.getResources().getColor(R.color.blue)).create())
-                .setText(R.id.data, model.createDate)
+                .setText(R.id.data, TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, model.createDate)))
                 .setText(R.id.content, setCommenter(baseViewHolder, model));
 
         CircleImageView headImg = baseViewHolder.getView(R.id.user_icon);

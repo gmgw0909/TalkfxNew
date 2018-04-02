@@ -11,6 +11,7 @@ import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.bean.ColumnInfo;
+import com.xindu.talkfx_new.utils.TimeUtil;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class ColumnListAdapter extends BaseQuickAdapter<ColumnInfo, BaseViewHold
     protected void convert(BaseViewHolder baseViewHolder, final ColumnInfo model) {
         baseViewHolder.setText(R.id.title, model.title)
                 .setText(R.id.userName, model.userName)
-                .setText(R.id.data, model.createDate)
-                .setText(R.id.content, model.content)
+                .setText(R.id.data,  TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, model.createDate)))
+                .setText(R.id.content, model.miniContent)
                 .setText(R.id.read_count, "阅读 " + model.readCount);
 
         CircleImageView headImg = baseViewHolder.getView(R.id.headImg);

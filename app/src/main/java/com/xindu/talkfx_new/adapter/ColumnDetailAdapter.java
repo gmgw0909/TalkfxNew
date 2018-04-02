@@ -24,6 +24,7 @@ import com.xindu.talkfx_new.bean.CommentInfo;
 import com.xindu.talkfx_new.utils.ImageGetterUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.SpannableStringUtils;
+import com.xindu.talkfx_new.utils.TimeUtil;
 import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
@@ -66,7 +67,7 @@ public class ColumnDetailAdapter extends BaseQuickAdapter<CommentInfo, BaseViewH
         baseViewHolder.setText(R.id.userName, model.fromUserName.equals(getAuthor())
                 ? SpannableStringUtils.getBuilder(model.fromUserName + "(作者)").setForegroundColor(mContext.getResources().getColor(R.color.text_orange)).create()
                 : SpannableStringUtils.getBuilder(model.fromUserName).setForegroundColor(mContext.getResources().getColor(R.color.blue)).create())
-                .setText(R.id.data, model.createDate)
+                .setText(R.id.data, TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, model.createDate)))
                 .setText(R.id.content, Html.fromHtml(model.content, new ImageGetterUtil(mContext, (TextView) baseViewHolder.getView(R.id.content)), null));
 
         CircleImageView headImg = baseViewHolder.getView(R.id.user_icon);

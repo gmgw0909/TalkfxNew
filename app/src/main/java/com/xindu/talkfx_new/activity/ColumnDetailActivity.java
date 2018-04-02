@@ -217,7 +217,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                     title.setText("暂无");
                                 }
                                 if (!TextUtils.isEmpty(detailResponse.column.createDate)) {
-                                    data.setText(detailResponse.column.createDate);
+                                    data.setText(TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, detailResponse.column.createDate)));
                                 } else {
                                     data.setText("暂无");
                                 }

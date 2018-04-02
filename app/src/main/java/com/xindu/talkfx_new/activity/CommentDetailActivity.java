@@ -40,6 +40,7 @@ import com.xindu.talkfx_new.bean.CommentInfo;
 import com.xindu.talkfx_new.utils.ImageGetterUtil;
 import com.xindu.talkfx_new.utils.KeyboardUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
+import com.xindu.talkfx_new.utils.TimeUtil;
 import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
 import com.xindu.talkfx_new.widget.CircleImageView;
@@ -125,7 +126,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                 userName.setText("");
             }
             if (!TextUtils.isEmpty(info.createDate)) {
-                data.setText(info.createDate);
+                data.setText( TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, info.createDate)));
             } else {
                 data.setText("");
             }

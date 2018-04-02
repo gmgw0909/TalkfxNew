@@ -147,6 +147,26 @@ public class LoginActivity extends BaseActivity {
                         BaseResponse r = response.body();
                         if (r.code == 0 && r.msg.equals(NetResponseCode.验证码已发送.getCode())) {
                             showToast(NetResponseCode.验证码已发送.getValue());
+                            mCount = 60;
+                            final Timer timer = new Timer();
+                            TimerTask timertask = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mCount--;
+                                            mBtnSendCode.setText("(" + mCount + ")重新获取");
+                                            if (mCount <= 0) {
+                                                mBtnSendCode.setText("重新发送");
+                                                mBtnSendCode.setEnabled(true);
+                                                timer.cancel();
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+                            timer.schedule(timertask, 1000, 1000);
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
@@ -157,6 +177,7 @@ public class LoginActivity extends BaseActivity {
                     public void onError(Response<BaseResponse> response) {
                         dismissDialog();
                         Utils.errorResponse(mContext, response);
+                        mBtnSendCode.setEnabled(true);
                     }
                 });
     }
@@ -169,34 +190,6 @@ public class LoginActivity extends BaseActivity {
         mBtnSendCode.setEnabled(false);
         /*这个时候从服务器获取验证码*/
         sendCode(phone);
-        /*已经倒计时了。不能再次让他发送*/
-        /*不用初始化*/
-        mCount = 60;
-        /*弄一个计时器*/
-        final Timer timer = new Timer();
-        TimerTask timertask = new TimerTask() {
-            @Override
-            public void run() {
-                /*在ui里面操作*/
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCount--;
-                        /*把每一秒显示上去*/
-                        mBtnSendCode.setText("(" + mCount + ")重新获取");
-                        if (mCount <= 0) {
-                            mBtnSendCode.setText("重新发送");
-                            /*设置可以点击*/
-                            mBtnSendCode.setEnabled(true);
-                            /*别忘记   取消计时器*/
-                            timer.cancel();
-                        }
-                    }
-                });
-            }
-        };
-        /*这句话不能忘记*/
-        timer.schedule(timertask, 1000, 1000);
     }
 
     /**
