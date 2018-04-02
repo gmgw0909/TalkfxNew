@@ -14,8 +14,8 @@
         android:background="@null"
         android:gravity="left"
         android:text="提示"
-        android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textColor="#3c3f40"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -30,8 +30,6 @@
             android:id="@+id/tellTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="确定吃饭吗？"
-            android:textColor="#666666"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -43,7 +41,7 @@
 
         <View
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="10dp"
             android:layout_weight="3" />
 
         <Button

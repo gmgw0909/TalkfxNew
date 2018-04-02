@@ -1,12 +1,15 @@
 package com.xindu.talkfx_new.activity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xindu.talkfx_new.R;
+import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.BaseActivity;
+import com.xindu.talkfx_new.utils.MessageBox;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,11 +36,38 @@ public class PersonalInfoActivity extends BaseActivity {
         title.setText("个人资料");
     }
 
-    @OnClick({R.id.btn_back})
+    @OnClick({R.id.btn_back, R.id.logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
                 finish();
+                break;
+            case R.id.logout:
+//                new QMUIDialog.MessageDialogBuilder(mContext)
+//                        .setTitle("退出登录")
+//                        .setMessage("确定要退出登录吗？")
+//                        .addAction("取消", new QMUIDialogAction.ActionListener() {
+//                            @Override
+//                            public void onClick(QMUIDialog dialog, int index) {
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+//                            @Override
+//                            public void onClick(QMUIDialog dialog, int index) {
+//                                App.clearActivity();
+//                                startActivity(LoginActivity.class,false);
+//                            }
+//                        })
+//                        .show();
+                MessageBox.promptTwoDialog("取消", "确定", mContext, "确定要退出登录吗？", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        App.clearActivity();
+                        startActivity(LoginActivity.class, false);
+                        ((Dialog) view.getTag()).dismiss();
+                    }
+                });
                 break;
         }
     }

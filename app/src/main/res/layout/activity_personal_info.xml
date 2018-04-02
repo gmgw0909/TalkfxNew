@@ -91,7 +91,8 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="@dimen/sp_16"
                 android:layout_marginRight="@dimen/sp_16"
-                android:background="@color/gray" />
+                android:background="@color/gray"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -99,7 +100,8 @@
                 android:background="@drawable/selector_click_white"
                 android:clickable="true"
                 android:paddingLeft="@dimen/sp_16"
-                android:paddingRight="@dimen/sp_16">
+                android:paddingRight="@dimen/sp_16"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -237,6 +239,7 @@
                     android:textSize="@dimen/sp_16" />
 
                 <TextView
+                    android:id="@+id/phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -428,6 +431,7 @@
                 android:background="@color/gray" />
 
             <RelativeLayout
+                android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="@drawable/selector_click_white"
