@@ -1,15 +1,16 @@
 package com.xindu.talkfx_new.activity;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.BaseActivity;
-import com.xindu.talkfx_new.utils.MessageBox;
+import com.xindu.talkfx_new.utils.SPUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,31 +44,32 @@ public class PersonalInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.logout:
-//                new QMUIDialog.MessageDialogBuilder(mContext)
-//                        .setTitle("退出登录")
-//                        .setMessage("确定要退出登录吗？")
-//                        .addAction("取消", new QMUIDialogAction.ActionListener() {
-//                            @Override
-//                            public void onClick(QMUIDialog dialog, int index) {
-//                                dialog.dismiss();
-//                            }
-//                        })
-//                        .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
-//                            @Override
-//                            public void onClick(QMUIDialog dialog, int index) {
-//                                App.clearActivity();
-//                                startActivity(LoginActivity.class,false);
-//                            }
-//                        })
-//                        .show();
-                MessageBox.promptTwoDialog("取消", "确定", mContext, "确定要退出登录吗？", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        App.clearActivity();
-                        startActivity(LoginActivity.class, false);
-                        ((Dialog) view.getTag()).dismiss();
-                    }
-                });
+                new QMUIDialog.MessageDialogBuilder(mContext)
+                        .setTitle("退出登录")
+                        .setMessage("确定要退出登录吗？")
+                        .addAction("取消", new QMUIDialogAction.ActionListener() {
+                            @Override
+                            public void onClick(QMUIDialog dialog, int index) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                            @Override
+                            public void onClick(QMUIDialog dialog, int index) {
+                                SPUtil.clear(mContext);
+                                App.clearActivity();
+                                startActivity(LoginActivity.class, false);
+                            }
+                        })
+                        .show();
+//                MessageBox.promptTwoDialog("取消", "确定", mContext, "确定要退出登录吗？", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        App.clearActivity();
+//                        startActivity(LoginActivity.class, false);
+//                        ((Dialog) view.getTag()).dismiss();
+//                    }
+//                });
                 break;
         }
     }

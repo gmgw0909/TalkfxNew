@@ -15,7 +15,7 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.activity.ColumnDetailActivity;
-import com.xindu.talkfx_new.adapter.ColumnListAdapter;
+import com.xindu.talkfx_new.adapter.ColumnListAdapter2;
 import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
@@ -39,7 +39,7 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
     private int currentPage = 2;
-    private ColumnListAdapter mAdapter;
+    private ColumnListAdapter2 mAdapter;
     private boolean isInitCache = false;
     private boolean hasLoad = false;
 
@@ -63,7 +63,7 @@ public class ColumnListFragment extends BaseFragment implements SwipeRefreshLayo
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mAdapter = new ColumnListAdapter(null);
+        mAdapter = new ColumnListAdapter2(null);
 //        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.isFirstOnly(false);
         recyclerView.setAdapter(mAdapter);

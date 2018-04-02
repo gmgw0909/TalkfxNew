@@ -9,12 +9,13 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,6 +41,7 @@ import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.BaseActivity;
 import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
+import com.xindu.talkfx_new.base.JavascriptInterface;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.ColumnDetailResponse;
 import com.xindu.talkfx_new.bean.CommentInfo;
@@ -95,6 +97,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     QMUIFloatLayout floatLayout;
     CardView hdLayout;
     LinearLayout opinionLayout;
+    QMUIRoundButton follow;
 
     ColumnDetailAdapter mAdapter;
     int currentPage = 1;
@@ -104,6 +107,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     boolean sendSuccess;
     String customerId = "";
     int collectStatus;
+    int followStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +130,43 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         opinion = topView.findViewById(R.id.opinion);
         content = topView.findViewById(R.id.content);
         commentsCount = topView.findViewById(R.id.commentsCount);
+        follow = topView.findViewById(R.id.follow);
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
+                    if (followStatus == 0) {
+                        follow("cancel");
+                    } else {
+                        follow("care");
+                    }
+                } else {
+                    startActivity(LoginActivity.class, false);
+                }
+            }
+        });
+
         floatLayout = topView.findViewById(R.id.float_layout);
         hdLayout = topView.findViewById(R.id.handan_layout);
         opinionLayout = topView.findViewById(R.id.opinion_layout);
         zanDown = topView.findViewById(R.id.zan_down);
         zanUp = topView.findViewById(R.id.zan_up);
+        WebSettings webSettings = content.getSettings();// 设置与Js交互的权限
+        webSettings.setJavaScriptEnabled(true);
+        content.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //这段js函数的功能就是注册监听，遍历所有的img标签，并添加onClick函数，函数的功能是在图片点击的时候调用本地java接口并传递url过去
+                content.loadUrl("javascript:(function(){"
+                        + "var objs = document.getElementsByTagName(\"img\"); "
+                        + "for(var i=0;i<objs.length;i++)  " + "{"
+                        + "    objs[i].onclick=function()  " + "    {  "
+                        + "        window.imagelistner.openImage(this.src);  "
+                        + "    }  " + "}" + "})()");
+            }
+        });
+        content.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
         columnId = getIntent().getStringExtra("columnId");
         initData();
         initKeyboardChangeListener();
@@ -221,6 +257,11 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 } else {
                                     data.setText("暂无");
                                 }
+                                if (detailResponse.concernStatus == 0) {
+                                    follow.setText("已关注");
+                                } else {
+                                    follow.setText("+ 关注");
+                                }
                                 if (!TextUtils.isEmpty(detailResponse.column.opinion)) {
                                     opinionLayout.setVisibility(View.VISIBLE);
                                     opinion.setText(detailResponse.column.opinion);
@@ -266,7 +307,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 }
                             }
                             collectStatus = detailResponse.collectStatus;
-                            Log.d("Ok_collectStatus", collectStatus + "");
+                            followStatus = detailResponse.concernStatus;
                             if (detailResponse.collectStatus == 1) {
                                 collection.setImageResource(R.mipmap.column_btn_collection);
                             } else {
@@ -289,7 +330,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
                     @Override
                     public void onError(Response<BaseResponse<ColumnDetailResponse>> response) {
-                        Utils.errorResponse(mContext,response);
+                        Utils.errorResponse(mContext, response);
                     }
 
                     @Override
@@ -371,7 +412,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                     public void onError(Response<BaseResponse<List<CommentInfo>>> response) {
                         //显示数据加载失败,点击重试
                         mAdapter.loadMoreFail();
-                        Utils.errorResponse(mContext,response);
+                        Utils.errorResponse(mContext, response);
                     }
                 });
     }
@@ -411,7 +452,8 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         });
     }
 
-    @OnClick({R.id.discuss, R.id.collection, R.id.share, R.id.send, R.id.btn_back, R.id.click_close_kb})
+    @OnClick({R.id.discuss, R.id.collection, R.id.share, R.id.send,
+            R.id.btn_back, R.id.click_close_kb})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.discuss:
@@ -470,7 +512,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
-                        Utils.errorResponse(mContext,response);
+                        Utils.errorResponse(mContext, response);
                     }
 
                     @Override
@@ -478,6 +520,71 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                         dismissDialog();
                     }
                 });
+    }
+
+    private void follow(String s) {
+        showDialog();
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("toid", customerId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (s.equals("cancel")) {
+            OkGo.<BaseResponse>put(Constants.baseDataUrl + "/concern/" + s)
+                    .upJson(obj)
+                    .execute(new MJsonCallBack<BaseResponse>() {
+                        @Override
+                        public void onSuccess(Response<BaseResponse> response) {
+                            if (response.body().code == 0) {
+                                if (followStatus == 0) {
+                                    followStatus = 1;
+                                    follow.setText("+ 关注");
+                                } else if (followStatus == 1) {
+                                    followStatus = 0;
+                                    follow.setText("已关注");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<BaseResponse> response) {
+                            Utils.errorResponse(mContext, response);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            dismissDialog();
+                        }
+                    });
+        } else {
+            OkGo.<BaseResponse>post(Constants.baseDataUrl + "/concern/" + s)
+                    .upJson(obj)
+                    .execute(new MJsonCallBack<BaseResponse>() {
+                        @Override
+                        public void onSuccess(Response<BaseResponse> response) {
+                            if (response.body().code == 0) {
+                                if (followStatus == 0) {
+                                    followStatus = 1;
+                                    follow.setText("+ 关注");
+                                } else if (followStatus == 1) {
+                                    followStatus = 0;
+                                    follow.setText("已关注");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<BaseResponse> response) {
+                            Utils.errorResponse(mContext, response);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            dismissDialog();
+                        }
+                    });
+        }
     }
 
     /**
@@ -519,7 +626,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                     @Override
                     public void onError(Response<BaseResponse> response) {
                         dismissDialog();
-                        Utils.errorResponse(mContext,response);
+                        Utils.errorResponse(mContext, response);
                     }
                 });
     }
