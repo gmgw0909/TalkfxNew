@@ -45,6 +45,7 @@ import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -126,7 +127,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                 userName.setText("");
             }
             if (!TextUtils.isEmpty(info.createDate)) {
-                data.setText( TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, info.createDate)));
+                data.setText(TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, info.createDate)));
             } else {
                 data.setText("");
             }
@@ -208,7 +209,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                             adapter.loadMoreFail();
                         }
                         //网络请求失败的回调
-                        Utils.errorResponse(mContext,response);
+                        Utils.errorResponse(mContext, response);
                     }
 
                     @Override
@@ -322,11 +323,12 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                         etDiscuss.setText("");
                         onRefresh();
                         KeyboardUtil.closeKeyboard(etDiscuss, CommentDetailActivity.this);
+                        EventBus.getDefault().post("isRefresh");
                     }
 
                     @Override
                     public void onError(Response<BaseResponse> response) {
-                        Utils.errorResponse(mContext,response);
+                        Utils.errorResponse(mContext, response);
                     }
                 });
     }
@@ -393,6 +395,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                                     if (r.code == 0) {
                                         adapter.remove(p);
                                         showToast("删除成功");
+                                        EventBus.getDefault().post("isRefresh");
                                     }
                                 }
 

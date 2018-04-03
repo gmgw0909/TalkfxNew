@@ -53,6 +53,8 @@ import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -114,6 +116,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_column_detail);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         topView = LayoutInflater.from(this).inflate(R.layout.topview_column_detail, null);
         title = topView.findViewById(R.id.title);
         readCount = topView.findViewById(R.id.read_count);
@@ -170,6 +173,9 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         columnId = getIntent().getStringExtra("columnId");
         initData();
         initKeyboardChangeListener();
+        //开启loading,获取数据
+        setRefreshing(true);
+        onRefresh();
     }
 
     protected void initData() {
@@ -223,12 +229,12 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         floatLayout.addView(textView, lp);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //开启loading,获取数据
-        setRefreshing(true);
-        onRefresh();
+    @Subscribe
+    public void onEvent(String msg) {
+        if (msg.equals("isRefresh")) {
+            setRefreshing(true);
+            onRefresh();
+        }
     }
 
     @Override
@@ -640,6 +646,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     //键盘打开关闭监听器
