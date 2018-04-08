@@ -63,7 +63,7 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity.PhotoImageActivity"
+            android:name=".activity.PhotoBrowserActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
     </application>

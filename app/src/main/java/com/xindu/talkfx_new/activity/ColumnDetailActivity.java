@@ -169,7 +169,6 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                         + "    }  " + "}" + "})()");
             }
         });
-        content.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
         columnId = getIntent().getStringExtra("columnId");
         initData();
         initKeyboardChangeListener();
@@ -290,8 +289,9 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 if (!TextUtils.isEmpty(detailResponse.column.content)) {
                                     String s = detailResponse.column.content;
                                     String s1 = s.replace("data/resource/showImg?path=", Constants.baseUrl + "data/resource/showImg?path=");
-                                    String s2 = s1.replace(Constants.baseUrl + Constants.baseUrl, Constants.baseUrl);
-                                    content.loadDataWithBaseURL(null, Utils.getHtmlData(s2), "text/html", "utf-8", null);
+                                    String html_body = s1.replace(Constants.baseUrl + Constants.baseUrl, Constants.baseUrl);
+                                    content.addJavascriptInterface(new JavascriptInterface(ColumnDetailActivity.this, Utils.returnImageUrlsFromHtml(Utils.getHtmlData(html_body))), "imagelistner");
+                                    content.loadDataWithBaseURL(null, Utils.getHtmlData(html_body), "text/html", "utf-8", null);
                                 } else {
 //                                    content.setText("暂无");
                                 }
@@ -645,6 +645,13 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
     @Override
     protected void onDestroy() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(ColumnDetailActivity.this).clearDiskCache();//清理磁盘缓存需要在子线程中执行
+            }
+        }).start();
+        Glide.get(this).clearMemory();//清理内存缓存可以在UI主线程中进行
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }

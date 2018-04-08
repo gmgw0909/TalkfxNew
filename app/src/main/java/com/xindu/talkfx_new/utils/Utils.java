@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -90,6 +92,7 @@ public class Utils {
 
     /**
      * base64转为bitmap
+     *
      * @param base64Data
      * @return
      */
@@ -141,6 +144,28 @@ public class Utils {
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 
+    public static String[] returnImageUrlsFromHtml(String htmlStr) {
+        List<String> pics = new ArrayList<>();
+        String img = "";
+        Pattern p_image;
+        Matcher m_image;
+        //     String regEx_img = "<img.*src=(.*?)[^>]*?>"; //图片链接地址
+        String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+        p_image = Pattern.compile
+                (regEx_img, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(htmlStr);
+        while (m_image.find()) {
+            // 得到<img />数据
+            img = m_image.group();
+            // 匹配<img>中的src数据
+            Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+            while (m.find()) {
+                pics.add(m.group(1));
+            }
+        }
+        return pics.toArray(new String[pics.size()]);
+    }
+
     public static String htmlReplace(String str) {
         str = str.replace("&ldquo;", "“");
         str = str.replace("&rdquo;", "”");
@@ -153,7 +178,7 @@ public class Utils {
         return str;
     }
 
-    public static void errorResponse(Context mContext,Response response) {
+    public static void errorResponse(Context mContext, Response response) {
         final QMUITipDialog tipDialog = new QMUITipDialog.Builder(mContext)
                 .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
                 .setTipWord("请求网络失败:" + response.getException().getMessage())
