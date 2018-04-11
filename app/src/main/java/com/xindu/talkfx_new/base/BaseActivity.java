@@ -11,12 +11,12 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.Response;
+import com.lzy.okgo.model.HttpHeaders;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
-import com.xindu.talkfx_new.bean.IsLoginResponse;
+import com.xindu.talkfx_new.activity.HomeActivity;
+import com.xindu.talkfx_new.bean.LoginInfo;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.ToastUtil;
-import com.xindu.talkfx_new.utils.Utils;
 
 /**
  * Created by LeeBoo on 2018/3/12.
@@ -85,22 +85,17 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 保存用户信息
      */
-    public void isLogin() {
-        OkGo.<IsLoginResponse>get(Constants.baseDataUrl + "/customer/isLogin")
-                .execute(new MJsonCallBack<IsLoginResponse>() {
-                    @Override
-                    public void onSuccess(Response<IsLoginResponse> response) {
-                        IsLoginResponse r = response.body();
-                        if (r.code == 0) {
-                            SPUtil.put(Constants.USERNAME, r.userName);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<IsLoginResponse> response) {
-                        Utils.errorResponse(mContext,response);
-                    }
-                });
+    public void isLogin(LoginInfo info) {
+        SPUtil.put(Constants.USERNAME, info.user.userName);
+        SPUtil.put(Constants.TOKEN, info.token);
+        SPUtil.put(Constants.IS_LOGIN, true);
+        App.clearLoginActivity();
+        if (getIntent().getBooleanExtra("goMain", false)) {
+            startActivity(new Intent(mContext, HomeActivity.class));
+        }
+        //登陆成功网络请求头设置token
+        HttpHeaders headers = new HttpHeaders();
+        headers.put("token", SPUtil.getString(Constants.TOKEN));
+        OkGo.getInstance().addCommonHeaders(headers);
     }
-
 }

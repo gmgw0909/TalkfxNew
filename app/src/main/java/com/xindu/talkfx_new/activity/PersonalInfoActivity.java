@@ -1,5 +1,6 @@
 package com.xindu.talkfx_new.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.BaseActivity;
+import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.utils.SPUtil;
 
 import butterknife.Bind;
@@ -56,9 +58,13 @@ public class PersonalInfoActivity extends BaseActivity {
                         .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
                             @Override
                             public void onClick(QMUIDialog dialog, int index) {
-                                SPUtil.clear(mContext);
+                                dialog.dismiss();
+                                SPUtil.put(Constants.IS_LOGIN, false);
+                                SPUtil.put(Constants.USERNAME, "");
+                                SPUtil.put(Constants.TOKEN, "");
                                 App.clearActivity();
-                                startActivity(LoginActivity.class, false);
+                                startActivity(new Intent(PersonalInfoActivity.this, LoginActivity.class)
+                                        .putExtra("goMain", true));
                             }
                         })
                         .show();

@@ -1,5 +1,6 @@
 package com.xindu.talkfx_new.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -13,13 +14,12 @@ import android.widget.TextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xindu.talkfx_new.R;
-import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.BaseActivity;
 import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.base.NetResponseCode;
-import com.xindu.talkfx_new.utils.SPUtil;
+import com.xindu.talkfx_new.bean.LoginInfo;
 import com.xindu.talkfx_new.utils.StringUtil;
 import com.xindu.talkfx_new.utils.Utils;
 
@@ -121,7 +121,8 @@ public class LoginActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_register:
-                startActivity(RegisterActivity.class, false);
+                startActivity(new Intent(LoginActivity.this,RegisterActivity.class)
+                        .putExtra("goMain",getIntent().getBooleanExtra("goMain",false)));
                 break;
             case R.id.btn_send_code:
                 String phone = etPhone.getText().toString().trim();
@@ -168,6 +169,8 @@ public class LoginActivity extends BaseActivity {
                             };
                             timer.schedule(timertask, 1000, 1000);
                         } else {
+                            mBtnSendCode.setText("重新发送");
+                            mBtnSendCode.setEnabled(true);
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
                         dismissDialog();
@@ -214,16 +217,14 @@ public class LoginActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/customer/login/fast")
+        OkGo.<BaseResponse<LoginInfo>>post(Constants.baseDataUrl + "/customer/login/fast")
                 .upJson(obj)
-                .execute(new MJsonCallBack<BaseResponse>() {
+                .execute(new MJsonCallBack<BaseResponse<LoginInfo>>() {
                     @Override
-                    public void onSuccess(Response<BaseResponse> response) {
+                    public void onSuccess(Response<BaseResponse<LoginInfo>> response) {
                         BaseResponse r = response.body();
                         if (r.code == 0 && r.msg.equals(NetResponseCode.登录成功.getCode())) {
-                            App.clearLoginActivity();
-                            SPUtil.put(Constants.IS_LOGIN, true);
-                            isLogin();
+                            isLogin(response.body().datas);
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
@@ -231,7 +232,7 @@ public class LoginActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(Response<BaseResponse> response) {
+                    public void onError(Response<BaseResponse<LoginInfo>> response) {
                         dismissDialog();
                         Utils.errorResponse(mContext, response);
                     }
@@ -260,16 +261,14 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
         showDialog();
-        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/customer/login")
+        OkGo.<BaseResponse<LoginInfo>>post(Constants.baseDataUrl + "/customer/login")
                 .upJson(obj)
-                .execute(new MJsonCallBack<BaseResponse>() {
+                .execute(new MJsonCallBack<BaseResponse<LoginInfo>>() {
                     @Override
-                    public void onSuccess(Response<BaseResponse> response) {
+                    public void onSuccess(Response<BaseResponse<LoginInfo>> response) {
                         BaseResponse r = response.body();
                         if (r.code == 0 && r.msg.equals(NetResponseCode.登录成功.getCode())) {
-                            App.clearLoginActivity();
-                            SPUtil.put(Constants.IS_LOGIN, true);
-                            isLogin();
+                            isLogin(response.body().datas);
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
@@ -277,7 +276,7 @@ public class LoginActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(Response<BaseResponse> response) {
+                    public void onError(Response<BaseResponse<LoginInfo>> response) {
                         dismissDialog();
                         Utils.errorResponse(mContext, response);
                     }

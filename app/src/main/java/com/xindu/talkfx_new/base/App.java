@@ -15,6 +15,7 @@ import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.xindu.talkfx_new.activity.LoginActivity;
 import com.xindu.talkfx_new.activity.RegisterActivity;
+import com.xindu.talkfx_new.utils.SPUtil;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -100,6 +101,7 @@ public class App extends Application {
      */
     private void configOkGo() {
         HttpHeaders headers = new HttpHeaders();
+        headers.put("token", SPUtil.getString(Constants.TOKEN));
 //        headers.put("commonParamsKey1", "commonParamsKey1");    //header不支持中文，不允许有特殊字符
         HttpParams params = new HttpParams();
 //        params.put("commonParamsKey1", "commonParamsValue1");     //param支持中文,直接传,不要自己编码

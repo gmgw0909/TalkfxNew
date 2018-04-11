@@ -10,13 +10,12 @@ import android.widget.TextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.xindu.talkfx_new.R;
-import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.BaseActivity;
 import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.base.NetResponseCode;
-import com.xindu.talkfx_new.utils.SPUtil;
+import com.xindu.talkfx_new.bean.LoginInfo;
 import com.xindu.talkfx_new.utils.StringUtil;
 import com.xindu.talkfx_new.utils.Utils;
 
@@ -87,7 +86,29 @@ public class RegisterActivity extends BaseActivity {
                         BaseResponse r = response.body();
                         if (r.code == 0 && r.msg.equals(NetResponseCode.验证码已发送.getCode())) {
                             showToast(NetResponseCode.验证码已发送.getValue());
+                            mCount = 60;
+                            final Timer timer = new Timer();
+                            TimerTask timertask = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mCount--;
+                                            mBtnSendCode.setText("(" + mCount + ")重新获取");
+                                            if (mCount <= 0) {
+                                                mBtnSendCode.setText("重新发送");
+                                                mBtnSendCode.setEnabled(true);
+                                                timer.cancel();
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+                            timer.schedule(timertask, 1000, 1000);
                         } else {
+                            mBtnSendCode.setText("重新发送");
+                            mBtnSendCode.setEnabled(true);
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
                         dismissDialog();
@@ -109,34 +130,6 @@ public class RegisterActivity extends BaseActivity {
         mBtnSendCode.setEnabled(false);
         /*这个时候从服务器获取验证码*/
         sendCode(phone);
-        /*已经倒计时了。不能再次让他发送*/
-        /*不用初始化*/
-        mCount = 60;
-        /*弄一个计时器*/
-        final Timer timer = new Timer();
-        TimerTask timertask = new TimerTask() {
-            @Override
-            public void run() {
-                /*在ui里面操作*/
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCount--;
-                        /*把每一秒显示上去*/
-                        mBtnSendCode.setText("(" + mCount + ")重新获取");
-                        if (mCount <= 0) {
-                            mBtnSendCode.setText("重新发送");
-                            /*设置可以点击*/
-                            mBtnSendCode.setEnabled(true);
-                            /*别忘记   取消计时器*/
-                            timer.cancel();
-                        }
-                    }
-                });
-            }
-        };
-        /*这句话不能忘记*/
-        timer.schedule(timertask, 1000, 1000);
     }
 
     /**
@@ -161,16 +154,14 @@ public class RegisterActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/customer/regist/phone")
+        OkGo.<BaseResponse<LoginInfo>>post(Constants.baseDataUrl + "/customer/regist/phone")
                 .upJson(obj)
-                .execute(new MJsonCallBack<BaseResponse>() {
+                .execute(new MJsonCallBack<BaseResponse<LoginInfo>>() {
                     @Override
-                    public void onSuccess(Response<BaseResponse> response) {
+                    public void onSuccess(Response<BaseResponse<LoginInfo>> response) {
                         BaseResponse r = response.body();
                         if (r.code == 0) {
-                            App.clearLoginActivity();
-                            SPUtil.put(Constants.IS_LOGIN, true);
-                            isLogin();
+                            isLogin(response.body().datas);
                         } else {
                             showToast(NetResponseCode.getName(response.body().msg));
                         }
@@ -178,7 +169,7 @@ public class RegisterActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(Response<BaseResponse> response) {
+                    public void onError(Response<BaseResponse<LoginInfo>> response) {
                         dismissDialog();
                         Utils.errorResponse(mContext,response);
                     }
