@@ -2,8 +2,15 @@ package com.xindu.talkfx_new.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.imnjh.imagepicker.ImageLoader;
+import com.imnjh.imagepicker.PickerConfig;
+import com.imnjh.imagepicker.SImagePicker;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
@@ -13,6 +20,7 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.activity.LoginActivity;
 import com.xindu.talkfx_new.activity.RegisterActivity;
 import com.xindu.talkfx_new.utils.SPUtil;
@@ -45,6 +53,7 @@ public class App extends Application {
         super.onCreate();
         INSTANCE = this;
         configOkGo();
+        configImagePicker();
     }
 
     @NonNull
@@ -94,6 +103,40 @@ public class App extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 配置ImagePicker
+     */
+    private void configImagePicker() {
+        SImagePicker.init(new PickerConfig.Builder().setAppContext(this)
+                .setImageLoader(new ImageLoader() {
+                    @Override
+                    public void bindImage(ImageView imageView, Uri uri, int width, int height) {
+                        Glide.with(getApplicationContext()).load(uri).placeholder(R.mipmap.ic_launcher)
+                                .error(R.mipmap.ic_launcher).override(width, height).dontAnimate().into(imageView);
+                    }
+
+                    @Override
+                    public void bindImage(ImageView imageView, Uri uri) {
+                        Glide.with(getApplicationContext()).load(uri).placeholder(R.mipmap.ic_launcher)
+                                .error(R.mipmap.ic_launcher).dontAnimate().into(imageView);
+                    }
+
+                    @Override
+                    public ImageView createImageView(Context context) {
+                        ImageView imageView = new ImageView(context);
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        return imageView;
+                    }
+
+                    @Override
+                    public ImageView createFakeImageView(Context context) {
+                        return new ImageView(context);
+                    }
+                })
+                .setToolbaseColor(getResources().getColor(R.color.colorPrimaryDark))
+                .build());
     }
 
     /**

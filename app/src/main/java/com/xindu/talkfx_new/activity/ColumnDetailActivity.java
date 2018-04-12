@@ -230,7 +230,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
     @Subscribe
     public void onEvent(String msg) {
-        if (msg.equals("isRefresh")) {
+        if (msg.equals("isRefresh") || msg.equals("login_refresh")) {
             setRefreshing(true);
             onRefresh();
         }
@@ -262,30 +262,6 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 } else {
                                     data.setText("暂无");
                                 }
-                                if (detailResponse.concernStatus == 0) {
-                                    follow.setText("已关注");
-                                } else {
-                                    follow.setText("+ 关注");
-                                }
-                                if (!TextUtils.isEmpty(detailResponse.column.opinion)) {
-                                    opinionLayout.setVisibility(View.VISIBLE);
-                                    opinion.setText(detailResponse.column.opinion);
-//                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
-//                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-//                                    zanUp.setCompoundDrawables(drawable, null, null, null);
-                                    if (detailResponse.column.supportCount != 0) {
-                                        zanUp.setText(detailResponse.column.supportCount + "");
-                                    } else {
-                                        zanUp.setText("0");
-                                    }
-                                    if (detailResponse.column.opposeCount != 0) {
-                                        zanDown.setText(detailResponse.column.opposeCount + "");
-                                    } else {
-                                        zanDown.setText("0");
-                                    }
-                                } else {
-                                    opinionLayout.setVisibility(View.GONE);
-                                }
                                 if (!TextUtils.isEmpty(detailResponse.column.content)) {
                                     String s = detailResponse.column.content;
                                     String s1 = s.replace("data/resource/showImg?path=", Constants.baseUrl + "data/resource/showImg?path=");
@@ -294,11 +270,6 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                     content.loadDataWithBaseURL(null, Utils.getHtmlData(html_body), "text/html", "utf-8", null);
                                 } else {
 //                                    content.setText("暂无");
-                                }
-                                if (detailResponse.column.readCount != 0) {
-                                    readCount.setText(detailResponse.column.readCount + "");
-                                } else {
-                                    readCount.setText("0");
                                 }
                                 if (!TextUtils.isEmpty(detailResponse.userName)) {
                                     userName.setText(detailResponse.userName);
@@ -311,6 +282,35 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                             .error(R.mipmap.default_person_icon)
                                             .into(headImg);
                                 }
+                            }
+                            if (detailResponse.concernStatus == 0) {
+                                follow.setText("已关注");
+                            } else {
+                                follow.setText("+ 关注");
+                            }
+                            if (!TextUtils.isEmpty(detailResponse.column.opinion)) {
+                                opinionLayout.setVisibility(View.VISIBLE);
+                                opinion.setText(detailResponse.column.opinion);
+//                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
+//                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//                                    zanUp.setCompoundDrawables(drawable, null, null, null);
+                                if (detailResponse.column.supportCount != 0) {
+                                    zanUp.setText(detailResponse.column.supportCount + "");
+                                } else {
+                                    zanUp.setText("0");
+                                }
+                                if (detailResponse.column.opposeCount != 0) {
+                                    zanDown.setText(detailResponse.column.opposeCount + "");
+                                } else {
+                                    zanDown.setText("0");
+                                }
+                            } else {
+                                opinionLayout.setVisibility(View.GONE);
+                            }
+                            if (detailResponse.column.readCount != 0) {
+                                readCount.setText(detailResponse.column.readCount + "");
+                            } else {
+                                readCount.setText("0");
                             }
                             collectStatus = detailResponse.collectStatus;
                             followStatus = detailResponse.concernStatus;

@@ -25,6 +25,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rl_userIcon"
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
                 android:background="@drawable/selector_click_white"
@@ -40,6 +41,7 @@
                     android:textSize="@dimen/sp_16" />
 
                 <com.xindu.talkfx_new.widget.CircleImageView
+                    android:id="@+id/userIcon"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
                     android:layout_alignParentRight="true"

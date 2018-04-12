@@ -18,6 +18,8 @@ import com.xindu.talkfx_new.bean.LoginInfo;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.ToastUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by LeeBoo on 2018/3/12.
  */
@@ -93,6 +95,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         if (getIntent().getBooleanExtra("goMain", false)) {
             startActivity(new Intent(mContext, HomeActivity.class));
         }
+        EventBus.getDefault().post("login_refresh");
         //登陆成功网络请求头设置token
         HttpHeaders headers = new HttpHeaders();
         headers.put("token", SPUtil.getString(Constants.TOKEN));
