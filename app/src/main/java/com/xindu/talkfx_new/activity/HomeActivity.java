@@ -1,7 +1,6 @@
 package com.xindu.talkfx_new.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,7 +30,7 @@ public class HomeActivity extends BaseActivity {
     private RadioButton r2;
     private RadioButton r3;
     private RadioButton r4;
-    private RadioButton r5;
+//    private RadioButton r5;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,12 +40,12 @@ public class HomeActivity extends BaseActivity {
         r2 = (RadioButton) findViewById(R.id.rb_order);
         r3 = (RadioButton) findViewById(R.id.rb_income);
         r4 = (RadioButton) findViewById(R.id.rb_group);
-        r5 = (RadioButton) findViewById(R.id.rb_my);
+//        r5 = (RadioButton) findViewById(R.id.rb_my);
         r1.setOnClickListener(this);
         r2.setOnClickListener(this);
         r3.setOnClickListener(this);
         r4.setOnClickListener(this);
-        r5.setOnClickListener(this);
+//        r5.setOnClickListener(this);
         r1.setSelected(true);
         initFragment();
     }
@@ -75,7 +74,7 @@ public class HomeActivity extends BaseActivity {
         r2.setSelected(false);
         r3.setSelected(false);
         r4.setSelected(false);
-        r5.setSelected(false);
+//        r5.setSelected(false);
         switch (v.getId()) {
             case R.id.rb_underling:
                 index = 0;
@@ -85,10 +84,10 @@ public class HomeActivity extends BaseActivity {
                 index = 1;
                 r4.setSelected(true);
                 break;
-            case R.id.rb_my:
-                index = 2;
-                r5.setSelected(true);
-                break;
+//            case R.id.rb_my:
+//                index = 2;
+//                r5.setSelected(true);
+//                break;
             case R.id.rb_income:
                 index = 3;
                 r3.setSelected(true);

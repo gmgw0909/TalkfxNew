@@ -39,12 +39,19 @@
             android:paddingTop="6dp"
             android:text="群组" />
 
+        <!--<RadioButton-->
+            <!--android:id="@+id/rb_my"-->
+            <!--style="@style/BottomBarItem"-->
+            <!--android:drawableTop="@drawable/selector_bottom_bar_rb5"-->
+            <!--android:paddingTop="6dp"-->
+            <!--android:text="我的" />-->
+
         <RadioButton
-            android:id="@+id/rb_my"
+            android:id="@+id/rb_order"
             style="@style/BottomBarItem"
-            android:drawableTop="@drawable/selector_bottom_bar_rb5"
+            android:drawableTop="@drawable/selector_bottom_bar_rb2"
             android:paddingTop="6dp"
-            android:text="我的" />
+            android:text="交易" />
 
         <RadioButton
             android:id="@+id/rb_income"
@@ -53,12 +60,6 @@
             android:paddingTop="6dp"
             android:text="行情" />
 
-        <RadioButton
-            android:id="@+id/rb_order"
-            style="@style/BottomBarItem"
-            android:drawableTop="@drawable/selector_bottom_bar_rb2"
-            android:paddingTop="6dp"
-            android:text="交易" />
     </RadioGroup>
 
 
