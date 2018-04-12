@@ -90,6 +90,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public void isLogin(LoginInfo info) {
         SPUtil.put(Constants.USERNAME, info.user.userName);
         SPUtil.put(Constants.TOKEN, info.token);
+        SPUtil.put(Constants.USERID, info.user.customerId);
         SPUtil.put(Constants.IS_LOGIN, true);
         App.clearLoginActivity();
         if (getIntent().getBooleanExtra("goMain", false)) {

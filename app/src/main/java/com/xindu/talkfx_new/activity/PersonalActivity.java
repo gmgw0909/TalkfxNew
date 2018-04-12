@@ -26,7 +26,6 @@ import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.CustomerResponse;
-import com.xindu.talkfx_new.fragment.ColumnListFragment;
 import com.xindu.talkfx_new.fragment.ColumnPersonalListFragment;
 import com.xindu.talkfx_new.fragment.GroupFragment;
 import com.xindu.talkfx_new.utils.Utils;
@@ -166,7 +165,7 @@ public class PersonalActivity extends BaseActivity {
                 overridePendingTransition(0, R.anim.zoom_finish);
                 break;
             case R.id.headImg:
-                startActivity(new Intent(PersonalActivity.this, PersonalInfoActivity.class));
+                startActivity(new Intent(PersonalActivity.this, MyInfoActivity.class));
                 break;
         }
     }

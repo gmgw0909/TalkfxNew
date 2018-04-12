@@ -13,18 +13,26 @@ import com.bumptech.glide.Glide;
 import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.HttpHeaders;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.model.Response;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.base.App;
 import com.xindu.talkfx_new.base.BaseActivity;
+import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
+import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.base.cache.CacheManager;
+import com.xindu.talkfx_new.bean.CustomerResponse;
 import com.xindu.talkfx_new.utils.PermissionUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
+import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -35,7 +43,7 @@ import butterknife.OnClick;
  * Created by LeeBoo on 2018/3/15.
  */
 
-public class PersonalInfoActivity extends BaseActivity {
+public class MyInfoActivity extends BaseActivity {
 
     @Bind(R.id.title)
     TextView title;
@@ -52,16 +60,44 @@ public class PersonalInfoActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_info);
+        setContentView(R.layout.activity_my_info);
         ButterKnife.bind(this);
         initTopBar();
+        initData();
+    }
+
+    private void initData() {
+        showDialog("正在加载");
+        OkGo.<BaseResponse<CustomerResponse>>get(Constants.baseDataUrl + "/customer/personal/" + SPUtil.getInt(Constants.USERID))
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new MJsonCallBack<BaseResponse<CustomerResponse>>() {
+                    @Override
+                    public void onSuccess(Response<BaseResponse<CustomerResponse>> response) {
+                        CustomerResponse detailResponse = response.body().datas;
+                        if (detailResponse != null) {
+                            Glide.with(App.getInstance().getApplicationContext())
+                                    .load(Constants.baseImgUrl + detailResponse.getHeadImg())
+                                    .into(userIcon);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<BaseResponse<CustomerResponse>> response) {
+                        Utils.errorResponse(mContext, response);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissDialog();
+                    }
+                });
     }
 
     private void initTopBar() {
         title.setText("个人资料");
     }
 
-    @OnClick({R.id.btn_back, R.id.logout, R.id.rl_userIcon})
+    @OnClick({R.id.btn_back, R.id.rl_userIcon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
@@ -98,42 +134,6 @@ public class PersonalInfoActivity extends BaseActivity {
                                 PermissionUtil.requestMorePermissions(mContext, PERMISSIONS, REQUEST_CODE_PERMISSIONS);
                             }
                         });
-                break;
-            case R.id.logout:
-                new QMUIDialog.MessageDialogBuilder(mContext)
-                        .setTitle("退出登录")
-                        .setMessage("确定要退出登录吗？")
-                        .addAction("取消", new QMUIDialogAction.ActionListener() {
-                            @Override
-                            public void onClick(QMUIDialog dialog, int index) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
-                            @Override
-                            public void onClick(QMUIDialog dialog, int index) {
-                                dialog.dismiss();
-                                SPUtil.put(Constants.IS_LOGIN, false);
-                                SPUtil.put(Constants.USERNAME, "");
-                                SPUtil.put(Constants.TOKEN, "");
-                                //登陆成功网络请求头设置token
-                                HttpHeaders headers = new HttpHeaders();
-                                headers.put("token", SPUtil.getString(Constants.TOKEN));
-                                OkGo.getInstance().addCommonHeaders(headers);
-                                App.clearActivity();
-                                startActivity(new Intent(PersonalInfoActivity.this, LoginActivity.class)
-                                        .putExtra("goMain", true));
-                            }
-                        })
-                        .show();
-//                MessageBox.promptTwoDialog("取消", "确定", mContext, "确定要退出登录吗？", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        App.clearActivity();
-//                        startActivity(LoginActivity.class, false);
-//                        ((Dialog) view.getTag()).dismiss();
-//                    }
-//                });
                 break;
         }
     }
@@ -177,7 +177,7 @@ public class PersonalInfoActivity extends BaseActivity {
 
     private void toImagePicker() {
         SImagePicker
-                .from(PersonalInfoActivity.this)
+                .from(MyInfoActivity.this)
                 .pickMode(SImagePicker.MODE_AVATAR)
                 .showCamera(true)
                 .cropFilePath(
@@ -192,8 +192,35 @@ public class PersonalInfoActivity extends BaseActivity {
         if (resultCode == Activity.RESULT_OK) {
             final ArrayList<String> pathList =
                     data.getStringArrayListExtra(PhotoPickerActivity.EXTRA_RESULT_SELECTION);
-            Glide.with(App.getInstance().getApplicationContext()).load(pathList.get(0)).into(userIcon);
+            if (pathList != null && pathList.size() > 0) {
+                showDialog("头像上传中");
+                OkGo.<BaseResponse>post(Constants.baseDataUrl + "/customer/update/headimg")
+                        .params("file", new File(pathList.get(0)))
+                        .execute(new MJsonCallBack<BaseResponse>() {
+                            @Override
+                            public void onSuccess(Response<BaseResponse> response) {
+                                if (response.body().code == 0) {
+                                    Glide.with(App.getInstance().getApplicationContext()).load(pathList.get(0)).into(userIcon);
+                                    showToast("上传成功");
+                                    EventBus.getDefault().post("refresh_headImg");
+                                } else {
+                                    Utils.errorResponse(mContext, response);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<BaseResponse> response) {
+                                //显示数据加载失败,点击重试
+                                Utils.errorResponse(mContext, response);
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                super.onFinish();
+                                dismissDialog();
+                            }
+                        });
+            }
         }
     }
-
 }
