@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -47,6 +48,12 @@ public class MyInfoActivity extends BaseActivity {
 
     @Bind(R.id.title)
     TextView title;
+    @Bind(R.id.userName)
+    TextView userName;
+    @Bind(R.id.summary)
+    TextView summary;
+    @Bind(R.id.authenInfor)
+    TextView authenInfor;
     @Bind(R.id.userIcon)
     CircleImageView userIcon;
 
@@ -75,6 +82,21 @@ public class MyInfoActivity extends BaseActivity {
                     public void onSuccess(Response<BaseResponse<CustomerResponse>> response) {
                         CustomerResponse detailResponse = response.body().datas;
                         if (detailResponse != null) {
+                            if (!TextUtils.isEmpty(detailResponse.getUserName())) {
+                                userName.setText(detailResponse.getUserName());
+                            } else {
+                                userName.setText("");
+                            }
+                            if (!TextUtils.isEmpty(detailResponse.getSummary())) {
+                                summary.setText(detailResponse.getSummary());
+                            } else {
+                                summary.setText("这个人很奇怪，啥也没有写~");
+                            }
+                            if (!TextUtils.isEmpty(detailResponse.getAuthenInfor())) {
+                                authenInfor.setText(detailResponse.getAuthenInfor());
+                            } else {
+                                authenInfor.setText("");
+                            }
                             Glide.with(App.getInstance().getApplicationContext())
                                     .load(Constants.baseImgUrl + detailResponse.getHeadImg())
                                     .into(userIcon);

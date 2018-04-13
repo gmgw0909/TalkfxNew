@@ -119,14 +119,14 @@ public class PersonalActivity extends BaseActivity {
                             if (detailResponse.getConcernCount() != 0) {
                                 fans.setText("粉丝：" + detailResponse.getConcernCount() + "人");
                             } else {
-                                fans.setText("");
+                                fans.setText("粉丝：0人");
                             }
                             if (!TextUtils.isEmpty(detailResponse.getSummary())) {
                                 llSummary.setVisibility(View.VISIBLE);
                                 summary.setText(detailResponse.getSummary());
                             } else {
                                 llSummary.setVisibility(View.GONE);
-                                userName.setText("");
+                                summary.setText("");
                             }
                             if (!TextUtils.isEmpty(detailResponse.getAuthenInfor())) {
                                 llAuthenInfor.setVisibility(View.VISIBLE);

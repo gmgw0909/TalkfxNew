@@ -79,11 +79,11 @@
                     android:textSize="@dimen/sp_16" />
 
                 <TextView
+                    android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="LeeBoo"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp" />
             </RelativeLayout>
@@ -153,12 +153,12 @@
                     android:textSize="@dimen/sp_16" />
 
                 <TextView
+                    android:id="@+id/authenInfor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:text="韬客认证分析师"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
@@ -193,12 +193,12 @@
                     android:textSize="@dimen/sp_16" />
 
                 <TextView
+                    android:id="@+id/summary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:text="擅长写文章"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
@@ -247,7 +247,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:text="15656238290"
+                    android:text="点击绑定"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
