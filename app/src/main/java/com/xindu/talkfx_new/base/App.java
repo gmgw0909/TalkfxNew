@@ -144,7 +144,7 @@ public class App extends Application {
      */
     private void configOkGo() {
         HttpHeaders headers = new HttpHeaders();
-        headers.put("token", SPUtil.getString(Constants.TOKEN));
+        headers.put(Constants.AUTHORIZATION, SPUtil.getString(Constants.AUTHORIZATION));
 //        headers.put("commonParamsKey1", "commonParamsKey1");    //header不支持中文，不允许有特殊字符
         HttpParams params = new HttpParams();
 //        params.put("commonParamsKey1", "commonParamsValue1");     //param支持中文,直接传,不要自己编码

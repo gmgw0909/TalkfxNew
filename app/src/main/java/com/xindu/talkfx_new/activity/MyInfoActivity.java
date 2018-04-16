@@ -221,7 +221,7 @@ public class MyInfoActivity extends BaseActivity {
                         .execute(new MJsonCallBack<BaseResponse>() {
                             @Override
                             public void onSuccess(Response<BaseResponse> response) {
-                                if (response.body().code == 0) {
+                                if (response.body() != null && response.body().code == 0) {
                                     Glide.with(App.getInstance().getApplicationContext()).load(pathList.get(0)).into(userIcon);
                                     showToast("上传成功");
                                     EventBus.getDefault().post("refresh_headImg");

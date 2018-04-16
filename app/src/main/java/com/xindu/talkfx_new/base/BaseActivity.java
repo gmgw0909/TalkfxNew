@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpHeaders;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.xindu.talkfx_new.activity.HomeActivity;
 import com.xindu.talkfx_new.bean.LoginInfo;
@@ -29,12 +30,31 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public Context mContext;
     protected Handler handler = new Handler();
     protected QMUITipDialog tipDialog;
+    QMUIDialog qmuiDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         App.addActivity(this);
+//        if (SPUtil.getBoolean(Constants.IS_LOGIN, false) && TextUtils.isEmpty("")) {
+//            final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(mContext);
+//            builder.setTitle("修改用户名")
+//                    .setPlaceholder("在此输入您的用户名")
+//                    .setInputType(InputType.TYPE_CLASS_TEXT)
+//                    .addAction("确定", new QMUIDialogAction.ActionListener() {
+//                        @Override
+//                        public void onClick(QMUIDialog dialog, int index) {
+//                            CharSequence text = builder.getEditText().getText();
+//                            if (text != null && text.length() > 0) {
+//                                dialog.dismiss();
+//                            }
+//                        }
+//                    });
+//            qmuiDialog = builder.create();
+//            qmuiDialog.setCancelable(false);
+//            qmuiDialog.show();
+//        }
     }
 
     public void showDialog(String s) {
@@ -88,9 +108,13 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      * 保存用户信息
      */
     public void isLogin(LoginInfo info) {
-        SPUtil.put(Constants.USERNAME, info.user.userName);
-        SPUtil.put(Constants.TOKEN, info.token);
-        SPUtil.put(Constants.USERID, info.user.customerId);
+        if (info != null) {
+            SPUtil.put(Constants.AUTHORIZATION, info.token);
+            if (info.user != null){
+                SPUtil.put(Constants.USERNAME, info.user.userName);
+                SPUtil.put(Constants.USERID, info.user.customerId);
+            }
+        }
         SPUtil.put(Constants.IS_LOGIN, true);
         App.clearLoginActivity();
         if (getIntent().getBooleanExtra("goMain", false)) {
@@ -99,7 +123,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         EventBus.getDefault().post("login_refresh");
         //登陆成功网络请求头设置token
         HttpHeaders headers = new HttpHeaders();
-        headers.put("token", SPUtil.getString(Constants.TOKEN));
+        headers.put(Constants.AUTHORIZATION, SPUtil.getString(Constants.AUTHORIZATION));
         OkGo.getInstance().addCommonHeaders(headers);
     }
 }

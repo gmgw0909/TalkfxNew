@@ -28,8 +28,12 @@ import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.CustomerResponse;
 import com.xindu.talkfx_new.fragment.ColumnPersonalListFragment;
 import com.xindu.talkfx_new.fragment.GroupFragment;
+import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.widget.CircleImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -72,6 +76,7 @@ public class PersonalActivity extends BaseActivity {
     LinearLayout llAuthenInfor;
     private ViewPagerAdapter mPagerAdapter;
     String customerId;
+    int followStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +88,23 @@ public class PersonalActivity extends BaseActivity {
 
     private void initTabAndPager() {
         customerId = getIntent().getStringExtra("customerId");
+        if (customerId.equals(SPUtil.getInt(Constants.USERID) + "")) {
+            follow.setVisibility(View.GONE);
+        }
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
+                    if (followStatus == 0) {
+                        follow("cancel");
+                    } else {
+                        follow("care");
+                    }
+                } else {
+                    startActivity(LoginActivity.class, false);
+                }
+            }
+        });
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(ColumnPersonalListFragment.newInstance(customerId));
         fragments.add(new GroupFragment());
@@ -105,6 +127,12 @@ public class PersonalActivity extends BaseActivity {
                     public void onSuccess(Response<BaseResponse<CustomerResponse>> response) {
                         CustomerResponse detailResponse = response.body().datas;
                         if (detailResponse != null) {
+                            followStatus = detailResponse.getConcernStatus();
+                            if (detailResponse.getConcernStatus() == 0) {
+                                follow.setText("已关注");
+                            } else {
+                                follow.setText("+ 关注");
+                            }
                             if (!TextUtils.isEmpty(detailResponse.getUserName())) {
                                 userName.setText(detailResponse.getUserName());
                             } else {
@@ -147,7 +175,7 @@ public class PersonalActivity extends BaseActivity {
 
                     @Override
                     public void onError(Response<BaseResponse<CustomerResponse>> response) {
-                        Utils.errorResponse(mContext,response);
+                        Utils.errorResponse(mContext, response);
                     }
 
                     @Override
@@ -167,6 +195,71 @@ public class PersonalActivity extends BaseActivity {
             case R.id.headImg:
                 startActivity(new Intent(PersonalActivity.this, MyInfoActivity.class));
                 break;
+        }
+    }
+
+    private void follow(String s) {
+        showDialog();
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("toid", customerId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (s.equals("cancel")) {
+            OkGo.<BaseResponse>put(Constants.baseDataUrl + "/concern/" + s)
+                    .upJson(obj)
+                    .execute(new MJsonCallBack<BaseResponse>() {
+                        @Override
+                        public void onSuccess(Response<BaseResponse> response) {
+                            if (response.body().code == 0) {
+                                if (followStatus == 0) {
+                                    followStatus = 1;
+                                    follow.setText("+ 关注");
+                                } else if (followStatus == 1) {
+                                    followStatus = 0;
+                                    follow.setText("已关注");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<BaseResponse> response) {
+                            Utils.errorResponse(mContext, response);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            dismissDialog();
+                        }
+                    });
+        } else {
+            OkGo.<BaseResponse>post(Constants.baseDataUrl + "/concern/" + s)
+                    .upJson(obj)
+                    .execute(new MJsonCallBack<BaseResponse>() {
+                        @Override
+                        public void onSuccess(Response<BaseResponse> response) {
+                            if (response.body().code == 0) {
+                                if (followStatus == 0) {
+                                    followStatus = 1;
+                                    follow.setText("+ 关注");
+                                } else if (followStatus == 1) {
+                                    followStatus = 0;
+                                    follow.setText("已关注");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<BaseResponse> response) {
+                            Utils.errorResponse(mContext, response);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            dismissDialog();
+                        }
+                    });
         }
     }
 

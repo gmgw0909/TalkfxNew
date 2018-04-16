@@ -24,7 +24,7 @@ public class TimeUtil {
     public static final String FORMAT_TIME_EN = "yyyy-MM-dd HH:mm:ss";
     public static final String FORMAT_TIME_EN_2 = "yyyy-MM-dd HH:mm";
     public static final String FORMAT_TIME_MM_dd = "MM/dd";
-    public static final String FORMAT_TIME_MM_dd_HH_mm = "MM-dd HH:mm";
+    public static final String FORMAT_TIME_MM_dd_HH_mm = "MM-dd hh:mm";
 
     public static final String FORMAT_DAY_CN = "HH时mm分ss秒";
     public static final String FORMAT_DAY_CN_2 = "HH时mm分";
@@ -168,6 +168,12 @@ public class TimeUtil {
     public static String convertToTime(String timeformat, long longTime) {
         Date date = new Date(longTime);
         return convertToTime(timeformat, date);
+    }
+
+    public static String convertToTime(String timeStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_TIME_MM_dd_HH_mm);
+        SimpleDateFormat sdf1 = new SimpleDateFormat(FORMAT_TIME_EN);
+        return sdf.format(sdf1.parse(timeStr));
     }
 
     /**

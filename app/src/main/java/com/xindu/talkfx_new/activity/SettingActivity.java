@@ -88,11 +88,11 @@ public class SettingActivity extends BaseActivity {
                                 dialog.dismiss();
                                 SPUtil.put(Constants.IS_LOGIN, false);
                                 SPUtil.put(Constants.USERNAME, "");
-                                SPUtil.put(Constants.TOKEN, "");
+                                SPUtil.put(Constants.AUTHORIZATION, "");
                                 SPUtil.put(Constants.USERID, "");
                                 //登陆成功网络请求头设置token
                                 HttpHeaders headers = new HttpHeaders();
-                                headers.put("token", SPUtil.getString(Constants.TOKEN));
+                                headers.put("token", SPUtil.getString(Constants.AUTHORIZATION));
                                 OkGo.getInstance().addCommonHeaders(headers);
                                 App.clearActivity();
                                 startActivity(new Intent(SettingActivity.this, LoginActivity.class)

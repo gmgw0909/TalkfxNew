@@ -181,7 +181,7 @@ public class Utils {
     public static void errorResponse(Context mContext, Response response) {
         final QMUITipDialog tipDialog = new QMUITipDialog.Builder(mContext)
                 .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
-                .setTipWord("请求网络失败:" + response.getException().getMessage())
+                .setTipWord("请求网络失败")
                 .create();
         tipDialog.show();
         new android.os.Handler().postDelayed(new Runnable() {
