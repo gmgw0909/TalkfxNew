@@ -110,6 +110,20 @@
             android:padding="15dp">
 
             <TextView
+                android:id="@+id/my_personal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/selector_click_white"
+                android:clickable="true"
+                android:drawablePadding="15dp"
+                android:drawableTop="@mipmap/my_ic_grzy"
+                android:gravity="center"
+                android:text="个人主页"
+                android:textColor="@color/text_no_select"
+                android:textSize="15sp" />
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -118,7 +132,7 @@
                 android:drawablePadding="15dp"
                 android:drawableTop="@mipmap/my_ic_yue"
                 android:gravity="center"
-                android:text="钱包余额"
+                android:text="关注"
                 android:textColor="@color/text_no_select"
                 android:textSize="15sp" />
 
@@ -131,34 +145,7 @@
                 android:drawablePadding="15dp"
                 android:drawableTop="@mipmap/my_ic_sqrz"
                 android:gravity="center"
-                android:text="申请认证"
-                android:textColor="@color/text_no_select"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/selector_click_white"
-                android:clickable="true"
-                android:drawablePadding="15dp"
-                android:drawableTop="@mipmap/my_ic_xiaoxi"
-                android:gravity="center"
-                android:text="消息中心"
-                android:textColor="@color/text_no_select"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/my_personal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/selector_click_white"
-                android:clickable="true"
-                android:drawablePadding="15dp"
-                android:drawableTop="@mipmap/my_ic_grzy"
-                android:gravity="center"
-                android:text="个人主页"
+                android:text="粉丝"
                 android:textColor="@color/text_no_select"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -174,32 +161,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <View
-                    android:layout_width="3dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="16dp"
-                    android:background="@color/blue" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="专栏"
-                    android:textColor="@color/text_no_select" />
-            </LinearLayout>
-
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="10dp"
                 app:cardCornerRadius="3dp"
                 app:cardElevation="0dp">
 
@@ -220,42 +186,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:drawableLeft="@mipmap/my_ic_fans"
-                            android:drawablePadding="10dp"
-                            android:text="粉丝列表"
-                            android:textColor="@color/text_no_select"
-                            android:textSize="@dimen/sp_16" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:src="@mipmap/right_arrow" />
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="@dimen/sp_16"
-                        android:layout_marginRight="@dimen/sp_16"
-                        android:background="@color/gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@drawable/selector_click_white"
-                        android:clickable="true"
-                        android:paddingLeft="@dimen/sp_16"
-                        android:paddingRight="@dimen/sp_16">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
                             android:drawableLeft="@mipmap/my_ic_ygz"
                             android:drawablePadding="10dp"
-                            android:text="关注列表"
+                            android:text="钱包"
                             android:textColor="@color/text_no_select"
                             android:textSize="@dimen/sp_16" />
 
@@ -288,7 +221,7 @@
                             android:layout_centerVertical="true"
                             android:drawableLeft="@mipmap/my_ic_shoucang"
                             android:drawablePadding="10dp"
-                            android:text="收藏列表"
+                            android:text="申请官方认证"
                             android:textColor="@color/text_no_select"
                             android:textSize="@dimen/sp_16" />
 
@@ -302,26 +235,77 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                app:cardCornerRadius="3dp"
+                app:cardElevation="0dp">
 
-                <View
-                    android:layout_width="3dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="16dp"
-                    android:background="@color/blue" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/selector_click_white"
+                    android:clickable="true"
+                    android:paddingLeft="@dimen/sp_16"
+                    android:paddingRight="@dimen/sp_16">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="交易"
-                    android:textColor="@color/text_no_select" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:drawableLeft="@mipmap/my_ic_shoucang"
+                        android:drawablePadding="10dp"
+                        android:text="收藏"
+                        android:textColor="@color/text_no_select"
+                        android:textSize="@dimen/sp_16" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/right_arrow" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/selector_click_white"
+                    android:clickable="true"
+                    android:paddingLeft="@dimen/sp_16"
+                    android:paddingRight="@dimen/sp_16">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:drawableLeft="@mipmap/my_ic_group"
+                        android:drawablePadding="10dp"
+                        android:text="加入的群组"
+                        android:textColor="@color/text_no_select"
+                        android:textSize="@dimen/sp_16" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/right_arrow" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -351,7 +335,7 @@
                             android:layout_centerVertical="true"
                             android:drawableLeft="@mipmap/my_ic_gljyzh"
                             android:drawablePadding="10dp"
-                            android:text="管理交易账号"
+                            android:text="交易账号管理"
                             android:textColor="@color/text_no_select"
                             android:textSize="@dimen/sp_16" />
 
@@ -384,7 +368,7 @@
                             android:layout_centerVertical="true"
                             android:drawableLeft="@mipmap/my_ic_gensui"
                             android:drawablePadding="10dp"
-                            android:text="我的跟随"
+                            android:text="跟随交易大师"
                             android:textColor="@color/text_no_select"
                             android:textSize="@dimen/sp_16" />
 
@@ -398,27 +382,6 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <View
-                    android:layout_width="3dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="16dp"
-                    android:background="@color/blue" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="群组"
-                    android:textColor="@color/text_no_select" />
-            </LinearLayout>
-
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -428,37 +391,31 @@
                 app:cardCornerRadius="3dp"
                 app:cardElevation="0dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="45dp"
+                    android:background="@drawable/selector_click_white"
+                    android:clickable="true"
+                    android:paddingLeft="@dimen/sp_16"
+                    android:paddingRight="@dimen/sp_16">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@drawable/selector_click_white"
-                        android:clickable="true"
-                        android:paddingLeft="@dimen/sp_16"
-                        android:paddingRight="@dimen/sp_16">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:drawableLeft="@mipmap/my_ic_group"
+                        android:drawablePadding="10dp"
+                        android:text="行情提醒"
+                        android:textColor="@color/text_no_select"
+                        android:textSize="@dimen/sp_16" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:drawableLeft="@mipmap/my_ic_group"
-                            android:drawablePadding="10dp"
-                            android:text="我的群组"
-                            android:textColor="@color/text_no_select"
-                            android:textSize="@dimen/sp_16" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:src="@mipmap/right_arrow" />
-                    </RelativeLayout>
-                </LinearLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/right_arrow" />
+                </RelativeLayout>
             </android.support.v7.widget.CardView>
 
             <View

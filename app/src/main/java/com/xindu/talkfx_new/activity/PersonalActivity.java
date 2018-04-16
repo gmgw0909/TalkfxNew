@@ -1,6 +1,5 @@
 package com.xindu.talkfx_new.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -193,7 +192,6 @@ public class PersonalActivity extends BaseActivity {
                 overridePendingTransition(0, R.anim.zoom_finish);
                 break;
             case R.id.headImg:
-                startActivity(new Intent(PersonalActivity.this, MyInfoActivity.class));
                 break;
         }
     }
