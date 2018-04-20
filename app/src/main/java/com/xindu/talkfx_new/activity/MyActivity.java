@@ -17,7 +17,7 @@ import com.xindu.talkfx_new.base.BaseActivity;
 import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
-import com.xindu.talkfx_new.bean.CustomerResponse;
+import com.xindu.talkfx_new.bean.MyInfoResponse;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.widget.CircleImageView;
@@ -54,26 +54,26 @@ public class MyActivity extends BaseActivity {
 
     private void refreshUser() {
         showDialog("加载中");
-        OkGo.<BaseResponse<CustomerResponse>>get(Constants.baseDataUrl + "/customer/personal/" + SPUtil.getInt(Constants.USERID))
+        OkGo.<BaseResponse<MyInfoResponse>>get(Constants.baseDataUrl + "/customer")
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new MJsonCallBack<BaseResponse<CustomerResponse>>() {
+                .execute(new MJsonCallBack<BaseResponse<MyInfoResponse>>() {
                     @Override
-                    public void onSuccess(Response<BaseResponse<CustomerResponse>> response) {
-                        CustomerResponse detailResponse = response.body().datas;
-                        if (detailResponse != null) {
-                            if (!TextUtils.isEmpty(detailResponse.getUserName())) {
-                                userName.setText(detailResponse.getUserName());
+                    public void onSuccess(Response<BaseResponse<MyInfoResponse>> response) {
+                        MyInfoResponse detailResponse = response.body().datas;
+                        if (detailResponse != null && detailResponse.user != null) {
+                            if (!TextUtils.isEmpty(detailResponse.user.userName)) {
+                                userName.setText(detailResponse.user.userName);
                             } else {
                                 userName.setText("");
                             }
                             Glide.with(App.getInstance().getApplicationContext())
-                                    .load(Constants.baseImgUrl + detailResponse.getHeadImg())
+                                    .load(Constants.baseImgUrl + detailResponse.user.headImg)
                                     .into(headImg);
                         }
                     }
 
                     @Override
-                    public void onError(Response<BaseResponse<CustomerResponse>> response) {
+                    public void onError(Response<BaseResponse<MyInfoResponse>> response) {
                         Utils.errorResponse(mContext, response);
                     }
 
@@ -95,7 +95,7 @@ public class MyActivity extends BaseActivity {
         title.setText("我的");
     }
 
-    @OnClick({R.id.btn_back, R.id.btn_setting, R.id.rl_user, R.id.my_personal})
+    @OnClick({R.id.btn_back, R.id.btn_setting, R.id.headImg, R.id.my_personal})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
@@ -104,7 +104,7 @@ public class MyActivity extends BaseActivity {
             case R.id.btn_setting:
                 startActivity(new Intent(MyActivity.this, SettingActivity.class));
                 break;
-            case R.id.rl_user:
+            case R.id.headImg:
                 startActivity(new Intent(MyActivity.this, MyInfoActivity.class));
                 break;
             case R.id.my_personal:

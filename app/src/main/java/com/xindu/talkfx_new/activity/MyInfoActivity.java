@@ -25,9 +25,8 @@ import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.base.cache.CacheManager;
-import com.xindu.talkfx_new.bean.CustomerResponse;
+import com.xindu.talkfx_new.bean.MyInfoResponse;
 import com.xindu.talkfx_new.utils.PermissionUtil;
-import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.widget.CircleImageView;
 
@@ -75,36 +74,36 @@ public class MyInfoActivity extends BaseActivity {
 
     private void initData() {
         showDialog("正在加载");
-        OkGo.<BaseResponse<CustomerResponse>>get(Constants.baseDataUrl + "/customer/personal/" + SPUtil.getInt(Constants.USERID))
+        OkGo.<BaseResponse<MyInfoResponse>>get(Constants.baseDataUrl + "/customer")
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new MJsonCallBack<BaseResponse<CustomerResponse>>() {
+                .execute(new MJsonCallBack<BaseResponse<MyInfoResponse>>() {
                     @Override
-                    public void onSuccess(Response<BaseResponse<CustomerResponse>> response) {
-                        CustomerResponse detailResponse = response.body().datas;
-                        if (detailResponse != null) {
-                            if (!TextUtils.isEmpty(detailResponse.getUserName())) {
-                                userName.setText(detailResponse.getUserName());
+                    public void onSuccess(Response<BaseResponse<MyInfoResponse>> response) {
+                        MyInfoResponse detailResponse = response.body().datas;
+                        if (detailResponse != null && detailResponse.user != null) {
+                            if (!TextUtils.isEmpty(detailResponse.user.userName)) {
+                                userName.setText(detailResponse.user.userName);
                             } else {
                                 userName.setText("");
                             }
-                            if (!TextUtils.isEmpty(detailResponse.getSummary())) {
-                                summary.setText(detailResponse.getSummary());
+                            if (!TextUtils.isEmpty(detailResponse.user.summary)) {
+                                summary.setText(detailResponse.user.summary);
                             } else {
                                 summary.setText("这个人很奇怪，啥也没有写~");
                             }
-                            if (!TextUtils.isEmpty(detailResponse.getAuthenInfor())) {
-                                authenInfor.setText(detailResponse.getAuthenInfor());
+                            if (!TextUtils.isEmpty(detailResponse.user.authenInfor)) {
+                                authenInfor.setText(detailResponse.user.authenInfor);
                             } else {
                                 authenInfor.setText("");
                             }
                             Glide.with(App.getInstance().getApplicationContext())
-                                    .load(Constants.baseImgUrl + detailResponse.getHeadImg())
+                                    .load(Constants.baseImgUrl + detailResponse.user.headImg)
                                     .into(userIcon);
                         }
                     }
 
                     @Override
-                    public void onError(Response<BaseResponse<CustomerResponse>> response) {
+                    public void onError(Response<BaseResponse<MyInfoResponse>> response) {
                         Utils.errorResponse(mContext, response);
                     }
 

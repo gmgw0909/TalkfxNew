@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
-import com.xindu.talkfx_new.bean.CustomerResponse;
+import com.xindu.talkfx_new.bean.MyInfoResponse;
 import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.widget.CircleImageView;
@@ -87,21 +88,23 @@ public class ColumnFragment extends BaseFragment {
     }
 
     private void refreshHeadImg() {
-        OkGo.<BaseResponse<CustomerResponse>>get(Constants.baseDataUrl + "/customer/personal/" + SPUtil.getInt(Constants.USERID))
+        OkGo.<BaseResponse<MyInfoResponse>>get(Constants.baseDataUrl + "/customer")
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new MJsonCallBack<BaseResponse<CustomerResponse>>() {
+                .execute(new MJsonCallBack<BaseResponse<MyInfoResponse>>() {
                     @Override
-                    public void onSuccess(Response<BaseResponse<CustomerResponse>> response) {
-                        CustomerResponse detailResponse = response.body().datas;
-                        if (detailResponse != null) {
-                            Glide.with(App.getInstance().getApplicationContext())
-                                    .load(Constants.baseImgUrl + detailResponse.getHeadImg())
-                                    .into(btnSetting);
+                    public void onSuccess(Response<BaseResponse<MyInfoResponse>> response) {
+                        MyInfoResponse detailResponse = response.body().datas;
+                        if (detailResponse != null && detailResponse.user != null) {
+                            if (!TextUtils.isEmpty(detailResponse.user.headImg)){
+                                Glide.with(App.getInstance().getApplicationContext())
+                                        .load(Constants.baseImgUrl + detailResponse.user.headImg)
+                                        .into(btnSetting);
+                            }
                         }
                     }
 
                     @Override
-                    public void onError(Response<BaseResponse<CustomerResponse>> response) {
+                    public void onError(Response<BaseResponse<MyInfoResponse>> response) {
                         Utils.errorResponse(getActivity(), response);
                     }
 
