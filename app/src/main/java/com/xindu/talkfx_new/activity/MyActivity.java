@@ -66,9 +66,11 @@ public class MyActivity extends BaseActivity {
                             } else {
                                 userName.setText("");
                             }
-                            Glide.with(App.getInstance().getApplicationContext())
-                                    .load(Constants.baseImgUrl + detailResponse.user.headImg)
-                                    .into(headImg);
+                            if (!TextUtils.isEmpty(detailResponse.user.headImg)) {
+                                Glide.with(App.getInstance().getApplicationContext())
+                                        .load(Constants.baseImgUrl + detailResponse.user.headImg)
+                                        .into(headImg);
+                            }
                         }
                     }
 
@@ -105,7 +107,7 @@ public class MyActivity extends BaseActivity {
                 startActivity(new Intent(MyActivity.this, SettingActivity.class));
                 break;
             case R.id.headImg:
-                startActivity(new Intent(MyActivity.this, MyInfoActivity.class));
+//                startActivity(new Intent(MyActivity.this, MyInfoActivity.class));
                 break;
             case R.id.my_personal:
                 startActivity(new Intent(MyActivity.this, PersonalActivity.class)

@@ -152,7 +152,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
         adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseQuickAdapter quickAdapter, View view, int position) {
-                if (SPUtil.getString(Constants.USERNAME).equals(((CommentInfo) (quickAdapter.getItem(position))).fromUserName)) {
+                if (SPUtil.getInt(Constants.USERID) == (((CommentInfo) (quickAdapter.getItem(position))).fromUserId)) {
                     showListPopup(view, (CommentInfo) quickAdapter.getItem(position), listItems2, position);
                 } else {
                     showListPopup(view, (CommentInfo) quickAdapter.getItem(position), listItems1, position);

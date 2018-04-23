@@ -57,8 +57,8 @@
         </android.support.v7.widget.Toolbar>
 
         <RelativeLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="-10dp"
             android:background="@mipmap/headimg_bg">
@@ -124,7 +124,6 @@
             android:paddingRight="50dp">
 
             <LinearLayout
-                android:id="@+id/my_personal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -207,6 +206,7 @@
             android:paddingRight="5dp">
 
             <RelativeLayout
+                android:id="@+id/my_personal"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:background="@drawable/selector_click_white"

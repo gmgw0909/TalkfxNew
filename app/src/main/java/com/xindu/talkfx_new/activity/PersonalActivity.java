@@ -125,48 +125,48 @@ public class PersonalActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Response<BaseResponse<CustomerResponse>> response) {
                         CustomerResponse detailResponse = response.body().datas;
-                        if (detailResponse != null) {
-                            followStatus = detailResponse.getConcernStatus();
-                            if (detailResponse.getConcernStatus() == 0) {
+                        if (detailResponse != null && detailResponse.user != null) {
+                            followStatus = detailResponse.user.concernStatus;
+                            if (detailResponse.user.concernStatus == 0) {
                                 follow.setText("已关注");
                             } else {
                                 follow.setText("+ 关注");
                             }
-                            if (!TextUtils.isEmpty(detailResponse.getUserName())) {
-                                userName.setText(detailResponse.getUserName());
+                            if (!TextUtils.isEmpty(detailResponse.user.userName)) {
+                                userName.setText(detailResponse.user.userName);
                             } else {
                                 userName.setText("");
                             }
-                            if (!TextUtils.isEmpty(detailResponse.getHeadImg())) {
+                            if (!TextUtils.isEmpty(detailResponse.user.headImg)) {
                                 Glide.with(App.getInstance().getApplicationContext())
-                                        .load(Constants.baseImgUrl + detailResponse.getHeadImg())
+                                        .load(Constants.baseImgUrl + detailResponse.user.headImg)
                                         .error(R.mipmap.default_person_icon)
                                         .into(headImg);
                             }
-                            if (detailResponse.getConcernCount() != 0) {
-                                fans.setText("粉丝：" + detailResponse.getConcernCount() + "人");
+                            if (detailResponse.user.concernCount != 0) {
+                                fans.setText("粉丝：" + detailResponse.user.concernCount + "人");
                             } else {
                                 fans.setText("粉丝：0人");
                             }
-                            if (!TextUtils.isEmpty(detailResponse.getSummary())) {
+                            if (!TextUtils.isEmpty(detailResponse.user.summary)) {
                                 llSummary.setVisibility(View.VISIBLE);
-                                summary.setText(detailResponse.getSummary());
+                                summary.setText(detailResponse.user.summary);
                             } else {
                                 llSummary.setVisibility(View.GONE);
                                 summary.setText("");
                             }
-                            if (!TextUtils.isEmpty(detailResponse.getAuthenInfor())) {
+                            if (!TextUtils.isEmpty(detailResponse.user.authenInfor)) {
                                 llAuthenInfor.setVisibility(View.VISIBLE);
-                                authenInfor.setText(detailResponse.getAuthenInfor());
+                                authenInfor.setText(detailResponse.user.authenInfor);
                             } else {
                                 llAuthenInfor.setVisibility(View.GONE);
                                 authenInfor.setText("");
                             }
-                            if (!TextUtils.isEmpty(detailResponse.getSummary()) && !TextUtils.isEmpty(detailResponse.getAuthenInfor())) {
+                            if (!TextUtils.isEmpty(detailResponse.user.summary) && !TextUtils.isEmpty(detailResponse.user.authenInfor)) {
                                 summaryAuthenInfor.setText("个人简介\u0026认证信息");
-                            } else if (TextUtils.isEmpty(detailResponse.getSummary()) && !TextUtils.isEmpty(detailResponse.getAuthenInfor())) {
+                            } else if (TextUtils.isEmpty(detailResponse.user.summary) && !TextUtils.isEmpty(detailResponse.user.authenInfor)) {
                                 summaryAuthenInfor.setText("认证信息");
-                            } else if (!TextUtils.isEmpty(detailResponse.getSummary()) && TextUtils.isEmpty(detailResponse.getAuthenInfor())) {
+                            } else if (!TextUtils.isEmpty(detailResponse.user.summary) && TextUtils.isEmpty(detailResponse.user.authenInfor)) {
                                 summaryAuthenInfor.setText("个人简介");
                             }
                         }

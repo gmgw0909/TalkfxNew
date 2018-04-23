@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -235,11 +234,6 @@ public class PhotoBrowserActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void savePhotoToLocal() {
-//        ViewGroup containerTemp = (ViewGroup) mPager.findViewWithTag(mPager.getCurrentItem());
-//        if (containerTemp == null) {
-//            return;
-//        }
-//        PhotoView photoViewTemp = (PhotoView) containerTemp.getChildAt(0);
         PhotoView photoViewTemp = (PhotoView) curPage;
         if (photoViewTemp != null) {
             BitmapDrawable glideBitmapDrawable = (BitmapDrawable) photoViewTemp.getDrawable();

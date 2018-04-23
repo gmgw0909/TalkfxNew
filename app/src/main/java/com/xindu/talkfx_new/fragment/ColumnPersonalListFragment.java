@@ -103,19 +103,19 @@ public class ColumnPersonalListFragment extends BaseFragment implements SwipeRef
     public void onRefresh() {
         currentPage = 1;
         mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
-        OkGo.<BaseResponse<List<ColumnInfo>>>get(url + "1")//
+        OkGo.<BaseResponse<MyResponse>>get(url + "1")//
                 .cacheKey("ColumnPersonalListFragment" + cid)       //由于该fragment会被复用,必须保证key唯一,否则数据会发生覆盖
                 .cacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST)  //缓存模式先使用缓存,然后使用网络数据
-                .execute(new MJsonCallBack<BaseResponse<List<ColumnInfo>>>() {
+                .execute(new MJsonCallBack<BaseResponse<MyResponse>>() {
                     @Override
-                    public void onSuccess(Response<BaseResponse<List<ColumnInfo>>> response) {
-                        List<ColumnInfo> results = response.body().datas;
+                    public void onSuccess(Response<BaseResponse<MyResponse>> response) {
+                        List<ColumnInfo> results = response.body().datas.list;
                         setData(true, results);
                         mAdapter.setEnableLoadMore(true);
                     }
 
                     @Override
-                    public void onCacheSuccess(Response<BaseResponse<List<ColumnInfo>>> response) {
+                    public void onCacheSuccess(Response<BaseResponse<MyResponse>> response) {
                         //一般来说,只需呀第一次初始化界面的时候需要使用缓存刷新界面,以后不需要,所以用一个变量标识
                         if (!isInitCache) {
                             //一般来说,缓存回调成功和网络回调成功做的事情是一样的,所以这里直接回调onSuccess
@@ -125,9 +125,9 @@ public class ColumnPersonalListFragment extends BaseFragment implements SwipeRef
                     }
 
                     @Override
-                    public void onError(Response<BaseResponse<List<ColumnInfo>>> response) {
+                    public void onError(Response<BaseResponse<MyResponse>> response) {
                         mAdapter.setEnableLoadMore(true);
-                        Utils.errorResponse(getActivity(),response);
+                        Utils.errorResponse(getActivity(), response);
                     }
 
                     @Override
@@ -146,22 +146,22 @@ public class ColumnPersonalListFragment extends BaseFragment implements SwipeRef
      */
     @Override
     public void onLoadMoreRequested() {
-        OkGo.<BaseResponse<List<ColumnInfo>>>get(url + currentPage)
+        OkGo.<BaseResponse<MyResponse>>get(url + currentPage)
                 .cacheMode(CacheMode.NO_CACHE)       //上拉不需要缓存
-                .execute(new MJsonCallBack<BaseResponse<List<ColumnInfo>>>() {
+                .execute(new MJsonCallBack<BaseResponse<MyResponse>>() {
                     @Override
-                    public void onSuccess(Response<BaseResponse<List<ColumnInfo>>> response) {
+                    public void onSuccess(Response<BaseResponse<MyResponse>> response) {
                         if (response.body().datas != null) {
-                            List<ColumnInfo> results = response.body().datas;
+                            List<ColumnInfo> results = response.body().datas.list;
                             setData(false, results);
                         }
                     }
 
                     @Override
-                    public void onError(Response<BaseResponse<List<ColumnInfo>>> response) {
+                    public void onError(Response<BaseResponse<MyResponse>> response) {
                         //显示数据加载失败,点击重试
                         mAdapter.loadMoreFail();
-                        Utils.errorResponse(getActivity(),response);
+                        Utils.errorResponse(getActivity(), response);
                     }
                 });
     }
@@ -191,5 +191,10 @@ public class ColumnPersonalListFragment extends BaseFragment implements SwipeRef
                 refreshLayout.setRefreshing(refreshing);
             }
         });
+    }
+
+    class MyResponse {
+        public int listCount;
+        public List<ColumnInfo> list;
     }
 }
