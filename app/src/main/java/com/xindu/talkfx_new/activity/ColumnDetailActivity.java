@@ -2,6 +2,7 @@ package com.xindu.talkfx_new.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -109,6 +110,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     String customerId = "";
     int collectStatus;
     int followStatus;
+    String viewStatus = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +155,26 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
         opinionLayout = topView.findViewById(R.id.opinion_layout);
         zanDown = topView.findViewById(R.id.zan_down);
         zanUp = topView.findViewById(R.id.zan_up);
+        zanUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
+                    opinion("support");
+                } else {
+                    startActivity(LoginActivity.class, false);
+                }
+            }
+        });
+        zanDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
+                    opinion("oppose");
+                } else {
+                    startActivity(LoginActivity.class, false);
+                }
+            }
+        });
         WebSettings webSettings = content.getSettings();// 设置与Js交互的权限
         webSettings.setJavaScriptEnabled(true);
         content.setWebViewClient(new WebViewClient() {
@@ -270,15 +292,10 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                     String html_body = s1.replace(Constants.baseUrl + Constants.baseUrl, Constants.baseUrl);
                                     content.addJavascriptInterface(new JavascriptInterface(ColumnDetailActivity.this, Utils.returnImageUrlsFromHtml(Utils.getHtmlData(html_body))), "imagelistner");
                                     content.loadDataWithBaseURL(null, Utils.getHtmlData(html_body), "text/html", "utf-8", null);
-                                } else {
-//                                    content.setText("暂无");
                                 }
                                 if (!TextUtils.isEmpty(detailResponse.column.opinion)) {
                                     opinionLayout.setVisibility(View.VISIBLE);
                                     opinion.setText(detailResponse.column.opinion);
-//                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
-//                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-//                                    zanUp.setCompoundDrawables(drawable, null, null, null);
                                     if (detailResponse.column.supportCount != 0) {
                                         zanUp.setText(detailResponse.column.supportCount + "");
                                     } else {
@@ -291,6 +308,20 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                     }
                                 } else {
                                     opinionLayout.setVisibility(View.GONE);
+                                }
+                                if (!TextUtils.isEmpty(detailResponse.column.viewStatus)) {
+                                    viewStatus = detailResponse.column.viewStatus;
+                                    if (detailResponse.column.viewStatus.equals("1")) {
+                                        Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
+                                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                                        zanUp.setCompoundDrawables(drawable, null, null, null);
+                                        zanUp.setTextColor(getResources().getColor(R.color.orange));
+                                    } else if (detailResponse.column.viewStatus.equals("0")) {
+                                        Drawable drawable = getResources().getDrawable(R.mipmap.zan_down_s);
+                                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                                        zanDown.setCompoundDrawables(drawable, null, null, null);
+                                        zanDown.setTextColor(getResources().getColor(R.color.orange));
+                                    }
                                 }
                                 collectStatus = detailResponse.column.collectStatus;
                                 if (detailResponse.column.collectStatus == 1) {
@@ -512,6 +543,84 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                             } else if (collectStatus == 0) {
                                 collectStatus = 1;
                                 collection.setImageResource(R.mipmap.column_btn_collection);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<BaseResponse> response) {
+                        Utils.errorResponse(mContext, response);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissDialog();
+                    }
+                });
+    }
+
+    private void opinion(final String s) {
+        showDialog();
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("cid", columnId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkGo.<BaseResponse>post(Constants.baseDataUrl + "/column/" + s)
+                .upJson(obj)
+                .execute(new MJsonCallBack<BaseResponse>() {
+                    @Override
+                    public void onSuccess(Response<BaseResponse> response) {
+                        if (response.body().code == 0) {
+                            if (TextUtils.isEmpty(viewStatus)) {
+                                if (s.equals("oppose")) {
+                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_down_s);
+                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                                    zanDown.setCompoundDrawables(drawable, null, null, null);
+                                    zanDown.setText(Integer.parseInt(zanDown.getText().toString()) + 1 + "");
+                                    zanDown.setTextColor(getResources().getColor(R.color.orange));
+                                    viewStatus = "0";
+                                } else {
+                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
+                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                                    zanUp.setCompoundDrawables(drawable, null, null, null);
+                                    zanUp.setText(Integer.parseInt(zanUp.getText().toString()) + 1 + "");
+                                    zanUp.setTextColor(getResources().getColor(R.color.orange));
+                                    viewStatus = "1";
+                                }
+                            } else {
+                                if (viewStatus.equals("1")) {
+                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_up);
+                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                                    zanUp.setCompoundDrawables(drawable, null, null, null);
+                                    zanUp.setText(Integer.parseInt(zanUp.getText().toString()) - 1 + "");
+                                    zanUp.setTextColor(getResources().getColor(R.color.text_gray));
+                                    viewStatus = "";
+                                    if (s.equals("oppose")) {
+                                        Drawable drawable1 = getResources().getDrawable(R.mipmap.zan_down_s);
+                                        drawable1.setBounds(0, 0, drawable1.getMinimumWidth(), drawable1.getMinimumHeight());
+                                        zanDown.setCompoundDrawables(drawable1, null, null, null);
+                                        zanDown.setText(Integer.parseInt(zanDown.getText().toString()) + 1 + "");
+                                        zanDown.setTextColor(getResources().getColor(R.color.orange));
+                                        viewStatus = "0";
+                                    }
+                                } else if (viewStatus.equals("0")) {
+                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_down);
+                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                                    zanDown.setCompoundDrawables(drawable, null, null, null);
+                                    zanDown.setText(Integer.parseInt(zanDown.getText().toString()) - 1 + "");
+                                    zanDown.setTextColor(getResources().getColor(R.color.text_gray));
+                                    viewStatus = "";
+                                    if (s.equals("support")) {
+                                        Drawable drawable1 = getResources().getDrawable(R.mipmap.zan_up_s);
+                                        drawable1.setBounds(0, 0, drawable1.getMinimumWidth(), drawable1.getMinimumHeight());
+                                        zanUp.setCompoundDrawables(drawable1, null, null, null);
+                                        zanUp.setText(Integer.parseInt(zanUp.getText().toString()) + 1 + "");
+                                        zanUp.setTextColor(getResources().getColor(R.color.orange));
+                                        viewStatus = "1";
+                                    }
+                                }
                             }
                         }
                     }

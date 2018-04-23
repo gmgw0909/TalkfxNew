@@ -33,4 +33,5 @@ public class ColumnInfo implements Serializable {
     public String typeTitle;
     public String miniContent;
     public int collectStatus;
+    public String viewStatus;
 }
