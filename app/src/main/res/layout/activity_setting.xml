@@ -26,30 +26,50 @@
                 android:text="将你的账号绑定至"
                 android:textColor="@color/text_gray" />
 
-            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="绑定微信账号"
-                android:textColor="@color/white"
-                app:qmui_backgroundColor="@color/green"
-                app:qmui_borderColor="@color/green"
-                app:qmui_isRadiusAdjustBounds="false"
-                app:qmui_radius="3dp" />
+                android:layout_height="wrap_content">
 
-            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@mipmap/personal_bind_wx"
+                    app:qmui_border_color="@color/white"
+                    app:qmui_corner_radius="3dp"
+                    app:qmui_is_circle="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="绑定微信账号"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="10dp"
-                android:text="绑定微博账号"
-                android:textColor="@color/white"
-                app:qmui_backgroundColor="@color/orange"
-                app:qmui_borderColor="@color/orange"
-                app:qmui_isRadiusAdjustBounds="false"
-                app:qmui_radius="3dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@mipmap/personal_bind_wb"
+                    app:qmui_border_color="@color/white"
+                    app:qmui_corner_radius="3dp"
+                    app:qmui_is_circle="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="绑定微博账号"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
