@@ -4,7 +4,7 @@ package com.xindu.talkfx_new.bean;
  * Created by LeeBoo on 2018/4/20.
  */
 
-public class AttNoAchievementInfo {
+public class AttAchievementInfo {
     /**
      * img : staticImg/1524104942.png
      * achievementId : 8

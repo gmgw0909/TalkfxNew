@@ -105,7 +105,6 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     int currentPage = 1;
 
     String columnId = "";
-    boolean firstIn = true;
     boolean sendSuccess;
     String customerId = "";
     int collectStatus;
@@ -247,11 +246,14 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                     public void onSuccess(Response<BaseResponse<ColumnDetailResponse>> response) {
                         ColumnDetailResponse detailResponse = response.body().datas;
                         if (detailResponse != null) {
-                            if (firstIn && detailResponse.column != null) {
-                                firstIn = false;
+                            if (detailResponse.column != null) {
+                                if (detailResponse.column.commentCount != 0) {
+                                    commentsCount.setText("评论 (" + detailResponse.column.commentCount + ")");
+                                } else {
+                                    commentsCount.setText("暂无评论");
+                                }
                                 //喊单数据
                                 setDataToTopView(detailResponse);
-                                customerId = detailResponse.customerId + "";
                                 if (!TextUtils.isEmpty(detailResponse.column.title)) {
                                     title.setText(detailResponse.column.title);
                                 } else {
@@ -271,60 +273,58 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 } else {
 //                                    content.setText("暂无");
                                 }
-                                if (!TextUtils.isEmpty(detailResponse.userName)) {
-                                    userName.setText(detailResponse.userName);
-                                } else {
-                                    userName.setText("暂无");
-                                }
-                                if (!TextUtils.isEmpty(detailResponse.headImg)) {
-                                    Glide.with(App.getInstance().getApplicationContext())
-                                            .load(Constants.baseImgUrl + detailResponse.headImg)
-                                            .error(R.mipmap.default_person_icon)
-                                            .into(headImg);
-                                }
-                            }
-                            if (detailResponse.concernStatus == 0) {
-                                follow.setText("已关注");
-                            } else {
-                                follow.setText("+ 关注");
-                            }
-                            if (!TextUtils.isEmpty(detailResponse.column.opinion)) {
-                                opinionLayout.setVisibility(View.VISIBLE);
-                                opinion.setText(detailResponse.column.opinion);
+                                if (!TextUtils.isEmpty(detailResponse.column.opinion)) {
+                                    opinionLayout.setVisibility(View.VISIBLE);
+                                    opinion.setText(detailResponse.column.opinion);
 //                                    Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
 //                                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
 //                                    zanUp.setCompoundDrawables(drawable, null, null, null);
-                                if (detailResponse.column.supportCount != 0) {
-                                    zanUp.setText(detailResponse.column.supportCount + "");
+                                    if (detailResponse.column.supportCount != 0) {
+                                        zanUp.setText(detailResponse.column.supportCount + "");
+                                    } else {
+                                        zanUp.setText("0");
+                                    }
+                                    if (detailResponse.column.opposeCount != 0) {
+                                        zanDown.setText(detailResponse.column.opposeCount + "");
+                                    } else {
+                                        zanDown.setText("0");
+                                    }
                                 } else {
-                                    zanUp.setText("0");
+                                    opinionLayout.setVisibility(View.GONE);
                                 }
-                                if (detailResponse.column.opposeCount != 0) {
-                                    zanDown.setText(detailResponse.column.opposeCount + "");
+                                collectStatus = detailResponse.column.collectStatus;
+                                if (detailResponse.column.collectStatus == 1) {
+                                    collection.setImageResource(R.mipmap.column_btn_collection);
                                 } else {
-                                    zanDown.setText("0");
+                                    collection.setImageResource(R.mipmap.column_btn_collection_s);
                                 }
-                            } else {
-                                opinionLayout.setVisibility(View.GONE);
+                                if (detailResponse.column.readCount != 0) {
+                                    readCount.setText(detailResponse.column.readCount + "");
+                                } else {
+                                    readCount.setText("0");
+                                }
                             }
-                            if (detailResponse.column.readCount != 0) {
-                                readCount.setText(detailResponse.column.readCount + "");
-                            } else {
-                                readCount.setText("0");
+                            if (detailResponse.user != null) {
+                                customerId = detailResponse.user.customerId + "";
+                                if (!TextUtils.isEmpty(detailResponse.user.userName)) {
+                                    userName.setText(detailResponse.user.userName);
+                                } else {
+                                    userName.setText("暂无");
+                                }
+                                if (!TextUtils.isEmpty(detailResponse.user.headImg)) {
+                                    Glide.with(App.getInstance().getApplicationContext())
+                                            .load(Constants.baseImgUrl + detailResponse.user.headImg)
+                                            .error(R.mipmap.default_person_icon)
+                                            .into(headImg);
+                                }
+                                if (detailResponse.user.concernStatus == 0) {
+                                    follow.setText("已关注");
+                                } else {
+                                    follow.setText("+ 关注");
+                                }
+                                followStatus = detailResponse.user.concernStatus;
+                                mAdapter.setAuthor(detailResponse.user.userName + "");
                             }
-                            collectStatus = detailResponse.collectStatus;
-                            followStatus = detailResponse.concernStatus;
-                            if (detailResponse.collectStatus == 1) {
-                                collection.setImageResource(R.mipmap.column_btn_collection);
-                            } else {
-                                collection.setImageResource(R.mipmap.column_btn_collection_s);
-                            }
-                            if (detailResponse.column != null && detailResponse.column.commentCount != 0) {
-                                commentsCount.setText("评论 (" + detailResponse.column.commentCount + ")");
-                            } else {
-                                commentsCount.setText("暂无评论");
-                            }
-                            mAdapter.setAuthor(detailResponse.userName + "");
                             setData(true, detailResponse.comments);
                             if (sendSuccess) {
                                 recyclerView.scrollToPosition(1);

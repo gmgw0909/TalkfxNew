@@ -36,6 +36,7 @@ public class UserInfo {
     public int concernCount;
     public int customerId;
     public List<?> labelList;
-    public List<AttNoAchievementInfo> attNoAchievementList;
-    public List<?> attAchievementList;
+    public List<AttAchievementInfo> attNoAchievementList;
+    public List<AttAchievementInfo> attAchievementList;
+    public int concernStatus;
 }
