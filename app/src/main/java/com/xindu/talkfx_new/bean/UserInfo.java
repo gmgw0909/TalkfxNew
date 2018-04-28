@@ -39,4 +39,5 @@ public class UserInfo {
     public List<AttAchievementInfo> attNoAchievementList;
     public List<AttAchievementInfo> attAchievementList;
     public int concernStatus;
+    public boolean follow;
 }

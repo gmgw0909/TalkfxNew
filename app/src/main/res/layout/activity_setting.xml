@@ -22,62 +22,78 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="30dp"
-                android:paddingLeft="16dp"
+                android:paddingLeft="25dp"
                 android:text="将你的账号绑定至"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/text_gray"
+                android:textSize="15sp" />
 
-            <RelativeLayout
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="55dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/bind_btn_wx"
+                app:qmui_backgroundColor="#25CE26"
+                app:qmui_borderColor="@color/white"
+                app:qmui_isRadiusAdjustBounds="false"
+                app:qmui_radius="3dp">
 
-                <com.qmuiteam.qmui.widget.QMUIRadiusImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@mipmap/personal_bind_wx"
-                    app:qmui_border_color="@color/white"
-                    app:qmui_corner_radius="3dp"
-                    app:qmui_is_circle="false" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="7dp"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/bind_btn_wx" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:gravity="center"
                     android:text="绑定微信账号"
                     android:textColor="@color/white" />
-            </RelativeLayout>
+            </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
 
-            <RelativeLayout
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="55dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/bind_btn_wx"
+                app:qmui_backgroundColor="#E75C15"
+                app:qmui_borderColor="@color/white"
+                app:qmui_isRadiusAdjustBounds="false"
+                app:qmui_radius="3dp">
 
-                <com.qmuiteam.qmui.widget.QMUIRadiusImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@mipmap/personal_bind_wb"
-                    app:qmui_border_color="@color/white"
-                    app:qmui_corner_radius="3dp"
-                    app:qmui_is_circle="false" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="7dp"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/bind_btn_wb" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:gravity="center"
                     android:text="绑定微博账号"
                     android:textColor="@color/white" />
-            </RelativeLayout>
+            </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:paddingLeft="16dp"
+                android:paddingLeft="25dp"
                 android:text="账号设置"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/text_gray"
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -88,12 +104,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/white"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@drawable/selector_click_white"
                     android:clickable="true"
                     android:paddingLeft="@dimen/sp_16"
@@ -104,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="修改个人简介"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -123,7 +141,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@drawable/selector_click_white"
                     android:clickable="true"
                     android:paddingLeft="@dimen/sp_16"
@@ -134,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="修改密码"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -153,7 +171,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@drawable/selector_click_white"
                     android:clickable="true"
                     android:paddingLeft="@dimen/sp_16"
@@ -164,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="绑定手机"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -183,7 +201,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@drawable/selector_click_white"
                     android:clickable="true"
                     android:paddingLeft="@dimen/sp_16"
@@ -194,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="绑定邮箱"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -214,7 +232,7 @@
                 <RelativeLayout
                     android:id="@+id/logout"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@drawable/selector_click_white"
                     android:clickable="true"
                     android:paddingLeft="@dimen/sp_16"
@@ -225,7 +243,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="退出登录"
-                        android:textSize="14sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -246,9 +264,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:paddingLeft="16dp"
+                android:paddingLeft="25dp"
                 android:text="系统设置"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/text_gray"
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -259,12 +278,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/white"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@color/white"
                     android:paddingLeft="@dimen/sp_16"
                     android:paddingRight="@dimen/sp_16">
@@ -274,7 +295,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="检查更新"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -283,7 +304,7 @@
                         android:layout_centerVertical="true"
                         android:text="版本号  1.0.0"
                         android:textColor="@color/text_gray"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <View
@@ -295,7 +316,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@color/white"
                     android:paddingLeft="@dimen/sp_16"
                     android:paddingRight="@dimen/sp_16">
@@ -305,7 +326,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="消息设置"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <android.support.v7.widget.SwitchCompat
                         android:layout_width="wrap_content"
@@ -324,7 +345,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@color/white"
                     android:paddingLeft="@dimen/sp_16"
                     android:paddingRight="@dimen/sp_16">
@@ -334,7 +355,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="仅WIFI网络下载图片"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <android.support.v7.widget.SwitchCompat
                         android:layout_width="wrap_content"
@@ -354,7 +375,7 @@
                 <RelativeLayout
                     android:id="@+id/rl_clear_data"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@drawable/selector_click_white"
                     android:clickable="true"
                     android:paddingLeft="@dimen/sp_16"
@@ -365,7 +386,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="清理缓存"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/app_data_clear"
@@ -394,7 +415,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="@drawable/selector_click_white"
                     android:clickable="true"
                     android:paddingLeft="@dimen/sp_16"
@@ -405,7 +426,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="联系我们"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"

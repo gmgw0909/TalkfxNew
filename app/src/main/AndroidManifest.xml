@@ -68,8 +68,12 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:theme="@style/AppTheme.Main"
             android:name=".activity.MyActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.Main"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.MyFollowPersonalActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
     </application>

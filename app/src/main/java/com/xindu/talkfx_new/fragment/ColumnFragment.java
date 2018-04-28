@@ -47,7 +47,7 @@ public class ColumnFragment extends BaseFragment {
     QMUITabSegment mTabSegment;
     @Bind(R.id.contentViewPager)
     ViewPager mViewPager;
-    String[] tabTitles = {"动态", "分析", "教学", "心得", "业内新闻", "数据报告"};
+    String[] tabTitles = {"动态", "关注", "分析", "教学", "心得", "业内新闻", "数据报告"};
     @Bind(R.id.btn_setting)
     CircleImageView btnSetting;
     private ViewPagerAdapter mPagerAdapter;
@@ -62,6 +62,8 @@ public class ColumnFragment extends BaseFragment {
         for (int i = 0; i < tabTitles.length; i++) {
             if (i == 0) {
                 fragments.add(ColumnHomeFragment.newInstance());
+            } else if (i == 1) {
+                fragments.add(ColumnFollowFragment.newInstance());
             } else {
                 fragments.add(ColumnListFragment.newInstance(i + ""));
             }
@@ -95,7 +97,7 @@ public class ColumnFragment extends BaseFragment {
                     public void onSuccess(Response<BaseResponse<MyInfoResponse>> response) {
                         MyInfoResponse detailResponse = response.body().datas;
                         if (detailResponse != null && detailResponse.user != null) {
-                            if (!TextUtils.isEmpty(detailResponse.user.headImg)){
+                            if (!TextUtils.isEmpty(detailResponse.user.headImg)) {
                                 Glide.with(App.getInstance().getApplicationContext())
                                         .load(Constants.baseImgUrl + detailResponse.user.headImg)
                                         .into(btnSetting);

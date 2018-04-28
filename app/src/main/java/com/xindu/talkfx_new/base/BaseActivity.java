@@ -114,7 +114,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             HttpHeaders headers = new HttpHeaders();
             headers.put(Constants.AUTHORIZATION, SPUtil.getString(Constants.AUTHORIZATION));
             OkGo.getInstance().addCommonHeaders(headers);
-            if (info.user != null){
+            if (info.user != null) {
                 SPUtil.put(Constants.USERNAME, info.user.userName);
                 SPUtil.put(Constants.USERID, info.user.customerId);
             }
@@ -125,5 +125,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(mContext, HomeActivity.class));
         }
         EventBus.getDefault().post("login_refresh");
+        EventBus.getDefault().post("refresh_follow_columns");
     }
 }
