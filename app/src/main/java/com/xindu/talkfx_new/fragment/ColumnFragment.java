@@ -71,8 +71,8 @@ public class ColumnFragment extends BaseFragment {
         mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         mPagerAdapter.setItems(fragments, tabTitles);
         mViewPager.setAdapter(mPagerAdapter);
-        mTabSegment.setDefaultNormalColor(getResources().getColor(R.color.text_normal));
-        mTabSegment.setDefaultSelectedColor(getResources().getColor(R.color.blue));
+        mTabSegment.setDefaultNormalColor(getResources().getColor(R.color.text_gray));
+        mTabSegment.setDefaultSelectedColor(getResources().getColor(R.color.text_black));
         mTabSegment.setTypefaceProvider(new MyTypefaceProvider());
         mTabSegment.setupWithViewPager(mViewPager);//设置TabLayout与ViewPager联动
         int space = QMUIDisplayHelper.dp2px(getContext(), 26);

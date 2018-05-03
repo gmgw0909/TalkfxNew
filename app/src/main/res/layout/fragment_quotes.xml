@@ -8,8 +8,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f9f9f9"
-        android:paddingBottom="3dp">
+        android:background="#f9f9f9">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -28,19 +27,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="left"
-                android:paddingTop="3dp"
                 android:drawableLeft="@mipmap/home_xiaoxi"
                 android:paddingLeft="15dp"
-                android:paddingRight="@dimen/sp_16" />
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:text="韬客"-->
-                <!--android:textColor="@color/text_normal"-->
-                <!--android:textSize="20dp"-->
-                <!--android:textStyle="bold" />-->
+                android:paddingRight="@dimen/sp_16"
+                android:paddingTop="3dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,7 +46,9 @@
             android:id="@+id/tabSegment"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            app:qmui_tab_indicator_height="3dp" />
+            app:qmui_tab_has_indicator="true"
+            app:qmui_tab_indicator_height="3dp"
+            app:qmui_tab_mode="fixed" />
     </android.support.design.widget.AppBarLayout>
 
     <com.qmuiteam.qmui.widget.QMUIViewPager
@@ -65,4 +57,5 @@
         android:layout_height="match_parent"
         android:background="@color/qmui_config_color_white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
 </android.support.design.widget.CoordinatorLayout>

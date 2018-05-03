@@ -13,7 +13,6 @@ import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.bean.ColumnInfo;
 import com.xindu.talkfx_new.utils.TimeUtil;
 
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -28,14 +27,9 @@ public class ColumnListAdapter2 extends BaseQuickAdapter<ColumnInfo, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, final ColumnInfo model) {
-        try {
             baseViewHolder.setText(R.id.title, model.title)
                     .setText(R.id.userName, model.userName)
-                    .setText(R.id.data, "/" + (TextUtils.isEmpty(model.createDate) ? "" : TimeUtil.convertToTime(model.createDate)));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+                    .setText(R.id.data, "/" + (TextUtils.isEmpty(model.createDate) ? "" : TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, model.createDate))));
         ImageView firstImg = baseViewHolder.getView(R.id.firstImg);
         if (!TextUtils.isEmpty(model.firstImg)) {
             firstImg.setVisibility(View.VISIBLE);
