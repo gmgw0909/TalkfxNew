@@ -21,7 +21,7 @@
                 android:id="@+id/btn_setting"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@mipmap/default_person_icon" />
+                android:src="@mipmap/defaut_small_head_icon" />
 
             <TextView
                 android:id="@+id/btn_msg"

@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
-            android:drawableLeft="@mipmap/iypz_unchecked"
+            android:drawableLeft="@mipmap/jypz_unchecked"
             android:drawablePadding="10dp"
             android:gravity="center"
             android:paddingLeft="20dp"
@@ -24,6 +24,7 @@
             android:textColor="@color/text_normal" />
 
         <TextView
+            android:id="@+id/notice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

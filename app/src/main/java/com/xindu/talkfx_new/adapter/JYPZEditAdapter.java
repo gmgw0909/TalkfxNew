@@ -1,6 +1,7 @@
 package com.xindu.talkfx_new.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.MotionEventCompat;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xindu.talkfx_new.R;
+import com.xindu.talkfx_new.activity.NoticeSettingActivity;
 import com.xindu.talkfx_new.base.helper.ItemTouchHelperAdapter;
 import com.xindu.talkfx_new.base.helper.ItemTouchHelperViewHolder;
 import com.xindu.talkfx_new.base.helper.OnStartDragListener;
@@ -57,7 +59,7 @@ public class JYPZEditAdapter extends RecyclerView.Adapter<JYPZEditAdapter.ItemVi
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             holder.text.setCompoundDrawables(drawable, null, null, null);
         } else {
-            Drawable drawable = context.getResources().getDrawable(R.mipmap.iypz_unchecked);
+            Drawable drawable = context.getResources().getDrawable(R.mipmap.jypz_unchecked);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             holder.text.setCompoundDrawables(drawable, null, null, null);
         }
@@ -70,6 +72,12 @@ public class JYPZEditAdapter extends RecyclerView.Adapter<JYPZEditAdapter.ItemVi
                     mItems.get(position).setCheck(true);
                 }
                 notifyDataSetChanged();
+            }
+        });
+        holder.notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context, NoticeSettingActivity.class));
             }
         });
         if (position % 2 == 0) {
@@ -115,12 +123,14 @@ public class JYPZEditAdapter extends RecyclerView.Adapter<JYPZEditAdapter.ItemVi
             ItemTouchHelperViewHolder {
 
         public final TextView text;
+        public final TextView notice;
         public final ImageView handleView;
         public final LinearLayout ll;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.text);
+            notice = (TextView) itemView.findViewById(R.id.notice);
             handleView = (ImageView) itemView.findViewById(R.id.handle);
             ll = (LinearLayout) itemView.findViewById(R.id.ll);
         }

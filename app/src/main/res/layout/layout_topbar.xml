@@ -29,10 +29,11 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/right_icon"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:gravity="right"
+            android:gravity="right|center_vertical"
             android:paddingRight="16dp" />
     </RelativeLayout>
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <FrameLayout
@@ -40,11 +41,11 @@
             android:text="群组" />
 
         <!--<RadioButton-->
-            <!--android:id="@+id/rb_my"-->
-            <!--style="@style/BottomBarItem"-->
-            <!--android:drawableTop="@drawable/selector_bottom_bar_rb5"-->
-            <!--android:paddingTop="6dp"-->
-            <!--android:text="我的" />-->
+        <!--android:id="@+id/rb_my"-->
+        <!--style="@style/BottomBarItem"-->
+        <!--android:drawableTop="@drawable/selector_bottom_bar_rb5"-->
+        <!--android:paddingTop="6dp"-->
+        <!--android:text="我的" />-->
 
         <RadioButton
             android:id="@+id/rb_order"

@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpHeaders;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.xindu.talkfx_new.activity.HomeActivity;
@@ -35,6 +36,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        QMUIStatusBarHelper.translucent(this); // 沉浸式状态栏
+        QMUIStatusBarHelper.setStatusBarLightMode(this);//设置状态栏黑色字体与图标
         mContext = this;
         App.addActivity(this);
 //        if (SPUtil.getBoolean(Constants.IS_LOGIN, false) && TextUtils.isEmpty("")) {

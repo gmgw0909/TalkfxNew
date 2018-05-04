@@ -94,17 +94,17 @@
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
-        android:layout_width="130dp"
-        android:layout_height="55dp"
+        android:layout_width="160dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="80dp"
         android:layout_marginRight="30dp"
         android:background="@mipmap/jypz_float_btn"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingBottom="12dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
 
         <ImageView
             android:id="@+id/add"
