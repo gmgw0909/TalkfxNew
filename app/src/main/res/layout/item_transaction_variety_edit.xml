@@ -5,9 +5,10 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/bg_normal"
+        android:background="@color/white"
         android:gravity="center_vertical">
 
         <TextView
@@ -18,7 +19,7 @@
             android:drawableLeft="@mipmap/iypz_unchecked"
             android:drawablePadding="10dp"
             android:gravity="center"
-            android:paddingLeft="30dp"
+            android:paddingLeft="20dp"
             android:paddingRight="30dp"
             android:textColor="@color/text_normal" />
 

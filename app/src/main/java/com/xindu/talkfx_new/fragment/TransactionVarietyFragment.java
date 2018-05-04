@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xindu.talkfx_new.R;
-import com.xindu.talkfx_new.adapter.JYEditAdapter;
 import com.xindu.talkfx_new.adapter.JYPZEditAdapter;
+import com.xindu.talkfx_new.adapter.JYPZAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.base.helper.OnStartDragListener;
 import com.xindu.talkfx_new.base.helper.SimpleItemTouchHelperCallback;
@@ -51,8 +51,8 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
     private ItemTouchHelper mItemTouchHelper;
     private boolean hasLoad = false;
 
-    JYPZEditAdapter adapter;
-    JYEditAdapter adapter2;
+    JYPZAdapter adapter;
+    JYPZEditAdapter adapter2;
 
     @Override
     protected int setContentView() {
@@ -82,12 +82,12 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
 
             recyclerView1.setHasFixedSize(true);
             recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity()));
-            adapter = new JYPZEditAdapter(list);
+            adapter = new JYPZAdapter(list);
             recyclerView1.setAdapter(adapter);
 
             recyclerView2.setHasFixedSize(true);
             recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
-            adapter2 = new JYEditAdapter(getActivity(), this, list);
+            adapter2 = new JYPZEditAdapter(getActivity(), this, list);
             recyclerView2.setAdapter(adapter2);
             ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter2);
             mItemTouchHelper = new ItemTouchHelper(callback);
@@ -97,7 +97,7 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
         }
     }
 
-    @OnClick({R.id.add, R.id.edit, R.id.search, R.id.back})
+    @OnClick({R.id.add, R.id.edit, R.id.search, R.id.back, R.id.delete})
     public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.add:
@@ -126,6 +126,18 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
                 add.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.VISIBLE);
                 search.setVisibility(View.VISIBLE);
+                break;
+            case R.id.delete:
+                List<TVInfo> list_ = new ArrayList<>();
+                if (list.size() > 0) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).isCheck) {
+                            list_.add(list.get(i));
+                        }
+                    }
+                    list.removeAll(list_);
+                    adapter2.notifyDataSetChanged();
+                }
                 break;
         }
     }
