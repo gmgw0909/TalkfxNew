@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.xindu.talkfx_new"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -38,4 +38,5 @@ dependencies {
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'org.greenrobot:eventbus:3.1.1'
     compile 'com.github.martin90s:ImagePicker:v1.3.2'
+    compile 'com.github.MagicMashRoom:SuperCalendar:1.6'
 }

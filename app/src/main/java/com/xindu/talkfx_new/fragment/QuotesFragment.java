@@ -33,7 +33,7 @@ public class QuotesFragment extends BaseFragment {
     private void initTabAndPager() {
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new TransactionVarietyFragment());
-        fragments.add(ColumnFollowFragment.newInstance());
+        fragments.add(new CalendarFragment());
         mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         mPagerAdapter.setItems(fragments, tabTitles);
         mViewPager.setAdapter(mPagerAdapter);
