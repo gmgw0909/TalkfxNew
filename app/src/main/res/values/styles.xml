@@ -35,4 +35,13 @@
         <item name="android:backgroundDimEnabled">true</item><!--模糊-->
     </style>
 
+    <style name="scstyle" parent="Theme.AppCompat.Light">
+        <!--开启时的颜色-->
+        <item name="colorControlActivated">@color/black</item>
+        <!--&lt;!&ndash;关闭时的颜色&ndash;&gt;-->
+        <!--<item name="colorSwitchThumbNormal">#383434</item>-->
+        <!--&lt;!&ndash;关闭时的轨迹颜色&ndash;&gt;-->
+        <!--<item name="android:colorForeground">#ecd502</item>-->
+    </style>
+
 </resources>

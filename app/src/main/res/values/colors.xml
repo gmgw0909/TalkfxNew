@@ -26,4 +26,5 @@
     <color name="video_bt_bg">#df365a</color>
     <color name="font_color_black">#434343</color>
     <color name="bg_normal">#F7F7F7</color>
+    <color name="seekBar_bg">#B6B6B6</color>
 </resources>

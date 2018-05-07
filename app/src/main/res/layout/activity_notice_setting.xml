@@ -59,7 +59,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15sp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingBottom="15dp"
@@ -110,7 +110,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingRight="20dp"
-                android:shadowColor="@color/blue" />
+                android:theme="@style/scstyle" />
         </LinearLayout>
 
         <View
@@ -125,11 +125,142 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="50"
+            android:maxHeight="2dp"
+            android:minHeight="2dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:progress="25"
-            android:progressDrawable="@color/gray"
-            android:thumb="@mipmap/jypz_checked" />
+            android:progressDrawable="@color/seekBar_bg"
+            android:thumb="@mipmap/seek_bar_thumb" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="最近"
+                android:textColor="@color/text_normal" />
+
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="7dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="7dp"
+                android:text="100"
+                android:textColor="@color/text_normal"
+                app:qmui_backgroundColor="@color/bg_normal"
+                app:qmui_borderColor="@color/bg_normal"
+                app:qmui_isRadiusAdjustBounds="false"
+                app:qmui_radius="3dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="天最高价1.56783"
+                android:textColor="@color/text_normal" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="价格涨到"
+                android:textColor="@color/text_normal" />
+
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/tv_down_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="7dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="7dp"
+                android:text="1.43876"
+                android:textColor="@color/text_normal"
+                app:qmui_backgroundColor="@color/bg_normal"
+                app:qmui_borderColor="@color/bg_normal"
+                app:qmui_isRadiusAdjustBounds="false"
+                app:qmui_radius="3dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="美元"
+                android:textColor="@color/text_normal" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingRight="20dp"
+                android:theme="@style/scstyle" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/gray" />
+
+        <SeekBar
+            android:id="@+id/seekBar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="50"
+            android:maxHeight="2dp"
+            android:minHeight="2dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:progress="25"
+            android:progressDrawable="@color/seekBar_bg"
+            android:thumb="@mipmap/seek_bar_thumb" />
 
         <View
             android:layout_width="match_parent"
@@ -178,4 +309,49 @@
         </LinearLayout>
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+
+    <RelativeLayout
+        android:id="@+id/rl_notice"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/selector_click_white"
+        android:clickable="true"
+        android:paddingLeft="@dimen/sp_16"
+        android:paddingRight="@dimen/sp_16">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="提醒频率"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/tv1"
+            android:text="仅提醒一次"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/right_arrow" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
 </LinearLayout>

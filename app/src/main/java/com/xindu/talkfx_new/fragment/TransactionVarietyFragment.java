@@ -103,6 +103,7 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
             case R.id.add:
                 break;
             case R.id.edit:
+                adapter2.notifyDataSetChanged();
                 ll1.setVisibility(View.GONE);
                 ll2.setVisibility(View.VISIBLE);
                 recyclerView1.setVisibility(View.GONE);
