@@ -81,6 +81,13 @@
         <activity
             android:name=".activity.NoticeSettingActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.AddMoreJYPZActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

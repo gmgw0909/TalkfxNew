@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/text_no_select"
+    android:paddingLeft="30dp"
+    android:text="原油价格创3年新高"
+    android:textColor="@color/white"
+    android:textSize="14sp" />
+
+
+

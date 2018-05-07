@@ -1,5 +1,6 @@
 package com.xindu.talkfx_new.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xindu.talkfx_new.R;
+import com.xindu.talkfx_new.activity.AddMoreJYPZActivity;
+import com.xindu.talkfx_new.activity.SearchActivity;
 import com.xindu.talkfx_new.adapter.JYPZEditAdapter;
 import com.xindu.talkfx_new.adapter.JYPZAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
@@ -101,6 +104,7 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
     public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.add:
+                startActivity(new Intent(getActivity(), AddMoreJYPZActivity.class));
                 break;
             case R.id.edit:
                 adapter2.notifyDataSetChanged();
@@ -115,6 +119,7 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
                 search.setVisibility(View.GONE);
                 break;
             case R.id.search:
+                startActivity(new Intent(getActivity(), SearchActivity.class));
                 break;
             case R.id.back:
                 adapter.notifyDataSetChanged();
