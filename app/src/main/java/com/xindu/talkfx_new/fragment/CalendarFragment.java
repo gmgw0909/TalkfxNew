@@ -1,5 +1,6 @@
 package com.xindu.talkfx_new.fragment;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -9,6 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ldf.calendar.Utils;
@@ -19,7 +26,7 @@ import com.ldf.calendar.model.CalendarDate;
 import com.ldf.calendar.view.Calendar;
 import com.ldf.calendar.view.MonthPager;
 import com.xindu.talkfx_new.R;
-import com.xindu.talkfx_new.adapter.JYPZAdapter;
+import com.xindu.talkfx_new.adapter.CalendarAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.bean.TVInfo;
 import com.xindu.talkfx_new.widget.CustomDayView;
@@ -29,6 +36,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by LeeBoo on 2018/3/12.
@@ -44,6 +52,11 @@ public class CalendarFragment extends BaseFragment {
     RecyclerView list;
     @Bind(R.id.content)
     CoordinatorLayout content;
+    @Bind(R.id.country)
+    TextView country;
+    @Bind(R.id.choose_date_view)
+    RelativeLayout chooseDateView;
+    String countrys[] = {"中国", "美国", "法国", "德国", "英国", "日本", "俄罗斯", "意大利", "波黑", "塞尔维亚", "加拿大", "墨西哥"};
 
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
     private CalendarViewAdapter calendarAdapter;
@@ -85,10 +98,32 @@ public class CalendarFragment extends BaseFragment {
         for (int i = 0; i < 20; i++) {
             list_.add(new TVInfo("欧元/美元", "1.23978", "1.53899", "+0.19383"));
         }
-        list.setAdapter(new JYPZAdapter(list_));
+        list.setAdapter(new CalendarAdapter(list_));
         initCurrentDate();
         initCalendarView();
+        initPop();
         return view;
+    }
+
+    PopupWindow qmuiPopup;
+
+    private void initPop() {
+        if (qmuiPopup == null) {
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_country, null);
+            GridView gridView = view.findViewById(R.id.grid_view);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.test_list_item, countrys);
+            gridView.setAdapter(adapter);
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    country.setText(countrys[i]);
+                }
+            });
+            qmuiPopup = new PopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT);
+            qmuiPopup.setOutsideTouchable(true);
+            qmuiPopup.setBackgroundDrawable(new BitmapDrawable());
+        }
     }
 
     private void refreshMonthPager() {
@@ -172,5 +207,21 @@ public class CalendarFragment extends BaseFragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+    @OnClick({R.id.country, R.id.goto_today})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.country:
+                if (qmuiPopup.isShowing()) {
+                    qmuiPopup.dismiss();
+                } else {
+                    qmuiPopup.showAsDropDown(chooseDateView);
+                }
+                break;
+            case R.id.goto_today:
+                refreshMonthPager();
+                break;
+        }
     }
 }

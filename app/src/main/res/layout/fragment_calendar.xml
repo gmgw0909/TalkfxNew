@@ -15,8 +15,8 @@
             android:layout_height="wrap_content"
             android:background="#fff"
             android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             <RelativeLayout
                 android:id="@+id/choose_date_view"
@@ -24,15 +24,42 @@
                 android:layout_height="40dp">
 
                 <TextView
+                    android:id="@+id/tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="国家："
+                    android:textColor="@color/text_normal"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv"
+                    android:text="德国"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp" />
+
+                <TextView
                     android:id="@+id/today"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:maxLines="1"
                     android:text="2018年4月"
                     android:textColor="@color/text_normal"
                     android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/goto_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="回到今天"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp" />
             </RelativeLayout>
 
         </LinearLayout>
