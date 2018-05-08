@@ -120,7 +120,7 @@ public class CalendarFragment extends BaseFragment {
                 }
             });
             qmuiPopup = new PopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT);
+                    WindowManager.LayoutParams.WRAP_CONTENT, true);
             qmuiPopup.setOutsideTouchable(true);
             qmuiPopup.setBackgroundDrawable(new BitmapDrawable());
         }
@@ -209,14 +209,14 @@ public class CalendarFragment extends BaseFragment {
         });
     }
 
-    @OnClick({R.id.country, R.id.goto_today})
+    @OnClick({R.id.goto_today, R.id.choose_date_view})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.country:
-                if (qmuiPopup.isShowing()) {
-                    qmuiPopup.dismiss();
-                } else {
+            case R.id.choose_date_view:
+                if (!qmuiPopup.isShowing()) {
                     qmuiPopup.showAsDropDown(chooseDateView);
+                } else {
+                    qmuiPopup.dismiss();
                 }
                 break;
             case R.id.goto_today:
