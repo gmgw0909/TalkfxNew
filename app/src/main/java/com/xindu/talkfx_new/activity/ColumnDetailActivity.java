@@ -46,8 +46,8 @@ import com.xindu.talkfx_new.base.JavascriptInterface;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.ColumnDetailResponse;
 import com.xindu.talkfx_new.bean.CommentInfo;
-import com.xindu.talkfx_new.utils.KeyboardUtil;
 import com.xindu.talkfx_new.utils.SPUtil;
+import com.xindu.talkfx_new.utils.KeyboardUtil;
 import com.xindu.talkfx_new.utils.SpannableStringUtils;
 import com.xindu.talkfx_new.utils.TimeUtil;
 import com.xindu.talkfx_new.utils.Utils;
@@ -767,23 +767,24 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
     //键盘打开关闭监听器
     private void initKeyboardChangeListener() {
-        new KeyboardUtil(this).setKeyBoardListener(new KeyboardUtil.KeyBoardListener() {
+        KeyboardUtil.setListener(ColumnDetailActivity.this, new KeyboardUtil.OnSoftKeyBoardChangeListener() {
             @Override
-            public void onKeyboardChange(boolean isShow, int keyboardHeight) {
-                if (isShow) {
-                    if (mAdapter.getClickInfo() != null && !TextUtils.isEmpty(mAdapter.getClickInfo().fromUserName)) {
-                        etDiscuss.setHint("回复 " + mAdapter.getClickInfo().fromUserName);
-                    }
-                    rl2.setVisibility(View.VISIBLE);
-                    rl1.setVisibility(View.GONE);
-                    clickCloseKb.setVisibility(View.VISIBLE);
-                } else {
-                    mAdapter.setClickInfo(null);
-                    etDiscuss.setHint("请您发表评论");
-                    rl2.setVisibility(View.GONE);
-                    rl1.setVisibility(View.VISIBLE);
-                    clickCloseKb.setVisibility(View.GONE);
+            public void keyBoardShow(int height) {
+                if (mAdapter.getClickInfo() != null && !TextUtils.isEmpty(mAdapter.getClickInfo().fromUserName)) {
+                    etDiscuss.setHint("回复 " + mAdapter.getClickInfo().fromUserName);
                 }
+                rl2.setVisibility(View.VISIBLE);
+                rl1.setVisibility(View.GONE);
+                clickCloseKb.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void keyBoardHide(int height) {
+                mAdapter.setClickInfo(null);
+                etDiscuss.setHint("请您发表评论");
+                rl2.setVisibility(View.GONE);
+                rl1.setVisibility(View.VISIBLE);
+                clickCloseKb.setVisibility(View.GONE);
             }
         });
     }

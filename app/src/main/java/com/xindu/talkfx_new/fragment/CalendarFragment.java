@@ -56,7 +56,8 @@ public class CalendarFragment extends BaseFragment {
     TextView country;
     @Bind(R.id.choose_date_view)
     RelativeLayout chooseDateView;
-    String countrys[] = {"中国", "美国", "法国", "德国", "英国", "日本", "俄罗斯", "意大利", "波黑", "塞尔维亚", "加拿大", "墨西哥"};
+    String countrys1[] = {"中国", "美国", "法国", "德国", "英国", "日本", "俄罗斯", "意大利", "波黑", "塞尔维亚", "加拿大", "墨西哥"};
+    String countrys2[] = {"美国", "英国", "日本", "法国", "德国", "加拿大", "意大利", "俄罗斯", "澳大利亚", "中国", "巴西", "阿根廷", "墨西哥", "韩国", "印度尼西亚", "印度", "沙特阿拉伯", "南非", "土耳其", "欧盟"};
 
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
     private CalendarViewAdapter calendarAdapter;
@@ -110,13 +111,42 @@ public class CalendarFragment extends BaseFragment {
     private void initPop() {
         if (qmuiPopup == null) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_country, null);
-            GridView gridView = view.findViewById(R.id.grid_view);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.test_list_item, countrys);
-            gridView.setAdapter(adapter);
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            final GridView gridView1 = view.findViewById(R.id.grid_view1);
+            final GridView gridView2 = view.findViewById(R.id.grid_view2);
+            view.findViewById(R.id.click_dismiss).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    qmuiPopup.dismiss();
+                }
+            });
+            view.findViewById(R.id.all).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gridView1.setVisibility(View.VISIBLE);
+                    gridView2.setVisibility(View.GONE);
+                }
+            });
+            view.findViewById(R.id.g20).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gridView2.setVisibility(View.VISIBLE);
+                    gridView1.setVisibility(View.GONE);
+                }
+            });
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.test_list_item, countrys1);
+            gridView1.setAdapter(adapter1);
+            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.test_list_item, countrys2);
+            gridView2.setAdapter(adapter2);
+            gridView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    country.setText(countrys[i]);
+                    country.setText(countrys1[i]);
+                }
+            });
+            gridView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    country.setText(countrys2[i]);
                 }
             });
             qmuiPopup = new PopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT,
