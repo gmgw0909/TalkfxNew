@@ -29,7 +29,7 @@ public class ColumnListAdapter2 extends BaseQuickAdapter<ColumnInfo, BaseViewHol
     protected void convert(BaseViewHolder baseViewHolder, final ColumnInfo model) {
             baseViewHolder.setText(R.id.title, model.title)
                     .setText(R.id.userName, model.userName)
-                    .setText(R.id.data, "/" + (TextUtils.isEmpty(model.createDate) ? "" : TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, model.createDate))));
+                    .setText(R.id.data, "/" + (TextUtils.isEmpty(model.createDate) ? "" : TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm,Long.parseLong(model.createDate)*1000)));
         ImageView firstImg = baseViewHolder.getView(R.id.firstImg);
         if (!TextUtils.isEmpty(model.firstImg)) {
             firstImg.setVisibility(View.VISIBLE);
