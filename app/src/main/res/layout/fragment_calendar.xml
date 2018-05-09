@@ -70,8 +70,11 @@
 
             <ImageView
                 android:id="@+id/toLastPager"
-                android:layout_width="30dp"
-                android:layout_height="match_parent" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/calendar_left_arrow" />
 
             <com.necer.ncalendar.calendar.WeekCalendar
                 android:id="@+id/weekCalendar"
@@ -83,9 +86,12 @@
 
             <ImageView
                 android:id="@+id/toNextPager"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:paddingRight="10dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/calendar_right_arrow" />
         </RelativeLayout>
 
 
