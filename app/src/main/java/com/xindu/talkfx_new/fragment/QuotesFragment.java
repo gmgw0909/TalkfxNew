@@ -39,6 +39,7 @@ public class QuotesFragment extends BaseFragment {
         mViewPager.setAdapter(mPagerAdapter);
         mTabSegment.setDefaultNormalColor(getResources().getColor(R.color.text_gray));
         mTabSegment.setDefaultSelectedColor(getResources().getColor(R.color.text_black));
+        mTabSegment.setTypefaceProvider(new MyTypefaceProvider());
         mTabSegment.setupWithViewPager(mViewPager);//设置TabLayout与ViewPager联动
         mTabSegment.setIndicatorWidthAdjustContent(false);
     }
@@ -53,4 +54,17 @@ public class QuotesFragment extends BaseFragment {
         super.stopLoad();
     }
 
+    //选中字体变粗
+    class MyTypefaceProvider implements QMUITabSegment.TypefaceProvider {
+
+        @Override
+        public boolean isNormalTabBold() {
+            return false;
+        }
+
+        @Override
+        public boolean isSelectedTabBold() {
+            return true;
+        }
+    }
 }

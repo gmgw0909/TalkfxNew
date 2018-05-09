@@ -24,6 +24,7 @@ import com.xindu.talkfx_new.adapter.SearchAdapter;
 import com.xindu.talkfx_new.adapter.SecondaryListAdapter;
 import com.xindu.talkfx_new.base.BaseActivity;
 import com.xindu.talkfx_new.bean.ItemInfo;
+import com.xindu.talkfx_new.utils.KeyboardUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,9 +61,16 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+        KeyboardUtil.openKeyboard(etSearch,mContext);
         initTopBar();
         initData();
         initRv();
+    }
+
+    @Override
+    public void onBackPressed() {
+        KeyboardUtil.closeKeyboard(etSearch,mContext);
+        super.onBackPressed();
     }
 
     {
@@ -161,6 +169,7 @@ public class SearchActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
+                KeyboardUtil.closeKeyboard(etSearch,mContext);
                 finish();
                 break;
             case R.id.delete:

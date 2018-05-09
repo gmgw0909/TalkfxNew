@@ -21,12 +21,12 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
-            android:paddingLeft="15dp"
+            android:paddingLeft="20dp"
             android:paddingRight="15dp"
             app:qmui_backgroundColor="@color/bg_normal"
             app:qmui_borderColor="@color/white"
             app:qmui_isRadiusAdjustBounds="false"
-            app:qmui_radius="3dp">
+            app:qmui_radius="10dp">
 
             <ImageView
                 android:id="@+id/img"
@@ -43,6 +43,7 @@
                 android:layout_toRightOf="@id/img"
                 android:background="@android:color/transparent"
                 android:hint="请输入关键字"
+                android:inputType="text"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:textSize="14sp" />

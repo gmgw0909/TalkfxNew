@@ -7,9 +7,11 @@
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@color/white"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <TextView
             android:id="@+id/text"
@@ -18,7 +20,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="名称"
-            android:textColor="@color/text_normal" />
+            android:textColor="@color/text_normal"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"

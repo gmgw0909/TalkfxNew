@@ -12,7 +12,8 @@
         android:layout_centerVertical="true"
         android:paddingLeft="30dp"
         android:text="澳元/美元"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv1"
@@ -23,7 +24,8 @@
         android:layout_toRightOf="@id/tv"
         android:text="AUD/USD"
         android:textColor="@color/text_gray"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:layout_width="wrap_content"

@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:drawableLeft="@mipmap/btn_back"
             android:gravity="left"
-            android:paddingLeft="16dp" />
+            android:paddingLeft="20dp" />
 
         <TextView
             android:id="@+id/title"
@@ -25,7 +25,7 @@
             android:layout_centerInParent="true"
             android:text="xx"
             android:textColor="@color/text_normal"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
