@@ -61,16 +61,20 @@ public class CalendarFragment extends BaseFragment {
 
     }
 
+    int year;
+    int month;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(setContentView(), container, false);
         ButterKnife.bind(this, view);
-        weekCalendar.setDefaultSelect(false);
+//        weekCalendar.setDefaultSelect(false);
         weekCalendar.setOnWeekCalendarChangedListener(new OnWeekCalendarChangedListener() {
             @Override
             public void onWeekCalendarChanged(LocalDate date) {
+                year = date.getYear();
+                month = date.getMonthOfYear();
                 today.setText(date.getYear() + "年" + date.getMonthOfYear() + "月");
             }
         });

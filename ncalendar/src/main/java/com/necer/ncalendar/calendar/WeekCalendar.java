@@ -80,8 +80,10 @@ public class WeekCalendar extends CalendarPager implements OnClickWeekViewListen
                 } else if (mSelectDate.isBefore(startDate)) {
                     mSelectDate = startDate;
                 }
-
-                currView.setDateAndPoint(mSelectDate, pointList);
+                if (Utils.isEqualsMonth(lastSelectDate, mSelectDate)) {
+                    currView.setDateAndPoint(lastSelectDate, pointList);
+                }
+//                currView.setDateAndPoint(mSelectDate, pointList);
                 if (onWeekCalendarChangedListener != null) {
                     onWeekCalendarChangedListener.onWeekCalendarChanged(mSelectDate);
                 }
