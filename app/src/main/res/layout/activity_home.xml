@@ -30,14 +30,14 @@
             style="@style/BottomBarItem"
             android:checked="true"
             android:drawableTop="@drawable/selector_bottom_bar_rb1"
-            android:paddingTop="6dp"
+            android:paddingTop="8dp"
             android:text="专栏" />
 
         <RadioButton
             android:id="@+id/rb_group"
             style="@style/BottomBarItem"
             android:drawableTop="@drawable/selector_bottom_bar_rb4"
-            android:paddingTop="6dp"
+            android:paddingTop="8dp"
             android:text="群组" />
 
         <!--<RadioButton-->
@@ -51,14 +51,14 @@
             android:id="@+id/rb_order"
             style="@style/BottomBarItem"
             android:drawableTop="@drawable/selector_bottom_bar_rb2"
-            android:paddingTop="6dp"
+            android:paddingTop="8dp"
             android:text="交易" />
 
         <RadioButton
             android:id="@+id/rb_income"
             style="@style/BottomBarItem"
             android:drawableTop="@drawable/selector_bottom_bar_rb3"
-            android:paddingTop="6dp"
+            android:paddingTop="8dp"
             android:text="行情" />
 
     </RadioGroup>
