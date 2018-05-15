@@ -16,12 +16,18 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.necer.ncalendar.calendar.WeekCalendar;
 import com.necer.ncalendar.listener.OnWeekCalendarChangedListener;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.adapter.CalendarAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
-import com.xindu.talkfx_new.bean.TVInfo;
+import com.xindu.talkfx_new.base.BaseResponse;
+import com.xindu.talkfx_new.base.Constants;
+import com.xindu.talkfx_new.base.MJsonCallBack;
+import com.xindu.talkfx_new.bean.CalendarsInfo;
+import com.xindu.talkfx_new.utils.Utils;
 
 import org.joda.time.LocalDate;
 
@@ -51,6 +57,11 @@ public class CalendarFragment extends BaseFragment {
     String countrys1[] = {"中国", "美国", "法国", "德国", "英国", "日本", "俄罗斯", "意大利", "波黑", "塞尔维亚", "加拿大", "墨西哥"};
     String countrys2[] = {"美国", "英国", "日本", "法国", "德国", "加拿大", "意大利", "俄罗斯", "澳大利亚", "中国", "巴西", "阿根廷", "墨西哥", "韩国", "印度尼西亚", "印度", "沙特阿拉伯", "南非", "土耳其", "欧盟"};
 
+    CalendarAdapter mAdapter;
+    List<CalendarsInfo.ListInfo> list_ = new ArrayList<>();
+
+    String countryStr = "";
+
     @Override
     protected int setContentView() {
         return R.layout.fragment_calendar;
@@ -76,17 +87,45 @@ public class CalendarFragment extends BaseFragment {
                 year = date.getYear();
                 month = date.getMonthOfYear();
                 today.setText(date.getYear() + "年" + date.getMonthOfYear() + "月");
+                if (date.getMonthOfYear() < 10) {
+                    setDataToView(countryStr, date.getYear() + "-0" + date.getMonthOfYear() + "-" + date.getDayOfMonth());
+                } else {
+                    setDataToView(countryStr, date.getYear() + "-" + date.getMonthOfYear() + "-" + date.getDayOfMonth());
+                }
             }
         });
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        List<TVInfo> list_ = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list_.add(new TVInfo("欧元/美元", "1.23978", "1.53899", "+0.19383"));
-        }
-        list.setAdapter(new CalendarAdapter(list_));
+        list.setAdapter(mAdapter = new CalendarAdapter(list_));
         initPop();
         return view;
+    }
+
+    private void setDataToView(String country, String data) {
+        showDialog();
+        OkGo.<BaseResponse<List<CalendarsInfo>>>get(Constants.baseDataUrl + "/dCalendar/list?country=" + country + "&tt=9&st=" + data + "&et=" + data)
+                .execute(new MJsonCallBack<BaseResponse<List<CalendarsInfo>>>() {
+                    @Override
+                    public void onSuccess(Response<BaseResponse<List<CalendarsInfo>>> response) {
+                        if (response.body().datas != null && response.body().datas.size() > 0) {
+                            if (response.body().datas.get(0).list != null && response.body().datas.get(0).list.size() > 0) {
+                                mAdapter.setNewData(response.body().datas.get(0).list);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<BaseResponse<List<CalendarsInfo>>> response) {
+                        //显示数据加载失败,点击重试
+                        Utils.errorResponse(getActivity(), response);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        dismissDialog();
+                    }
+                });
     }
 
     PopupWindow qmuiPopup;

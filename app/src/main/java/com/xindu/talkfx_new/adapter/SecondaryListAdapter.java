@@ -59,7 +59,6 @@ public abstract class SecondaryListAdapter<GVH, SVH extends RecyclerView.ViewHol
         setDataTrees(data);
     }
 
-
     /**
      * Set new data for adapter and notify changing.
      *
@@ -341,6 +340,11 @@ public abstract class SecondaryListAdapter<GVH, SVH extends RecyclerView.ViewHol
         public DataTree(K groupItem, List<V> subItems) {
             this.groupItem = groupItem;
             this.subItems = subItems;
+        }
+
+        public void replaceSubItems(int p, V newItem) {
+            subItems.remove(p);
+            subItems.add(p, newItem);
         }
 
         public K getGroupItem() {

@@ -5,17 +5,14 @@ package com.xindu.talkfx_new.bean;
  */
 
 public class TVInfo {
-    public TVInfo(String a, String b, String c, String d) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-    }
-
-    public String a;
-    public String b;
-    public String c;
-    public String d;
+    public long date;
+    public double dailyChange;
+    public double dailyPercentualChange;
+    public double last;
+    public double yearlyPercentualChange;
+    public String name;
+    public double weeklyPercentualChange;
+    public double monthlyPercentualChange;
     public boolean isCheck;
 
     public boolean isCheck() {

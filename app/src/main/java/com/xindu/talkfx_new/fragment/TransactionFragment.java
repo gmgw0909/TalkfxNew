@@ -16,13 +16,13 @@ import butterknife.Bind;
  * Created by LeeBoo on 2018/3/12.
  */
 
-public class QuotesFragment extends BaseFragment {
+public class TransactionFragment extends BaseFragment {
 
     @Bind(R.id.tabSegment)
     QMUITabSegment mTabSegment;
     @Bind(R.id.contentViewPager)
     ViewPager mViewPager;
-    String[] tabTitles = {"交易品种", "日历"};
+    String[] tabTitles = {"排行榜", "我的交易", "我的跟随"};
     private ViewPagerAdapter mPagerAdapter;
 
     @Override
@@ -32,8 +32,9 @@ public class QuotesFragment extends BaseFragment {
 
     private void initTabAndPager() {
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new JYPZFragment());
-        fragments.add(new CalendarFragment());
+        fragments.add(new RankFragment());
+        fragments.add(new MyJYFragment());
+        fragments.add(new GroupFragment());
         mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         mPagerAdapter.setItems(fragments, tabTitles);
         mViewPager.setAdapter(mPagerAdapter);

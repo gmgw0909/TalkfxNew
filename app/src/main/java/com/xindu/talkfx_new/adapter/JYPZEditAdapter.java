@@ -53,7 +53,7 @@ public class JYPZEditAdapter extends RecyclerView.Adapter<JYPZEditAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
-        holder.text.setText(mItems.get(position).a);
+        holder.text.setText(mItems.get(position).name);
         if (mItems.get(position).isCheck) {
             Drawable drawable = context.getResources().getDrawable(R.mipmap.jypz_checked);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());

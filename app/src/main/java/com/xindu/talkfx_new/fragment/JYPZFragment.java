@@ -16,8 +16,8 @@ import com.lzy.okgo.model.Response;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.activity.AddMoreJYPZActivity;
 import com.xindu.talkfx_new.activity.SearchActivity;
-import com.xindu.talkfx_new.adapter.CurrencyPairAdapter;
 import com.xindu.talkfx_new.adapter.JYPZEditAdapter;
+import com.xindu.talkfx_new.adapter.JYPZMajorAdapter;
 import com.xindu.talkfx_new.adapter.SecondaryListAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.base.BaseResponse;
@@ -36,10 +36,9 @@ import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 
-import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +49,7 @@ import butterknife.OnClick;
  * Created by LeeBoo on 2018/3/12.
  */
 
-public class TransactionVarietyFragment extends BaseFragment implements OnStartDragListener {
+public class JYPZFragment extends BaseFragment implements OnStartDragListener {
 
     @Bind(R.id.recycler_view1)
     RecyclerView recyclerView1;
@@ -76,7 +75,7 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
     private ItemTouchHelper mItemTouchHelper;
     private boolean hasLoad = false;
 
-    CurrencyPairAdapter adapter;
+    JYPZMajorAdapter adapter;
     JYPZEditAdapter adapter2;
     LinearLayoutManager linearLayoutManager;
     Gson gson = new Gson();
@@ -93,10 +92,7 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
             recyclerView1.setHasFixedSize(true);
             linearLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView1.setLayoutManager(linearLayoutManager);
-            adapter = new CurrencyPairAdapter(getActivity());
-            adapter.setItemOpen(true);
-            adapter.setData(dataTrees);
-            adapter.setCanClosed(false);
+            adapter = new JYPZMajorAdapter(list);
             recyclerView1.setAdapter(adapter);
 
             recyclerView2.setHasFixedSize(true);
@@ -106,10 +102,6 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
             ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter2);
             mItemTouchHelper = new ItemTouchHelper(callback);
             mItemTouchHelper.attachToRecyclerView(recyclerView2);
-            // 保留两位小数
-            nf.setMaximumFractionDigits(5);
-            // 如果不需要四舍五入，可以使用RoundingMode.DOWN
-            nf.setRoundingMode(RoundingMode.UP);
             hasLoad = true;
         }
     }
@@ -122,14 +114,8 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
                         if (response.body().datas != null) {
                             CurrencyResponse results = response.body().datas;
                             if (results != null && results.currencys != null && results.currencys.size() > 0) {
-                                for (int i = 0; i < results.currencys.size(); i++) {
-                                    TVInfo info = new TVInfo();
-                                    info.name = "HaHa";
-                                    list.add(info);
-                                    list.addAll(results.currencys.get(i).list);
-                                    dataTrees.add(new SecondaryListAdapter.DataTree<String, TVInfo>(results.currencys.get(i).group, results.currencys.get(i).list));
-                                }
-                                adapter.notifyNewData(dataTrees);
+                                list.addAll(results.currencys.get(0).list);
+                                adapter.notifyDataSetChanged();
                                 getWebsocket();
                             }
                         }
@@ -143,9 +129,11 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
                 });
     }
 
+    ExampleClient c;
+
     private void getWebsocket() {
         try {
-            ExampleClient c = new ExampleClient(new URI("ws://gwt.talkfx.com:3677"), new Draft_17());
+            c = new ExampleClient(new URI("ws://gwt.talkfx.com:3677"), new Draft_17());
             c.connectBlocking();
             c.send("我是Android");
         } catch (URISyntaxException e) {
@@ -155,7 +143,7 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
         }
     }
 
-    NumberFormat nf = NumberFormat.getNumberInstance();
+    DecimalFormat df = new DecimalFormat("0.00000");
 
     class ExampleClient extends WebSocketClient {
 
@@ -178,35 +166,35 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
         @Override
         public void onMessage(final String message) {
             info = gson.fromJson(message, WebSocketInfo.class);
-            getActivity().runOnUiThread(new Runnable() {
+            Log.d("Ok_received:", message);
+            handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < list.size(); i++) {
-                        if (info.i.equals(list.get(i).name)) {
-                            if (i == 0 || i == 7 || i == 15 || i == 22 || i == 30) {
-                                Log.d("Ok_====::", "i == 0 || i == 7 || i == 15 || i == 22 || i == 30");
-                            } else {
-                                View view = linearLayoutManager.findViewByPosition(i);
-                                if (view != null) {
-                                    LinearLayout layout = (LinearLayout) view;
-                                    TextView upDown = (TextView) layout.findViewById(R.id.up_down);
-                                    TextView price = (TextView) layout.findViewById(R.id.price);
-                                    price.setText(nf.format(info.price));
-                                    if (info.nch < 0.00000D) {
-                                        Log.d("Ok_===0===::", "<<<<<<0");
-                                        upDown.setTextColor(getActivity().getResources().getColor(R.color.red));
-                                    } else {
-                                        Log.d("Ok_===0===:", ">>>>>>0");
-                                        upDown.setTextColor(getActivity().getResources().getColor(R.color.green));
-                                    }
-                                    upDown.setText(nf.format(info.nch));
+                    if (list != null && list.size() > 0) {
+                        for (int i = 0; i < list.size(); i++) {
+                            if (info.i.equals(list.get(i).name)) {
+                                LinearLayout view = (LinearLayout) linearLayoutManager.findViewByPosition(i);
+                                TextView uP = (TextView) view.findViewById(R.id.up_down);
+                                TextView price = (TextView) view.findViewById(R.id.price);
+                                if (info.nch < 0.00000D) {
+                                    uP.setTextColor(getActivity().getResources().getColor(R.color.red));
+                                } else {
+                                    uP.setTextColor(getActivity().getResources().getColor(R.color.green));
                                 }
+                                price.setText(df.format(info.price));
+                                uP.setText(df.format(info.nch));
                             }
                         }
                     }
                 }
-            });
-            Log.d("Ok_received:", message);
+            }, 100);
+//            for (int i = 0; i < list.size(); i++) {
+//                if (info.i.equals(list.get(i).name)) {
+//                    list.get(i).dailyChange = info.nch;
+//                    list.get(i).last = info.price;
+//                    adapter.notifyItemChanged(i);
+//                }
+//            }
         }
 
         @Override
@@ -225,6 +213,12 @@ public class TransactionVarietyFragment extends BaseFragment implements OnStartD
             ex.printStackTrace();
             // if the error is fatal then onClose will be called additionally
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        c.close();
     }
 
     @OnClick({R.id.add, R.id.edit, R.id.search, R.id.back, R.id.delete})

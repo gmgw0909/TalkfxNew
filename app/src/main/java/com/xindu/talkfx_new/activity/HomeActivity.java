@@ -15,6 +15,7 @@ import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.fragment.ColumnFragment;
 import com.xindu.talkfx_new.fragment.GroupFragment;
 import com.xindu.talkfx_new.fragment.QuotesFragment;
+import com.xindu.talkfx_new.fragment.TransactionFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class HomeActivity extends BaseActivity {
         GroupFragment f2 = new GroupFragment();
         GroupFragment f3 = new GroupFragment();
         QuotesFragment f4 = new QuotesFragment();
-        GroupFragment f5 = new GroupFragment();
+        TransactionFragment f5 = new TransactionFragment();
         fragmentList.add(f1);
         fragmentList.add(f2);
         fragmentList.add(f3);
