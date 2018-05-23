@@ -1,6 +1,5 @@
 package com.xindu.talkfx_new.fragment;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,7 +8,6 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xindu.talkfx_new.R;
-import com.xindu.talkfx_new.activity.PersonalActivity;
 import com.xindu.talkfx_new.adapter.RankAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
 import com.xindu.talkfx_new.bean.UserInfo;
@@ -53,14 +51,6 @@ public class RankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             refreshLayout.setColorSchemeColors(Color.BLACK, Color.BLUE);
             adapter.setEnableLoadMore(false);
             refreshLayout.setOnRefreshListener(this);
-            adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter quickAdapter, View view, int position) {
-                    startActivity(new Intent(getActivity(), PersonalActivity.class)
-                            .putExtra("customerId", adapter.getItem(position).customerId + ""));
-                }
-            });
-
             //开启loading,获取数据
             setRefreshing(true);
             onRefresh();

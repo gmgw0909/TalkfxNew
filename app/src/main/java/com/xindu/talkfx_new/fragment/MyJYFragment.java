@@ -1,25 +1,24 @@
 package com.xindu.talkfx_new.fragment;
 
-import android.graphics.Color;
+import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.xindu.talkfx_new.R;
+import com.xindu.talkfx_new.activity.JYAcountInfoActivity;
+import com.xindu.talkfx_new.activity.PingCangActivity;
+import com.xindu.talkfx_new.activity.TradersActivity;
+import com.xindu.talkfx_new.adapter.PingCangAdapter;
 import com.xindu.talkfx_new.base.BaseFragment;
+import com.xindu.talkfx_new.bean.TVInfo;
+import com.xindu.talkfx_new.widget.RadarView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by LeeBoo on 2018/3/12.
@@ -27,9 +26,11 @@ import butterknife.ButterKnife;
 
 public class MyJYFragment extends BaseFragment {
 
-    @Bind(R.id.chart1)
-    RadarChart mChart;
-
+    @Bind(R.id.radar_view)
+    RadarView radarView;
+    @Bind(R.id.recyclerView)
+    RecyclerView recyclerView;
+    PingCangAdapter adapter;
     boolean isInit;
 
     @Override
@@ -40,49 +41,19 @@ public class MyJYFragment extends BaseFragment {
     @Override
     protected void lazyLoad() {
         if (!isInit) {
-            mChart.getDescription().setEnabled(false);
-            mChart.setWebLineWidth(1f);
-            mChart.setWebColor(Color.WHITE);
-            mChart.setWebLineWidthInner(1f);
-            mChart.setWebColorInner(Color.WHITE);
-            mChart.setWebAlpha(100);
-            //设置初始值
-            setData();
-            mChart.animateXY(
-                    1400, 1400,
-                    Easing.EasingOption.EaseInOutQuad,
-                    Easing.EasingOption.EaseInOutQuad);
-
-            XAxis xAxis = mChart.getXAxis();
-//        xAxis.setTypeface(mTfLight);
-            xAxis.setTextSize(9f);
-            xAxis.setYOffset(0f);
-            xAxis.setXOffset(0f);
-            xAxis.setValueFormatter(new IAxisValueFormatter() {
-
-                private String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
-
-                @Override
-                public String getFormattedValue(float value, AxisBase axis) {
-                    return mActivities[(int) value % mActivities.length];
-                }
-            });
-            xAxis.setTextColor(Color.WHITE);
-
-            YAxis yAxis = mChart.getYAxis();
-//        yAxis.setTypeface(mTfLight);
-            yAxis.setLabelCount(5, false);
-            yAxis.setTextSize(9f);
-            yAxis.setAxisMinimum(0f);
-            yAxis.setAxisMaximum(80f);
-            yAxis.setDrawLabels(false);
-
-            Legend l = mChart.getLegend();
-            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-            l.setOrientation(Legend.LegendOrientation.VERTICAL);
-            l.setDrawInside(false);
-            l.setEnabled(false);
+            ArrayList<String> titles = new ArrayList<String>();
+            titles.add("抗风险能力\n85分");
+            titles.add("稳定性\n65分");
+            titles.add("可复制性\n46分");
+            titles.add("风险控制\n54分");
+            titles.add("盈利能力\n76分");
+            radarView.setTitles(titles);
+            List<TVInfo> list = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                list.add(new TVInfo());
+            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setAdapter(adapter = new PingCangAdapter(list));
             isInit = true;
         }
     }
@@ -92,44 +63,18 @@ public class MyJYFragment extends BaseFragment {
         super.stopLoad();
     }
 
-    public void setData() {
-
-        float mult = 100;
-        float min = 0;
-        int cnt = 5;
-
-        ArrayList<RadarEntry> entries1 = new ArrayList<RadarEntry>();
-
-        for (int i = 0; i < cnt; i++) {
-            float val1 = (float) (Math.random() * mult) + min;
-            entries1.add(new RadarEntry(val1));
+    @OnClick({R.id.pingcang_all, R.id.account_info, R.id.add})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.pingcang_all:
+                startActivity(new Intent(getActivity(), PingCangActivity.class));
+                break;
+            case R.id.account_info:
+                startActivity(new Intent(getActivity(), JYAcountInfoActivity.class));
+                break;
+            case R.id.add:
+                startActivity(new Intent(getActivity(), TradersActivity.class));
+                break;
         }
-
-        RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
-        set1.setColor(Color.rgb(103, 110, 129));
-        set1.setFillColor(Color.rgb(103, 110, 129));
-        set1.setDrawFilled(true);
-        set1.setFillAlpha(180);
-        set1.setLineWidth(2f);
-        set1.setDrawHighlightCircleEnabled(true);
-        set1.setDrawHighlightIndicators(false);
-
-        ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
-        sets.add(set1);
-
-        RadarData data = new RadarData(sets);
-//        data.setValueTypeface(mTfLight);
-        data.setValueTextSize(8f);
-        data.setDrawValues(false);
-        data.setValueTextColor(Color.WHITE);
-
-        mChart.setData(data);
-        mChart.invalidate();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

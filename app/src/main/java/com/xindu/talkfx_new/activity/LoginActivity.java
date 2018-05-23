@@ -121,8 +121,8 @@ public class LoginActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_register:
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class)
-                        .putExtra("goMain",getIntent().getBooleanExtra("goMain",false)));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class)
+                        .putExtra("goMain", getIntent().getBooleanExtra("goMain", false)));
                 break;
             case R.id.btn_send_code:
                 String phone = etPhone.getText().toString().trim();
@@ -257,6 +257,7 @@ public class LoginActivity extends BaseActivity {
         try {
             obj.put("userName", account);
             obj.put("passWord", password);
+            obj.put("isWeb", "1");
         } catch (JSONException e) {
             e.printStackTrace();
         }

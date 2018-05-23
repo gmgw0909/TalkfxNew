@@ -85,6 +85,8 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     Button clickCloseKb;
     @Bind(R.id.collection)
     ImageView collection;
+    @Bind(R.id.title)
+    TextView tv_title;
 
     View topView;
     TextView title;
@@ -99,8 +101,10 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     TextView zanDown;
     QMUIFloatLayout floatLayout;
     CardView hdLayout;
-    LinearLayout opinionLayout;
+    CardView opinionLayout;
     QMUIRoundButton follow;
+    View view;
+    TextView typeTitle;
 
     ColumnDetailAdapter mAdapter;
     int currentPage = 1;
@@ -115,12 +119,15 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_column_detail);
+        setContentView(R.layout.activity_column_details);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        topView = LayoutInflater.from(this).inflate(R.layout.topview_column_detail, null);
+        tv_title.setText("文章详情");
+        topView = LayoutInflater.from(this).inflate(R.layout.topview_column_details, null);
         title = topView.findViewById(R.id.title);
         readCount = topView.findViewById(R.id.read_count);
+        typeTitle = topView.findViewById(R.id.type_title);
+        view = topView.findViewById(R.id.view);
         headImg = topView.findViewById(R.id.headImg);
         headImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,6 +288,12 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                 } else {
                                     title.setText("暂无");
                                 }
+                                if (!TextUtils.isEmpty(detailResponse.column.typeTitle)) {
+                                    typeTitle.setText(detailResponse.column.typeTitle);
+                                    view.setBackgroundColor(Color.parseColor(getViewColor(detailResponse.column.typeTitle)));
+                                } else {
+                                    typeTitle.setText("暂无");
+                                }
                                 if (!TextUtils.isEmpty(detailResponse.column.createDate)) {
                                     data.setText(TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, detailResponse.column.createDate)));
                                 } else {
@@ -380,6 +393,28 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                         setRefreshing(false);
                     }
                 });
+    }
+
+    private String getViewColor(String typeTitle) {
+        String color = "";
+        switch (typeTitle) {
+            case "分析":
+                color = "#4CA0FF";
+                break;
+            case "教学":
+                color = "#A628FF";
+                break;
+            case "心得":
+                color = "#FF4C4C";
+                break;
+            case "业内新闻":
+                color = "#FFA028";
+                break;
+            case "数据报告":
+                color = "#20C43D";
+                break;
+        }
+        return color;
     }
 
     //初始化喊单数据
@@ -515,7 +550,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 break;
             case R.id.btn_back:
                 finish();
-                overridePendingTransition(0, R.anim.zoom_finish);
+//                overridePendingTransition(0, R.anim.zoom_finish);
                 break;
             case R.id.click_close_kb:
                 KeyboardUtil.closeKeyboard(etDiscuss, this);
@@ -746,11 +781,11 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(0, R.anim.zoom_finish);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        overridePendingTransition(0, R.anim.zoom_finish);
+//    }
 
     @Override
     protected void onDestroy() {

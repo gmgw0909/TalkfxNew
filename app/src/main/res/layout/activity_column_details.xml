@@ -9,11 +9,11 @@
         layout="@layout/layout_topbar" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_below="@id/title_bar"
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_bar">
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@+id/title_bar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"

@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv"
-                    android:text="德国"
+                    android:text="全部"
                     android:textColor="@color/blue"
                     android:textSize="14sp" />
 

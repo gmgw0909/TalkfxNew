@@ -88,6 +88,22 @@
         <activity
             android:name=".activity.AddMoreJYPZActivity"
             android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.PingCangActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.JYAcountInfoActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.TradersActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

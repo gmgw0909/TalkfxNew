@@ -65,7 +65,7 @@ public class ColumnFragment extends BaseFragment {
             } else if (i == 1) {
                 fragments.add(ColumnFollowFragment.newInstance());
             } else {
-                fragments.add(ColumnListFragment.newInstance(i + ""));
+                fragments.add(ColumnListFragment.newInstance(i - 1 + ""));
             }
         }
         mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());

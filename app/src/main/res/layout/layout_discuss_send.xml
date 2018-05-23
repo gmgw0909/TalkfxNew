@@ -64,7 +64,8 @@
             android:layout_height="45dp"
             android:background="@color/gray"
             android:scaleType="centerInside"
-            android:src="@mipmap/btn_comment_close" />
+            android:src="@mipmap/btn_comment_close"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

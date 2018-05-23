@@ -163,7 +163,7 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
 
                     @Override
                     public void onError(Response<BaseResponse<Columns>> response) {
-                        Utils.errorResponse(getActivity(),response);
+                        Utils.errorResponse(getActivity(), response);
                     }
 
                     @Override
@@ -198,7 +198,7 @@ public class ColumnHomeFragment extends BaseFragment implements SwipeRefreshLayo
                     public void onError(Response<BaseResponse<List<ColumnInfo>>> response) {
                         //显示数据加载失败,点击重试
                         mAdapter.loadMoreFail();
-                        Utils.errorResponse(getActivity(),response);
+                        Utils.errorResponse(getActivity(), response);
                     }
                 });
     }

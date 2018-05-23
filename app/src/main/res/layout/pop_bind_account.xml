@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape_dialog_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="12dp"
+            android:text="ADSS-Demo"
+            android:textColor="@color/text_normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/bg_normal"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:hint="请输入平台MT4账号"
+            android:inputType="number"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="交易商处开通账号时提供，8位数字"
+            android:textColor="@color/text_gray" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/bg_normal"
+            android:gravity="center"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="交易商处预留的密码"
+            android:textColor="@color/text_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/btn1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="-1dp"
+                android:layout_weight="1"
+                android:text="公开"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:qmui_backgroundColor="@color/blue"
+                app:qmui_borderColor="@color/white"
+                app:qmui_isRadiusAdjustBounds="false"
+                app:qmui_radiusBottomLeft="5dp"
+                app:qmui_radiusBottomRight="0dp"
+                app:qmui_radiusTopLeft="5dp"
+                app:qmui_radiusTopRight="0dp" />
+
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/btn2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="-1dp"
+                android:layout_weight="1"
+                android:text="私密"
+                android:textColor="@color/text_gray"
+                android:textSize="16sp"
+                app:qmui_backgroundColor="@color/bg_normal"
+                app:qmui_borderColor="@color/white"
+                app:qmui_isRadiusAdjustBounds="false"
+                app:qmui_radiusBottomLeft="0dp"
+                app:qmui_radiusBottomRight="5dp"
+                app:qmui_radiusTopLeft="0dp"
+                app:qmui_radiusTopRight="5dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:text="参与排行榜/向别人展示交易成果，可更改"
+            android:textColor="@color/text_gray" />
+    </LinearLayout>
+</LinearLayout>

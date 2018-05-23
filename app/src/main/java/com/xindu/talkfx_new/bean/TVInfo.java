@@ -11,6 +11,7 @@ public class TVInfo {
     public double last;
     public double yearlyPercentualChange;
     public String name;
+    public String symbol;
     public double weeklyPercentualChange;
     public double monthlyPercentualChange;
     public boolean isCheck;

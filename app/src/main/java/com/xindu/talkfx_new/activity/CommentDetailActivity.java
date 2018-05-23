@@ -77,6 +77,8 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
     ImageView collection;
     @Bind(R.id.share)
     ImageView share;
+    @Bind(R.id.title)
+    TextView tv_title;
 
     CommentDetailAdapter adapter;
 
@@ -99,7 +101,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
         setContentView(R.layout.activity_column_detail);
         ButterKnife.bind(this);
         etDiscuss.setHint("请您发表回复");
-
+        tv_title.setText("评论详情");
         topView = LayoutInflater.from(this).inflate(R.layout.topview_comment_detail, null);
         headImg = topView.findViewById(R.id.user_icon);
         userName = topView.findViewById(R.id.userName);
@@ -280,7 +282,7 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                 break;
             case R.id.btn_back:
                 finish();
-                overridePendingTransition(0, R.anim.zoom_finish);
+//                overridePendingTransition(0, R.anim.zoom_finish);
                 break;
             case R.id.click_close_kb:
                 KeyboardUtil.closeKeyboard(etDiscuss, this);
@@ -333,11 +335,11 @@ public class CommentDetailActivity extends BaseActivity implements SwipeRefreshL
                 });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(0, R.anim.zoom_finish);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        overridePendingTransition(0, R.anim.zoom_finish);
+//    }
 
     //键盘打开关闭监听器
     private void initKeyboardChangeListener() {

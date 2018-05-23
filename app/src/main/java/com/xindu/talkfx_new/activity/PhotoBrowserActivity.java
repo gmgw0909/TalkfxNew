@@ -10,7 +10,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,7 +45,7 @@ public class PhotoBrowserActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_photo_browser);
         String s = SPUtil.getString("imageUrls");
         imageUrls = s.split("==分割线==");
@@ -142,11 +141,11 @@ public class PhotoBrowserActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onPageSelected(int position) {
-//                if (initialedPositions[position] != position) {//如果当前页面未加载完毕，则显示加载动画，反之相反；
-//                    showLoadingAnimation();
-//                } else {
-//                    hideLoadingAnimation();
-//                }
+                if (initialedPositions[position] != position) {//如果当前页面未加载完毕，则显示加载动画，反之相反；
+                    showLoadingAnimation();
+                } else {
+                    hideLoadingAnimation();
+                }
                 curPosition = position;
                 photoOrderTv.setText((position + 1) + "/" + imageUrls.length);//设置页面的编号
                 mPager.setTag(position);//为当前view设置tag
