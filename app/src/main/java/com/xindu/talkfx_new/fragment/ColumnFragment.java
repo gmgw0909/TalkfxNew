@@ -95,7 +95,11 @@ public class ColumnFragment extends BaseFragment {
                 .execute(new MJsonCallBack<BaseResponse<MyInfoResponse>>() {
                     @Override
                     public void onSuccess(Response<BaseResponse<MyInfoResponse>> response) {
+                        if (response == null || response.body() == null) {
+                            return;
+                        }
                         MyInfoResponse detailResponse = response.body().datas;
+
                         if (detailResponse != null && detailResponse.user != null) {
                             if (!TextUtils.isEmpty(detailResponse.user.headImg)) {
                                 Glide.with(App.getInstance().getApplicationContext())

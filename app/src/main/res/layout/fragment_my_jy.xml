@@ -1,26 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/ll_no_data"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="120dp"
+                android:background="@mipmap/follow_login_iv" />
 
             <TextView
-                android:id="@+id/add"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white"
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="+ 绑定新账号"
-                android:textColor="@color/blue" />
+                android:text="老子》第三十三章:“知人者智,自知者明。”快绑定你的交易账号，实时了解自己的交易水平甚至与巅峰大师一较高下"
+                android:textColor="@color/text_normal" />
+
+            <Button
+                android:id="@+id/bt"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@mipmap/btn_follow_bg"
+                android:text="绑定交易账号"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/ll_pop"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/text_normal"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:textColor="@color/text_gray"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/tv1"
-                        android:text="   |   跑赢89%的用户"
+                        android:text="   |   跑赢98%的用户"
                         android:textColor="@color/text_white"
                         android:textSize="13sp" />
 
@@ -65,10 +120,11 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="175.87%"
+                    android:text="100%"
                     android:textColor="@color/white"
                     android:textSize="55sp" />
 
@@ -98,11 +154,12 @@
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/real"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
                             android:layout_marginTop="6dp"
-                            android:text="12%"
+                            android:text="0%"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -124,15 +181,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="平均实际杠杆率"
+                            android:text="最大资金回撤率"
                             android:textColor="@color/text_white"
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/back"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:text="12%"
+                            android:text="0%"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -153,15 +211,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="平均实际杠杆率"
+                            android:text="平均持仓时间    "
                             android:textColor="@color/text_white"
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:text="12%"
+                            android:text="0小时"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -183,15 +242,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="平均实际杠杆率"
+                            android:text="胜率"
                             android:textColor="@color/text_white"
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/win"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:text="12%"
+                            android:text="0%"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -296,5 +356,6 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

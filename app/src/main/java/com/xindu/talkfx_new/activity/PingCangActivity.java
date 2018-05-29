@@ -19,7 +19,9 @@ import com.xindu.talkfx_new.base.BaseResponse;
 import com.xindu.talkfx_new.base.Constants;
 import com.xindu.talkfx_new.base.MJsonCallBack;
 import com.xindu.talkfx_new.bean.FollowResponse;
+import com.xindu.talkfx_new.bean.PingCangInfo;
 import com.xindu.talkfx_new.bean.TVInfo;
+import com.xindu.talkfx_new.utils.SPUtil;
 import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.utils.WrapContentLinearLayoutManager;
 
@@ -71,16 +73,18 @@ public class PingCangActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
-        status = 1;
-        currentPage = 1;
-        adapter.setEnableLoadMore(false);
-        requestData(currentPage);//第一页数据
+        getHistory(SPUtil.getInt(Constants.USERID) + "");
+//        status = 1;
+//        currentPage = 1;
+//        adapter.setEnableLoadMore(false);
+//        requestData(currentPage);//第一页数据
     }
 
     @Override
     public void onLoadMoreRequested() {
-        status = 2;
-        requestData(currentPage);
+        adapter.loadMoreComplete();
+//        status = 2;
+//        requestData(currentPage);
     }
 
     public void requestData(int page) {
@@ -122,6 +126,24 @@ public class PingCangActivity extends BaseActivity implements SwipeRefreshLayout
                             //最后调用结束刷新的方法
                             setRefreshing(false);
                         }
+                    }
+                });
+    }
+
+    //平仓历史
+    private void getHistory(String userId) {
+        OkGo.<BaseResponse<PingCangInfo>>get(Constants.baseDataUrl + "/tradeAcctData/detail/flow?status=1&cid=" + userId)
+                .execute(new MJsonCallBack<BaseResponse<PingCangInfo>>() {
+                    @Override
+                    public void onSuccess(Response<BaseResponse<PingCangInfo>> response) {
+                        if (response != null && response.body().datas != null && response.body().datas.list != null) {
+                            adapter.setNewData(response.body().datas.list);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<BaseResponse<PingCangInfo>> response) {
+                        Utils.errorResponse(mContext, response);
                     }
                 });
     }

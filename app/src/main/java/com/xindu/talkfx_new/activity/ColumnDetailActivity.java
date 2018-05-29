@@ -102,7 +102,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     QMUIFloatLayout floatLayout;
     CardView hdLayout;
     CardView opinionLayout;
-    QMUIRoundButton follow;
+    TextView follow;
     View view;
     TextView typeTitle;
 
@@ -112,8 +112,8 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
     String columnId = "";
     boolean sendSuccess;
     String customerId = "";
-    int collectStatus;
-    int followStatus;
+    String collectStatus;
+    String followStatus;
     String viewStatus = "";
 
     @Override
@@ -146,10 +146,10 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
             @Override
             public void onClick(View view) {
                 if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
-                    if (followStatus == 0) {
-                        follow("cancel");
-                    } else {
+                    if (!TextUtils.isEmpty(followStatus) && followStatus.equals("1")) {
                         follow("care");
+                    } else {
+                        follow("cancel");
                     }
                 } else {
                     startActivity(LoginActivity.class, false);
@@ -295,7 +295,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                     typeTitle.setText("暂无");
                                 }
                                 if (!TextUtils.isEmpty(detailResponse.column.createDate)) {
-                                    data.setText(TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, TimeUtil.covertToLong(TimeUtil.FORMAT_TIME_EN, detailResponse.column.createDate)));
+                                    data.setText(TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_CN_2, Long.parseLong(detailResponse.column.createDate) * 1000));
                                 } else {
                                     data.setText("暂无");
                                 }
@@ -328,16 +328,16 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                         Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
                                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                                         zanUp.setCompoundDrawables(drawable, null, null, null);
-                                        zanUp.setTextColor(getResources().getColor(R.color.orange));
+                                        zanUp.setTextColor(getResources().getColor(R.color.text_black));
                                     } else if (detailResponse.column.viewStatus.equals("0")) {
                                         Drawable drawable = getResources().getDrawable(R.mipmap.zan_down_s);
                                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                                         zanDown.setCompoundDrawables(drawable, null, null, null);
-                                        zanDown.setTextColor(getResources().getColor(R.color.orange));
+                                        zanDown.setTextColor(getResources().getColor(R.color.text_black));
                                     }
                                 }
                                 collectStatus = detailResponse.column.collectStatus;
-                                if (detailResponse.column.collectStatus == 1) {
+                                if (!TextUtils.isEmpty(detailResponse.column.collectStatus) && detailResponse.column.collectStatus.equals("1")) {
                                     collection.setImageResource(R.mipmap.column_btn_collection);
                                 } else {
                                     collection.setImageResource(R.mipmap.column_btn_collection_s);
@@ -361,10 +361,14 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                             .error(R.mipmap.default_person_icon)
                                             .into(headImg);
                                 }
-                                if (detailResponse.user.concernStatus == 0) {
-                                    follow.setText("已关注");
+                                if (!TextUtils.isEmpty(detailResponse.user.concernStatus) && detailResponse.user.concernStatus.equals("1")) {
+                                    follow.setText("关注");
+                                    follow.setTextColor(getResources().getColor(R.color.white));
+                                    follow.setBackgroundResource(R.mipmap.btn_follow_bg);
                                 } else {
-                                    follow.setText("+ 关注");
+                                    follow.setText("已关注");
+                                    follow.setTextColor(getResources().getColor(R.color.text_gray));
+                                    follow.setBackgroundResource(R.mipmap.btn_unfollow_bg);
                                 }
                                 followStatus = detailResponse.user.concernStatus;
                                 mAdapter.setAuthor(detailResponse.user.userName + "");
@@ -572,11 +576,11 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                     @Override
                     public void onSuccess(Response<BaseResponse> response) {
                         if (response.body().code == 0) {
-                            if (collectStatus == 1) {
-                                collectStatus = 0;
+                            if (!TextUtils.isEmpty(collectStatus) && collectStatus.equals("1")) {
+                                collectStatus = "0";
                                 collection.setImageResource(R.mipmap.column_btn_collection_s);
-                            } else if (collectStatus == 0) {
-                                collectStatus = 1;
+                            } else if (collectStatus.equals("0")) {
+                                collectStatus = "1";
                                 collection.setImageResource(R.mipmap.column_btn_collection);
                             }
                         }
@@ -614,14 +618,14 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                                     zanDown.setCompoundDrawables(drawable, null, null, null);
                                     zanDown.setText(Integer.parseInt(zanDown.getText().toString()) + 1 + "");
-                                    zanDown.setTextColor(getResources().getColor(R.color.orange));
+                                    zanDown.setTextColor(getResources().getColor(R.color.text_black));
                                     viewStatus = "0";
                                 } else {
                                     Drawable drawable = getResources().getDrawable(R.mipmap.zan_up_s);
                                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                                     zanUp.setCompoundDrawables(drawable, null, null, null);
                                     zanUp.setText(Integer.parseInt(zanUp.getText().toString()) + 1 + "");
-                                    zanUp.setTextColor(getResources().getColor(R.color.orange));
+                                    zanUp.setTextColor(getResources().getColor(R.color.text_black));
                                     viewStatus = "1";
                                 }
                             } else {
@@ -637,7 +641,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                         drawable1.setBounds(0, 0, drawable1.getMinimumWidth(), drawable1.getMinimumHeight());
                                         zanDown.setCompoundDrawables(drawable1, null, null, null);
                                         zanDown.setText(Integer.parseInt(zanDown.getText().toString()) + 1 + "");
-                                        zanDown.setTextColor(getResources().getColor(R.color.orange));
+                                        zanDown.setTextColor(getResources().getColor(R.color.text_black));
                                         viewStatus = "0";
                                     }
                                 } else if (viewStatus.equals("0")) {
@@ -652,7 +656,7 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                                         drawable1.setBounds(0, 0, drawable1.getMinimumWidth(), drawable1.getMinimumHeight());
                                         zanUp.setCompoundDrawables(drawable1, null, null, null);
                                         zanUp.setText(Integer.parseInt(zanUp.getText().toString()) + 1 + "");
-                                        zanUp.setTextColor(getResources().getColor(R.color.orange));
+                                        zanUp.setTextColor(getResources().getColor(R.color.text_black));
                                         viewStatus = "1";
                                     }
                                 }
@@ -687,12 +691,16 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                         @Override
                         public void onSuccess(Response<BaseResponse> response) {
                             if (response.body().code == 0) {
-                                if (followStatus == 0) {
-                                    followStatus = 1;
-                                    follow.setText("+ 关注");
-                                } else if (followStatus == 1) {
-                                    followStatus = 0;
+                                if (!TextUtils.isEmpty(followStatus) && followStatus.equals("1")) {
+                                    followStatus = "0";
                                     follow.setText("已关注");
+                                    follow.setTextColor(getResources().getColor(R.color.text_gray));
+                                    follow.setBackgroundResource(R.mipmap.btn_unfollow_bg);
+                                } else if (followStatus.equals("0")) {
+                                    followStatus = "1";
+                                    follow.setText("关注");
+                                    follow.setTextColor(getResources().getColor(R.color.white));
+                                    follow.setBackgroundResource(R.mipmap.btn_follow_bg);
                                 }
                             }
                         }
@@ -714,12 +722,16 @@ public class ColumnDetailActivity extends BaseActivity implements SwipeRefreshLa
                         @Override
                         public void onSuccess(Response<BaseResponse> response) {
                             if (response.body().code == 0) {
-                                if (followStatus == 0) {
-                                    followStatus = 1;
-                                    follow.setText("+ 关注");
-                                } else if (followStatus == 1) {
-                                    followStatus = 0;
+                                if (!TextUtils.isEmpty(followStatus) && followStatus.equals("1")) {
+                                    followStatus = "0";
                                     follow.setText("已关注");
+                                    follow.setTextColor(getResources().getColor(R.color.text_gray));
+                                    follow.setBackgroundResource(R.mipmap.btn_unfollow_bg);
+                                } else if (followStatus.equals("0")) {
+                                    followStatus = "1";
+                                    follow.setText("关注");
+                                    follow.setTextColor(getResources().getColor(R.color.white));
+                                    follow.setBackgroundResource(R.mipmap.btn_follow_bg);
                                 }
                             }
                         }

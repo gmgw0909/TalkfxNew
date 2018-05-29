@@ -37,7 +37,7 @@ public class ColumnListAdapter2 extends BaseQuickAdapter<ColumnInfo, BaseViewHol
                         .append(" | " + model.miniContent)
                         .setForegroundColor(mContext.getResources().getColor(R.color.text_gray))
                         .create())
-                .setText(R.id.data, (TextUtils.isEmpty(model.createDate) ? "" : TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_MM_dd_HH_mm, Long.parseLong(model.createDate) * 1000)));
+                .setText(R.id.data, (TextUtils.isEmpty(model.createDate) ? "" : TimeUtil.convertToDifftime(TimeUtil.FORMAT_TIME_CN_2, Long.parseLong(model.createDate) * 1000)));
         ImageView firstImg = baseViewHolder.getView(R.id.firstImg);
         if (!TextUtils.isEmpty(model.firstImg)) {
             firstImg.setVisibility(View.VISIBLE);

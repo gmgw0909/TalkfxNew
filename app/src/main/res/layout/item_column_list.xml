@@ -1,102 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="155dp">
-
-    <LinearLayout
-        android:id="@+id/ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@+id/firstImg">
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="6dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/red" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:lineSpacingMultiplier="1.2"
-            android:maxLines="2"
-            android:text="原油价格创3年新高"
-            android:textColor="@color/text_black"
-            android:textSize="17sp" />
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/firstImg"
-        android:layout_width="100dp"
-        android:layout_height="65dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"
-        android:scaleType="fitXY" />
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ll"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@+id/firstImg"
-        android:ellipsize="end"
-        android:lines="3"
-        android:text="LeeBoo"
-        android:textColor="@color/text_gray" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="16dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/data"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="12-09"
-            android:textColor="@color/text_gray"
-            android:textSize="@dimen/sp_12" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp">
 
-        <TextView
-            android:id="@+id/read_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/comment_count"
-            android:drawableLeft="@mipmap/list_read_icon"
-            android:drawablePadding="6dp"
-            android:text="0"
-            android:textColor="@color/text_gray"
-            android:textSize="@dimen/sp_12" />
+            <View
+                android:id="@+id/view"
+                android:layout_width="6dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/red" />
 
-        <TextView
-            android:id="@+id/comment_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:lineSpacingMultiplier="1.2"
+                android:maxLines="2"
+                android:text="原油价格创3年新高"
+                android:textColor="@color/text_black"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/firstImg"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
-            android:drawableLeft="@mipmap/list_comment_icon"
-            android:drawablePadding="6dp"
-            android:text="0"
-            android:textColor="@color/text_gray"
-            android:textSize="@dimen/sp_12" />
+            android:layout_below="@id/ll"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/firstImg"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.2"
+            android:lines="3"
+            android:text="LeeBoo"
+            android:textColor="@color/text_gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12-09"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/sp_12" />
+
+            <TextView
+                android:id="@+id/read_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:layout_toLeftOf="@+id/comment_count"
+                android:drawableLeft="@mipmap/list_read_icon"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/sp_12" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="57dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:drawableLeft="@mipmap/list_comment_icon"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/sp_12" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
-</RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e4e8e9" />
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#fafafa" />
+</LinearLayout>

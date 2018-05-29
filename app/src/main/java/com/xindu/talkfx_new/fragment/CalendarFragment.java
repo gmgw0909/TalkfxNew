@@ -1,6 +1,8 @@
 package com.xindu.talkfx_new.fragment;
 
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -183,6 +185,12 @@ public class CalendarFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.choose_date_view:
                 if (!qmuiPopup.isShowing()) {
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        Rect visibleFrame = new Rect();
+                        view.getGlobalVisibleRect(visibleFrame);
+                        int height = view.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
+                        qmuiPopup.setHeight(height);
+                    }
                     qmuiPopup.showAsDropDown(chooseDateView);
                 } else {
                     qmuiPopup.dismiss();

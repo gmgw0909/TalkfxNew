@@ -22,7 +22,10 @@ import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.activity.LoginActivity;
+import com.xindu.talkfx_new.activity.MTPlatformActivity;
 import com.xindu.talkfx_new.activity.RegisterActivity;
+import com.xindu.talkfx_new.activity.TraderServersActivity;
+import com.xindu.talkfx_new.activity.TradersActivity;
 import com.xindu.talkfx_new.utils.SPUtil;
 
 import java.security.cert.CertificateException;
@@ -96,6 +99,36 @@ public class App extends Application {
 //                            a.finish();
 //                            list_.add(a);
 //                        }
+                    }
+                }
+                lists.removeAll(list_);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 清空绑定Activity
+     */
+    public static void clearBindActivity() {
+        try {
+            if (lists != null) {
+                ArrayList<Activity> list_ = new ArrayList<>();
+                for (Activity a : lists) {
+                    if (a != null) {
+                        if (a instanceof MTPlatformActivity) {
+                            a.finish();
+                            list_.add(a);
+                        }
+                        if (a instanceof TradersActivity) {
+                            a.finish();
+                            list_.add(a);
+                        }
+                        if (a instanceof TraderServersActivity) {
+                            a.finish();
+                            list_.add(a);
+                        }
                     }
                 }
                 lists.removeAll(list_);

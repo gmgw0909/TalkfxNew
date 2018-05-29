@@ -75,7 +75,7 @@ public class PersonalActivity extends BaseActivity {
     LinearLayout llAuthenInfor;
     private ViewPagerAdapter mPagerAdapter;
     String customerId;
-    int followStatus;
+    String followStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,10 +94,10 @@ public class PersonalActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
-                    if (followStatus == 0) {
-                        follow("cancel");
-                    } else {
+                    if (TextUtils.isEmpty(followStatus) || followStatus.equals("1")) {
                         follow("care");
+                    } else {
+                        follow("cancel");
                     }
                 } else {
                     startActivity(LoginActivity.class, false);
@@ -127,10 +127,10 @@ public class PersonalActivity extends BaseActivity {
                         CustomerResponse detailResponse = response.body().datas;
                         if (detailResponse != null && detailResponse.user != null) {
                             followStatus = detailResponse.user.concernStatus;
-                            if (detailResponse.user.concernStatus == 0) {
-                                follow.setText("已关注");
-                            } else {
+                            if (TextUtils.isEmpty(followStatus) || followStatus.equals("1")) {
                                 follow.setText("+ 关注");
+                            } else {
+                                follow.setText("已关注");
                             }
                             if (!TextUtils.isEmpty(detailResponse.user.userName)) {
                                 userName.setText(detailResponse.user.userName);
@@ -211,12 +211,12 @@ public class PersonalActivity extends BaseActivity {
                         @Override
                         public void onSuccess(Response<BaseResponse> response) {
                             if (response.body().code == 0) {
-                                if (followStatus == 0) {
-                                    followStatus = 1;
-                                    follow.setText("+ 关注");
-                                } else if (followStatus == 1) {
-                                    followStatus = 0;
+                                if (TextUtils.isEmpty(followStatus) || followStatus.equals("1")) {
+                                    followStatus = "0";
                                     follow.setText("已关注");
+                                } else if (followStatus.equals("0")) {
+                                    followStatus = "1";
+                                    follow.setText("+ 关注");
                                 }
                             }
                         }
@@ -238,12 +238,12 @@ public class PersonalActivity extends BaseActivity {
                         @Override
                         public void onSuccess(Response<BaseResponse> response) {
                             if (response.body().code == 0) {
-                                if (followStatus == 0) {
-                                    followStatus = 1;
-                                    follow.setText("+ 关注");
-                                } else if (followStatus == 1) {
-                                    followStatus = 0;
+                                if (TextUtils.isEmpty(followStatus) || followStatus.equals("1")) {
+                                    followStatus = "0";
                                     follow.setText("已关注");
+                                } else if (followStatus.equals("0")) {
+                                    followStatus = "1";
+                                    follow.setText("+ 关注");
                                 }
                             }
                         }

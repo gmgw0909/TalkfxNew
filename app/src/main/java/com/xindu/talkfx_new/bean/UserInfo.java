@@ -38,6 +38,6 @@ public class UserInfo {
     public List<?> labelList;
     public List<AttAchievementInfo> attNoAchievementList;
     public List<AttAchievementInfo> attAchievementList;
-    public int concernStatus;
+    public String concernStatus;
     public boolean follow;
 }

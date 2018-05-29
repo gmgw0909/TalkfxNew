@@ -20,7 +20,7 @@ public class TimeUtil {
     public static final String FORMAT_DATE_CN = "yyyy年MM月dd日";
 
     public static final String FORMAT_TIME_CN = "yyyy年MM月dd HH时mm分ss秒";
-    public static final String FORMAT_TIME_CN_2 = "yyyy年MM月dd HH时mm分";
+    public static final String FORMAT_TIME_CN_2 = "yyyy年MM月dd日 HH:mm";
     public static final String FORMAT_TIME_EN = "yyyy-MM-dd HH:mm:ss";
     public static final String FORMAT_TIME_EN_2 = "yyyy-MM-dd HH:mm";
     public static final String FORMAT_TIME_MM_dd = "MM/dd";

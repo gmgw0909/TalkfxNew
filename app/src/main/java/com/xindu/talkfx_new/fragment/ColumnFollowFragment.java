@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -86,7 +85,7 @@ public class ColumnFollowFragment extends BaseFragment implements SwipeRefreshLa
         followRv.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mAdapter = new ColumnListAdapter2(null);
 //        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.isFirstOnly(false);
@@ -146,6 +145,9 @@ public class ColumnFollowFragment extends BaseFragment implements SwipeRefreshLa
                 .execute(new MJsonCallBack<BaseResponse<FollowColumnInfo>>() {
                     @Override
                     public void onSuccess(Response<BaseResponse<FollowColumnInfo>> response) {
+                        if (response == null || response.body() == null) {
+                            return;
+                        }
                         List<ColumnInfo> results = response.body().datas.list;
                         setData(true, results);
                         mAdapter.setEnableLoadMore(true);
@@ -267,6 +269,9 @@ public class ColumnFollowFragment extends BaseFragment implements SwipeRefreshLa
                 .execute(new MJsonCallBack<BaseResponse<FollowResponse>>() {
                     @Override
                     public void onSuccess(Response<BaseResponse<FollowResponse>> response) {
+                        if (response == null || response.body() == null) {
+                            return;
+                        }
                         if (response.body().datas != null) {
                             List<UserInfo> results = response.body().datas.list;
                             adapter.setNewData(results);

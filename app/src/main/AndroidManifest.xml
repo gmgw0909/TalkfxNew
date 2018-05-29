@@ -102,7 +102,15 @@
             android:launchMode="singleTask" />
 
         <activity
+            android:name=".activity.MTPlatformActivity"
+            android:launchMode="singleTask" />
+
+        <activity
             android:name=".activity.TradersActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.TraderServersActivity"
             android:launchMode="singleTask" />
     </application>
 

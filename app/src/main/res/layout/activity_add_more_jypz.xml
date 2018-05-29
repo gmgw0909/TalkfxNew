@@ -13,7 +13,8 @@
         android:id="@+id/fl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="gone">
 
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
             android:layout_width="match_parent"

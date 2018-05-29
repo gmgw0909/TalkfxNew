@@ -14,11 +14,11 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="12dp"
-            android:text="ADSS-Demo"
             android:textColor="@color/text_normal" />
 
         <View
@@ -27,6 +27,7 @@
             android:background="@color/gray" />
 
         <EditText
+            android:id="@+id/et_account"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="30dp"
@@ -46,9 +47,11 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="交易商处开通账号时提供，8位数字"
-            android:textColor="@color/text_gray" />
+            android:textColor="@color/text_gray"
+            android:textSize="12sp" />
 
         <EditText
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="30dp"
@@ -66,7 +69,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="交易商处预留的密码"
-            android:textColor="@color/text_gray" />
+            android:textColor="@color/text_gray"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,39 +80,27 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            <Button
                 android:id="@+id/btn1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="-1dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_gk_btn_s"
                 android:text="公开"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                app:qmui_backgroundColor="@color/blue"
-                app:qmui_borderColor="@color/white"
-                app:qmui_isRadiusAdjustBounds="false"
-                app:qmui_radiusBottomLeft="5dp"
-                app:qmui_radiusBottomRight="0dp"
-                app:qmui_radiusTopLeft="5dp"
-                app:qmui_radiusTopRight="0dp" />
+                android:textSize="15sp" />
 
-            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            <Button
                 android:id="@+id/btn2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="-1dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_sm_btn"
                 android:text="私密"
                 android:textColor="@color/text_gray"
-                android:textSize="16sp"
-                app:qmui_backgroundColor="@color/bg_normal"
-                app:qmui_borderColor="@color/white"
-                app:qmui_isRadiusAdjustBounds="false"
-                app:qmui_radiusBottomLeft="0dp"
-                app:qmui_radiusBottomRight="5dp"
-                app:qmui_radiusTopLeft="0dp"
-                app:qmui_radiusTopRight="5dp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
         <TextView
@@ -118,6 +110,16 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
             android:text="参与排行榜/向别人展示交易成果，可更改"
-            android:textColor="@color/text_gray" />
+            android:textColor="@color/text_gray"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_bind"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="@drawable/shape_dialog_bind_btn"
+            android:text="绑定账号"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

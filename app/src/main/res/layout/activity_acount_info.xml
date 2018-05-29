@@ -36,6 +36,7 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
+                android:id="@+id/trader_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -68,6 +69,7 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
+                android:id="@+id/trader_mt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -100,6 +102,7 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
+                android:id="@+id/trader_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -132,6 +135,7 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
+                android:id="@+id/trader_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -173,6 +177,7 @@
                 android:textSize="14sp" />
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/trader_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -229,6 +234,7 @@
             android:background="@color/gray" />
 
         <RelativeLayout
+            android:id="@+id/rl_unbind"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@drawable/selector_click_white"
