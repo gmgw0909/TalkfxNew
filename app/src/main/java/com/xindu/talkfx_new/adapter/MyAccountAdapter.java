@@ -20,6 +20,6 @@ public class MyAccountAdapter extends BaseQuickAdapter<JYAccountListInfo.ListInf
     @Override
     protected void convert(BaseViewHolder baseViewHolder, final JYAccountListInfo.ListInfo info) {
         baseViewHolder.setText(R.id.tv_name, info.platformServer + " | " + info.acctNo)
-                .setText(R.id.tv_status, info.isSelf.equals("1") ? "(公开)" : "(私密)");
+                .setText(R.id.tv_status, info.isSelf.equals("1") ? "(私密)" : "(公开)");
     }
 }

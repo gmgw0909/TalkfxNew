@@ -8,48 +8,47 @@ import java.util.List;
 
 public class CurrentActInfo {
 
-
     /**
-     * profitability : 10
+     * profitability : -0.0321
      * summary : null
-     * dealerName : FxClub
+     * dealerName : XM
      * headImg : headImg/262300/1521444168.jpg
-     * comprehensiveEvaluation : 70.9166
-     * veracity : 40
-     * maxWithdrawlRate : 0.0066
-     * antiRiskAbility : 20
-     * userName : 张酷酷
+     * comprehensiveEvaluation : null
+     * veracity : 0.3975
+     * maxWithdrawlRate : 0.09
+     * antiRiskAbility : 0.09
+     * userName : 宝二代
      * levelTitle : null
-     * replicability : 50
+     * replicability : 22364.0
      * concernStatus : null
      * attNoAchievementList : []
-     * averageHoldingTime : 912185
-     * riskRate : 30
-     * yield : 5.0E-4
-     * concernCount : 8
-     * actualLeverage : 0.0011
-     * customerId : 207339
+     * averageHoldingTime : 22364
+     * riskRate : 0.2908
+     * yield : -0.0321
+     * concernCount : null
+     * actualLeverage : 0.2908
+     * customerId : 145844
      * acctType : 1
-     * winRate : 0.8168
+     * winRate : 0.3975
      * attAchievementList : [{"img":"staticImg/1526266921.png","achievementId":2,"title":"交易大师"}]
      */
 
-    public int profitability;
+    public double profitability;
     public Object summary;
     public String dealerName;
     public String headImg;
-    public double comprehensiveEvaluation;
-    public int veracity;
+    public Object comprehensiveEvaluation;
+    public double veracity;
     public double maxWithdrawlRate;
-    public int antiRiskAbility;
+    public double antiRiskAbility;
     public String userName;
     public Object levelTitle;
-    public int replicability;
+    public double replicability;
     public Object concernStatus;
     public int averageHoldingTime;
-    public int riskRate;
+    public double riskRate;
     public double yield;
-    public int concernCount;
+    public Object concernCount;
     public double actualLeverage;
     public int customerId;
     public String acctType;

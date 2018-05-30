@@ -73,6 +73,7 @@ public class PingCangActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
+        setRefreshing(false);
         getHistory(SPUtil.getInt(Constants.USERID) + "");
 //        status = 1;
 //        currentPage = 1;

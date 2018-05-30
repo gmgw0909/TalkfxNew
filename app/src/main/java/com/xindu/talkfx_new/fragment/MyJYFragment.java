@@ -38,6 +38,7 @@ import com.xindu.talkfx_new.widget.RadarView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +83,8 @@ public class MyJYFragment extends BaseFragment {
     boolean isInit;
     int currentAccountId;
 
+    DecimalFormat df = new DecimalFormat("#.00");
+
     @Override
     protected int setContentView() {
         return R.layout.fragment_my_jy;
@@ -90,14 +93,6 @@ public class MyJYFragment extends BaseFragment {
     @Override
     protected void lazyLoad() {
         if (!isInit) {
-            ArrayList<String> titles = new ArrayList<String>();
-            titles.add("抗风险能力\n85分");
-            titles.add("稳定性\n65分");
-            titles.add("可复制性\n46分");
-            titles.add("风险控制\n54分");
-            titles.add("盈利能力\n76分");
-            radarView.setTitles(titles);
-
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.setAdapter(adapter = new PingCangAdapter(list));
 
@@ -125,7 +120,7 @@ public class MyJYFragment extends BaseFragment {
                                 if (!TextUtils.isEmpty(data.get(i).isDefault) && data.get(i).isDefault.equals("1")) {
                                     tvName.setText(response.body().datas.list.get(i).platformServer + " | "
                                             + response.body().datas.list.get(i).acctNo);
-                                    tvStatus.setText(response.body().datas.list.get(i).isSelf.equals("1") ? "(公开)" : "(私密)");
+                                    tvStatus.setText(response.body().datas.list.get(i).isSelf.equals("1") ? "(私密)" : "(公共)");
                                     currentAccountId = response.body().datas.list.get(i).tradeAcctId;
                                 } else {
                                     list_.add(data.get(i));
@@ -152,11 +147,19 @@ public class MyJYFragment extends BaseFragment {
                     public void onSuccess(Response<BaseResponse<CurrentActInfo>> response) {
                         if (response != null && response.body().datas != null) {
                             CurrentActInfo info = response.body().datas;
-                            all.setText(info.yield+"");
-                            real.setText(info.actualLeverage + "%");
-                            back.setText(info.maxWithdrawlRate + "%");
-                            time.setText(info.averageHoldingTime + "%");
-                            win.setText(info.winRate + "%");
+                            all.setText(df.format(info.yield * 100) + "%");
+                            real.setText(df.format(info.actualLeverage * 100) + "%");
+                            back.setText(df.format(info.maxWithdrawlRate * 100) + "%");
+                            time.setText(info.averageHoldingTime + "s");
+                            win.setText(df.format(info.winRate * 100) + "%");
+
+                            ArrayList<String> titles = new ArrayList<String>();
+                            titles.add("抗风险能力\n85分");
+                            titles.add("稳定性\n65分");
+                            titles.add("可复制性\n46分");
+                            titles.add("风险控制\n54分");
+                            titles.add("盈利能力\n76分");
+                            radarView.setTitles(titles);
                         }
                     }
 
