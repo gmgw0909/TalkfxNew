@@ -71,6 +71,7 @@ public class TradersActivity extends BaseActivity {
     }
 
     private void getData() {
+        showDialog();
         OkGo.<BaseResponse<TraderInfo>>get(Constants.baseDataUrl + "/tradeAcct/bind/init")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new MJsonCallBack<BaseResponse<TraderInfo>>() {
@@ -81,11 +82,13 @@ public class TradersActivity extends BaseActivity {
                             list.addAll(response.body().datas.dealer);
                             adapter.setNewData(response.body().datas.dealer);
                         }
+                        dismissDialog();
                     }
 
                     @Override
                     public void onError(Response<BaseResponse<TraderInfo>> response) {
                         Utils.errorResponse(mContext, response);
+                        dismissDialog();
                     }
                 });
     }

@@ -12,14 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.xindu.talkfx_new.R;
 import com.xindu.talkfx_new.activity.JYAcountInfoActivity;
+import com.xindu.talkfx_new.activity.LoginActivity;
 import com.xindu.talkfx_new.activity.MTPlatformActivity;
 import com.xindu.talkfx_new.activity.PingCangActivity;
 import com.xindu.talkfx_new.adapter.MyAccountAdapter;
@@ -32,6 +36,7 @@ import com.xindu.talkfx_new.bean.CurrentActInfo;
 import com.xindu.talkfx_new.bean.JYAccountListInfo;
 import com.xindu.talkfx_new.bean.PingCangInfo;
 import com.xindu.talkfx_new.utils.SPUtil;
+import com.xindu.talkfx_new.utils.ToastUtil;
 import com.xindu.talkfx_new.utils.Utils;
 import com.xindu.talkfx_new.widget.RadarView;
 
@@ -74,16 +79,16 @@ public class MyJYFragment extends BaseFragment {
     TextView time;
     @Bind(R.id.win)
     TextView win;
+    @Bind(R.id.delete)
+    ImageView delete;
 
     List<PingCangInfo.PCInfo> list = new ArrayList<>();
     PingCangAdapter adapter;
 
     List<JYAccountListInfo.ListInfo> data = new ArrayList<>();
     MyAccountAdapter popAdapter;
-    boolean isInit;
     int currentAccountId;
-
-    DecimalFormat df = new DecimalFormat("#.00");
+    DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     protected int setContentView() {
@@ -92,16 +97,17 @@ public class MyJYFragment extends BaseFragment {
 
     @Override
     protected void lazyLoad() {
-        if (!isInit) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.setAdapter(adapter = new PingCangAdapter(list));
-
-            popAdapter = new MyAccountAdapter(data);
-            initPop();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter = new PingCangAdapter(list));
+        popAdapter = new MyAccountAdapter(data);
+        initPop();
+        if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
             getHistory(SPUtil.getInt(Constants.USERID) + "");
             getTradeAcctList();
             getCurrentAccountDetail(SPUtil.getInt(Constants.USERID) + "");
-            isInit = true;
+        } else {
+            llAccount.setVisibility(View.GONE);
+            llNoData.setVisibility(View.VISIBLE);
         }
     }
 
@@ -110,15 +116,21 @@ public class MyJYFragment extends BaseFragment {
                 .execute(new MJsonCallBack<BaseResponse<JYAccountListInfo>>() {
                     @Override
                     public void onSuccess(Response<BaseResponse<JYAccountListInfo>> response) {
-                        if (response.body() != null && response.body().datas != null && response.body().datas.list != null && response.body().datas.list.size() > 0) {
+                        if (response.body() != null && response.body().datas != null && response.body().datas.list != null
+                                && response.body().datas.list.size() > 0) {
                             llAccount.setVisibility(View.VISIBLE);
                             llNoData.setVisibility(View.GONE);
                             data.clear();
                             data.addAll(response.body().datas.list);
+                            if (data.size() == 1) {
+                                delete.setVisibility(View.VISIBLE);
+                            } else {
+                                delete.setVisibility(View.GONE);
+                            }
                             List list_ = new ArrayList();
                             for (int i = 0; i < data.size(); i++) {
                                 if (!TextUtils.isEmpty(data.get(i).isDefault) && data.get(i).isDefault.equals("1")) {
-                                    tvName.setText(response.body().datas.list.get(i).platformServer + " | "
+                                    tvName.setText(response.body().datas.list.get(i).name + " | "
                                             + response.body().datas.list.get(i).acctNo);
                                     tvStatus.setText(response.body().datas.list.get(i).isSelf.equals("1") ? "(私密)" : "(公共)");
                                     currentAccountId = response.body().datas.list.get(i).tradeAcctId;
@@ -153,13 +165,20 @@ public class MyJYFragment extends BaseFragment {
                             time.setText(info.averageHoldingTime + "s");
                             win.setText(df.format(info.winRate * 100) + "%");
 
-                            ArrayList<String> titles = new ArrayList<String>();
-                            titles.add("抗风险能力\n85分");
-                            titles.add("稳定性\n65分");
-                            titles.add("可复制性\n46分");
-                            titles.add("风险控制\n54分");
-                            titles.add("盈利能力\n76分");
+                            ArrayList<String> titles = new ArrayList<>();
+                            ArrayList<Double> doubles = new ArrayList<>();
+                            titles.add("抗风险能力\n" + info.antiRiskAbility + "分");
+                            doubles.add(info.antiRiskAbility);
+                            titles.add("稳定性\n" + info.veracity + "分");
+                            doubles.add(info.veracity);
+                            titles.add("可复制性\n" + info.replicability + "分");
+                            doubles.add(info.replicability);
+                            titles.add("风险控制\n" + info.riskRate + "分");
+                            doubles.add(info.riskRate);
+                            titles.add("盈利能力\n" + info.profitability + "分");
+                            doubles.add(info.profitability);
                             radarView.setTitles(titles);
+                            radarView.setData(doubles);
                         }
                     }
 
@@ -193,7 +212,7 @@ public class MyJYFragment extends BaseFragment {
         super.stopLoad();
     }
 
-    @OnClick({R.id.pingcang_all, R.id.account_info, R.id.bt, R.id.ll_pop})
+    @OnClick({R.id.pingcang_all, R.id.account_info, R.id.bt, R.id.ll_pop, R.id.delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.pingcang_all:
@@ -204,7 +223,11 @@ public class MyJYFragment extends BaseFragment {
                         .putExtra("id", currentAccountId));
                 break;
             case R.id.bt:
-                startActivity(new Intent(getActivity(), MTPlatformActivity.class));
+                if (SPUtil.getBoolean(Constants.IS_LOGIN, false)) {
+                    startActivity(new Intent(getActivity(), MTPlatformActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }
                 break;
             case R.id.ll_pop:
                 if (Build.VERSION.SDK_INT >= 24) {
@@ -214,6 +237,25 @@ public class MyJYFragment extends BaseFragment {
                     qmuiPopup.setHeight(height);
                 }
                 qmuiPopup.showAsDropDown(view);
+                break;
+            case R.id.delete:
+                new QMUIDialog.MessageDialogBuilder(getActivity())
+                        .setTitle("删除账户")
+                        .setMessage("确定要删除此账户吗？")
+                        .addAction("取消", new QMUIDialogAction.ActionListener() {
+                            @Override
+                            public void onClick(QMUIDialog dialog, int index) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                            @Override
+                            public void onClick(QMUIDialog dialog, int index) {
+                                delete();
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
                 break;
         }
     }
@@ -243,6 +285,27 @@ public class MyJYFragment extends BaseFragment {
             qmuiPopup.setOutsideTouchable(true);
             qmuiPopup.setBackgroundDrawable(new BitmapDrawable());
         }
+    }
+
+    private void delete() {
+        showDialog();
+        OkGo.<BaseResponse<JYAccountListInfo.ListInfo>>delete(Constants.baseDataUrl + "/tradeAcct/delete/" + currentAccountId)
+                .execute(new MJsonCallBack<BaseResponse<JYAccountListInfo.ListInfo>>() {
+                    @Override
+                    public void onSuccess(Response<BaseResponse<JYAccountListInfo.ListInfo>> response) {
+                        if (response.body().code == 0) {
+                            ToastUtil.showToast(getActivity(), "解绑成功");
+                            EventBus.getDefault().post("bind_refresh");
+                        }
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onError(Response<BaseResponse<JYAccountListInfo.ListInfo>> response) {
+                        Utils.errorResponse(getActivity(), response);
+                        dismissDialog();
+                    }
+                });
     }
 
     @Subscribe

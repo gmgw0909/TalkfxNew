@@ -64,7 +64,7 @@ public class TraderServersActivity extends BaseActivity {
     String mtp;
     String dealerId;
     String platformServer;
-    int isSelf = 1;
+    int isSelf = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,11 +89,12 @@ public class TraderServersActivity extends BaseActivity {
                 dialog.show();
             }
         });
-        getCurrentTraderCount();
+//        getCurrentTraderCount();
         getData(mtp, dealerId);
     }
 
     private void getData(String mtp, String dealerId) {
+        showDialog();
         OkGo.<BaseResponse<List<TraderServerInfo>>>get(Constants.baseDataUrl + "/tradeAcct/bind/service?dealerId=" + dealerId + "&platform=" + mtp)
                 .execute(new MJsonCallBack<BaseResponse<List<TraderServerInfo>>>() {
                     @Override
@@ -102,11 +103,13 @@ public class TraderServersActivity extends BaseActivity {
                             list.addAll(response.body().datas);
                             adapter.setNewData(response.body().datas);
                         }
+                        dismissDialog();
                     }
 
                     @Override
                     public void onError(Response<BaseResponse<List<TraderServerInfo>>> response) {
                         Utils.errorResponse(mContext, response);
+                        dismissDialog();
                     }
                 });
     }
@@ -208,7 +211,11 @@ public class TraderServersActivity extends BaseActivity {
                             EventBus.getDefault().post("bind_refresh");
                             App.clearBindActivity();
                         } else {
-                            ToastUtil.showToast(mContext, "绑定失败，账号信息不对");
+                            if (response.body().msg.equals("070006")) {
+                                ToastUtil.showToast(mContext, "绑定失败,该账户已绑定");
+                            } else {
+                                ToastUtil.showToast(mContext, "绑定失败");
+                            }
                         }
                         dismissDialog();
                     }

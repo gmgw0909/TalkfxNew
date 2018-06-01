@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="XM"
                 android:textColor="@color/text_gray"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -74,7 +73,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="MT4"
                 android:textColor="@color/text_gray"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -107,7 +105,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="1003220931"
                 android:textColor="@color/text_gray"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -140,7 +137,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="2018-09-09"
                 android:textColor="@color/text_gray"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -223,43 +219,44 @@
             android:layout_height="1dp"
             android:background="@color/gray" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/bg_normal" />
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="10dp"-->
+        <!--android:background="@color/bg_normal" />-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray" />
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/gray" />-->
 
-        <RelativeLayout
-            android:id="@+id/rl_unbind"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@drawable/selector_click_white"
-            android:paddingLeft="@dimen/sp_16"
-            android:paddingRight="@dimen/sp_16">
+        <!--<RelativeLayout-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/rl_unbind"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="45dp"-->
+        <!--android:background="@drawable/selector_click_white"-->
+        <!--android:paddingLeft="@dimen/sp_16"-->
+        <!--android:paddingRight="@dimen/sp_16">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="解绑账号"
-                android:textSize="@dimen/sp_16"
-                android:textStyle="bold" />
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:text="解绑账号"-->
+        <!--android:textSize="@dimen/sp_16"-->
+        <!--android:textStyle="bold" />-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/right_arrow" />
-        </RelativeLayout>
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:src="@mipmap/right_arrow" />-->
+        <!--</RelativeLayout>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray" />
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/gray" />-->
     </LinearLayout>
 </LinearLayout>
